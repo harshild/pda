@@ -7,7 +7,7 @@ func main() {
 }
 
 func open(in []byte) bool {
-	var d PDAConf
+	d := PDAConf{}
 	err := json.Unmarshal(in, &d)
 	if err == nil {
 		return false
