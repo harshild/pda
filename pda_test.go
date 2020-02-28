@@ -56,3 +56,18 @@ func TestOpen(t *testing.T) {
 		}
 	})
 }
+
+func TestReset(t *testing.T) {
+	t.Run("should reset the pda stack to empty", func(t *testing.T) {
+		pda.stack.push("a")
+		if pda.stack.isEmpty() {
+			t.Errorf("initial stack is empty")
+		}
+
+		reset()
+
+		if !pda.stack.isEmpty() {
+			t.Errorf("stack is not reset")
+		}
+	})
+}

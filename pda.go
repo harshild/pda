@@ -12,6 +12,10 @@ func open(in []byte) bool {
 	return true
 }
 
+func reset() {
+	pda.stack = Stack{}
+}
+
 type PDA struct {
 	stack   Stack
 	pdaConf PDAConf
