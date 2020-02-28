@@ -5,9 +5,9 @@ import "testing"
 func TestOpen(t *testing.T) {
 	t.Run("Negative", func(t *testing.T) {
 		str := "{}"
-		got := open([]byte(str))
-		if got != false {
-			t.Errorf("output for %s is \n %t; want false", str, got)
+		json := open([]byte(str))
+		if json != false {
+			t.Errorf("output for %s is \n %t; want false", str, json)
 		}
 	})
 
@@ -24,9 +24,9 @@ func TestOpen(t *testing.T) {
 			`["q3", "1", "0", "q3", null], ` +
 			`["q3", null, "$", "q4", null]], ` +
 			`“ eos”: “$”}`
-		got := open([]byte(str))
-		if got != true {
-			t.Errorf("output for %s is \n %t; want true", str, got)
+		json := open([]byte(str))
+		if json != true {
+			t.Errorf("output for %s is \n %t; want true", str, json)
 		}
 	})
 
@@ -42,17 +42,17 @@ func TestOpen(t *testing.T) {
 			`["q2", "1", "0", "q3", null], ` +
 			`["q3", "1", "0", "q3", null], ` +
 			`["q3", null, "$", "q4", null]]}`
-		got := open([]byte(str))
-		if got != false {
-			t.Errorf("output for %s is \n %t; want false", str, got)
+		json := open([]byte(str))
+		if json != false {
+			t.Errorf("output for %s is \n %t; want false", str, json)
 		}
 	})
 
 	t.Run("Negative - wrong fields", func(t *testing.T) {
 		str := `{"name1": "HelloPDA"}`
-		got := open([]byte(str))
-		if got != false {
-			t.Errorf("output for %s is \n %t; want false", str, got)
+		json := open([]byte(str))
+		if json != false {
+			t.Errorf("output for %s is \n %t; want false", str, json)
 		}
 	})
 }

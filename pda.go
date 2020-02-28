@@ -2,13 +2,10 @@ package main
 
 import "encoding/json"
 
-func main() {
-	print("Hello")
-}
+var pdaConf PDAConf
 
 func open(in []byte) bool {
-	d := PDAConf{}
-	err := json.Unmarshal(in, &d)
+	err := json.Unmarshal(in, &pdaConf)
 	if err == nil {
 		return false
 	}
