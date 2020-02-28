@@ -15,6 +15,9 @@ func (stack *Stack) push(str string) {
 }
 
 func (stack *Stack) pop() string {
+	if stack.size() == 0 {
+		return ""
+	}
 	topElement := stack.topElement()
 	elementIndex := stack.size() - 1
 	*stack = (*stack)[:elementIndex]

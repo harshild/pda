@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestStack(t *testing.T) {
 	t.Run("Push new element should result in size increase", func(t *testing.T) {
@@ -83,5 +85,14 @@ func TestStack(t *testing.T) {
 		if element != "c" {
 			t.Errorf("Expected poped element to return c got %s", element)
 		}
+	})
+
+	t.Run("Pop should return null when stack is empty", func(t *testing.T) {
+		stack := Stack{}
+		element := stack.pop()
+		if element != "" {
+			t.Errorf("Empty stack pop:Expected null got #{element}")
+		}
+
 	})
 }
