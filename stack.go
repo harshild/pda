@@ -29,3 +29,8 @@ func (stack *Stack) topElement() string {
 	elementIndex := stack.size() - 1
 	return (*stack)[elementIndex]
 }
+
+func (stack *Stack) peek(k int) []string {
+	top_k_values := stack.size() - k - 1
+	return (*stack)[top_k_values : stack.size()-1]
+}
