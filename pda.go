@@ -30,6 +30,10 @@ func stringarr_contains(str_arr []string, lookup_item string) bool {
 
 }
 
+func current_state() string {
+	return pda.state
+}
+
 type PDA struct {
 	stack   Stack
 	pdaConf PDAConf
