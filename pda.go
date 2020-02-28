@@ -16,9 +16,24 @@ func reset() {
 	pda.stack = Stack{}
 }
 
+func is_accepted() bool {
+	return pda.stack.isEmpty() && stringarr_contains(pda.pdaConf.acceptingStates, pda.state)
+}
+
+func stringarr_contains(str_arr []string, lookup_item string) bool {
+	for _, elem := range str_arr {
+		if elem == lookup_item {
+			return true
+		}
+	}
+	return false
+
+}
+
 type PDA struct {
 	stack   Stack
 	pdaConf PDAConf
+	state   string
 }
 
 type PDAConf struct {

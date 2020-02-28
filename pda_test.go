@@ -71,3 +71,16 @@ func TestReset(t *testing.T) {
 		}
 	})
 }
+
+func TestIsAccepted(t *testing.T) {
+	t.Run("return True if PDA is currently at an accepting state with empty stack", func(t *testing.T) {
+		pda.pdaConf.acceptingStates = append(pda.pdaConf.acceptingStates, "q1", "q2")
+
+		pda.state = "q1"
+		accepted := is_accepted()
+
+		if !accepted {
+			t.Errorf("expecting the state to be accepting and stack to be empty but failed")
+		}
+	})
+}
