@@ -2,14 +2,19 @@ package main
 
 import "encoding/json"
 
-var pdaConf PDAConf
+var pda PDA
 
 func open(in []byte) bool {
-	err := json.Unmarshal(in, &pdaConf)
+	err := json.Unmarshal(in, &pda.pdaConf)
 	if err == nil {
 		return false
 	}
 	return true
+}
+
+type PDA struct {
+	stack   Stack
+	pdaConf PDAConf
 }
 
 type PDAConf struct {

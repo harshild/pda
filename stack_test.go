@@ -74,7 +74,7 @@ func TestStack(t *testing.T) {
 		}
 	})
 
-	t.Run("Pop element should remove last added element", func(t *testing.T) {
+	t.Run("Pop element should pop last added element", func(t *testing.T) {
 		stack := Stack{}
 		stack.push("a")
 		stack.push("b")
