@@ -91,7 +91,7 @@ func TestStack(t *testing.T) {
 		stack := Stack{}
 		element := stack.pop()
 		if element != "" {
-			t.Errorf("Empty stack pop:Expected null got #{element}")
+			t.Errorf("Empty stack pop:Expected null got %s", element)
 		}
 
 	})
@@ -106,9 +106,8 @@ func TestStack(t *testing.T) {
 		stack.push("f")
 		stack.push("g")
 		got := stack.peek(3)
-		print("got #{got}")
-		if len(got) != 3 {
-			t.Errorf("Peek should return top 3 elements got #{got}")
+		if len(got) != 3 && stringarr_contains(got, "e") && stringarr_contains(got, "f") && stringarr_contains(got, "g") {
+			t.Errorf("Peek should return top 3 elements got %d and elements as %s", len(got), got)
 		}
 
 	})
