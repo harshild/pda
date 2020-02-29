@@ -9,7 +9,7 @@ import (
 func main() {
 	pda := PdaController{}
 
-	if len(os.Args) == 2 {
+	if len(os.Args) == 3 {
 		if os.Args[1] == "" {
 			print("Give PDA specifications ")
 		} else {
@@ -36,6 +36,6 @@ func main() {
 			}
 		}
 	} else {
-		print("Wrong number of inputs")
+		print("Wrong number of inputs ", len(os.Args))
 	}
 }

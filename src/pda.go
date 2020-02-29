@@ -24,8 +24,12 @@ func (pda *PdaController) Current_state() string {
 	return pda.State
 }
 
-func (pda *PdaController) Close() {
+func (pda *PdaController) Peek(k int) []string {
+	return pda.Stack.Peek(k)
+}
 
+func (pda *PdaController) Close() {
+	//TODO: garbage-collect/return any (re-usable) resources used by the PDA.
 }
 
 func (pda *PdaController) Put(token string) int {
