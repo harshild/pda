@@ -32,6 +32,14 @@ type PDA struct {
 	state   string
 }
 
+type PDATransitions struct {
+	currentState      string
+	currentAlphabet   string
+	elementToBePopped string
+	nextState         string
+	elementToBePushed string
+}
+
 type PDAConf struct {
 	name            string
 	states          []string
@@ -39,6 +47,6 @@ type PDAConf struct {
 	stackAlphabet   []string
 	acceptingStates []string
 	startState      string
-	transitions     [][]string
+	transitions     []PDATransitions
 	eos             string
 }
