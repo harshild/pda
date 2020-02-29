@@ -106,7 +106,7 @@ func TestStack(t *testing.T) {
 		stack.push("f")
 		stack.push("g")
 		got := stack.peek(3)
-		if len(got) != 3 && stringarr_contains(got, "e") && stringarr_contains(got, "f") && stringarr_contains(got, "g") {
+		if len(got) != 3 && stringArrContains(got, "e") && stringArrContains(got, "f") && stringArrContains(got, "g") {
 			t.Errorf("Peek should return top 3 elements got %d and elements as %s", len(got), got)
 		}
 

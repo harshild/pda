@@ -84,3 +84,15 @@ func TestIsAccepted(t *testing.T) {
 		}
 	})
 }
+
+func TestCurrentState(t *testing.T) {
+	t.Run("check current pda state", func(t *testing.T) {
+		state := "q1"
+		pda.state = state
+		got := current_state()
+
+		if got != state {
+			t.Errorf("expecting the state to be q1 got %s", got)
+		}
+	})
+}
