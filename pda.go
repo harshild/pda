@@ -2,9 +2,7 @@ package main
 
 import "encoding/json"
 
-var pda PDA
-
-func open(in []byte) bool {
+func (pda *PDA) open(in []byte) bool {
 	err := json.Unmarshal(in, &pda.pdaConf)
 	if err == nil {
 		return false
@@ -12,11 +10,11 @@ func open(in []byte) bool {
 	return true
 }
 
-func reset() {
+func (pda *PDA) reset() {
 	pda.stack = Stack{}
 }
 
-func is_accepted() bool {
+func (pda *PDA) is_accepted() bool {
 	return pda.stack.isEmpty() && stringArrContains(pda.pdaConf.acceptingStates, pda.state)
 }
 
@@ -30,8 +28,12 @@ func stringArrContains(str_arr []string, lookup_item string) bool {
 
 }
 
-func current_state() string {
+func (pda *PDA) current_state() string {
 	return pda.state
+}
+
+func (pda *PDA) close() {
+
 }
 
 type PDA struct {
