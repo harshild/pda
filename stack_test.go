@@ -106,7 +106,6 @@ func TestStack(t *testing.T) {
 		stack.push("f")
 		stack.push("g")
 		got := stack.peek(3)
-		print("got #{got}")
 		if len(got) != 3 {
 			t.Errorf("Peek should return top 3 elements got #{got}")
 		}
