@@ -1,4 +1,6 @@
-package main
+package test
+
+import . "../src"
 
 import (
 	"testing"
@@ -7,13 +9,13 @@ import (
 func TestStack(t *testing.T) {
 	t.Run("Push new element should result in size increase", func(t *testing.T) {
 		stack := Stack{}
-		size := stack.size()
+		size := stack.Size()
 		if size != 0 {
 			t.Errorf("Expected initial size to be 0 but got %d", size)
 		}
 
-		stack.push("a")
-		size = stack.size()
+		stack.Push("a")
+		size = stack.Size()
 		if size != 1 {
 			t.Errorf("Expected the size to be 1 but got %d", size)
 		}
@@ -21,27 +23,27 @@ func TestStack(t *testing.T) {
 
 	t.Run("Size of stack should increment with number of variables", func(t *testing.T) {
 		stack := Stack{}
-		size := stack.size()
+		size := stack.Size()
 		if size != 0 {
 			t.Errorf("Expected initial size to be 0 but got %d", size)
 		}
 
-		stack.push("a")
-		size = stack.size()
+		stack.Push("a")
+		size = stack.Size()
 		if size != 1 {
 			t.Errorf("Expected the size to be 1 but got %d", size)
 		}
 
-		stack.push("b")
-		size = stack.size()
+		stack.Push("b")
+		size = stack.Size()
 		if size != 2 {
 			t.Errorf("Expected the size to be 2 but got %d", size)
 		}
 
-		stack.push("a")
-		stack.push("a")
-		stack.push("a")
-		size = stack.size()
+		stack.Push("a")
+		stack.Push("a")
+		stack.Push("a")
+		size = stack.Size()
 		if size != 5 {
 			t.Errorf("Expected the size to be 5 but got %d", size)
 		}
@@ -50,7 +52,7 @@ func TestStack(t *testing.T) {
 
 	t.Run("isEmpty Positive", func(t *testing.T) {
 		stack := Stack{}
-		empty := stack.isEmpty()
+		empty := stack.IsEmpty()
 		if !empty {
 			t.Errorf("Expected isEmpty to return false got %t", empty)
 		}
@@ -58,8 +60,8 @@ func TestStack(t *testing.T) {
 
 	t.Run("isEmpty Negative", func(t *testing.T) {
 		stack := Stack{}
-		stack.push("a")
-		empty := stack.isEmpty()
+		stack.Push("a")
+		empty := stack.IsEmpty()
 		if empty {
 			t.Errorf("Expected isEmpty to return true got %t", empty)
 		}
@@ -67,10 +69,10 @@ func TestStack(t *testing.T) {
 
 	t.Run("We should be able to get top element on the stack", func(t *testing.T) {
 		stack := Stack{}
-		stack.push("a")
-		stack.push("b")
-		stack.push("c")
-		element := stack.topElement()
+		stack.Push("a")
+		stack.Push("b")
+		stack.Push("c")
+		element := stack.TopElement()
 		if element != "c" {
 			t.Errorf("Expected topmost element to be c got %s", element)
 		}
@@ -78,10 +80,10 @@ func TestStack(t *testing.T) {
 
 	t.Run("Pop element should pop last added element", func(t *testing.T) {
 		stack := Stack{}
-		stack.push("a")
-		stack.push("b")
-		stack.push("c")
-		element := stack.pop()
+		stack.Push("a")
+		stack.Push("b")
+		stack.Push("c")
+		element := stack.Pop()
 		if element != "c" {
 			t.Errorf("Expected poped element to return c got %s", element)
 		}
@@ -89,7 +91,7 @@ func TestStack(t *testing.T) {
 
 	t.Run("Pop should return null when stack is empty", func(t *testing.T) {
 		stack := Stack{}
-		element := stack.pop()
+		element := stack.Pop()
 		if element != "" {
 			t.Errorf("Empty stack pop:Expected null got %s", element)
 		}
@@ -98,15 +100,15 @@ func TestStack(t *testing.T) {
 
 	t.Run("Peek should return top 3 elements", func(t *testing.T) {
 		stack := Stack{}
-		stack.push("a")
-		stack.push("b")
-		stack.push("c")
-		stack.push("d")
-		stack.push("e")
-		stack.push("f")
-		stack.push("g")
-		got := stack.peek(3)
-		if len(got) != 3 && stringArrContains(got, "e") && stringArrContains(got, "f") && stringArrContains(got, "g") {
+		stack.Push("a")
+		stack.Push("b")
+		stack.Push("c")
+		stack.Push("d")
+		stack.Push("e")
+		stack.Push("f")
+		stack.Push("g")
+		got := stack.Peek(3)
+		if len(got) != 3 && StringArrContains(got, "e") && StringArrContains(got, "f") && StringArrContains(got, "g") {
 			t.Errorf("Peek should return top 3 elements got %d and elements as %s", len(got), got)
 		}
 

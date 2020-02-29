@@ -1,6 +1,6 @@
-package main
+package src
 
-func stringArrContains(strArr []string, lookupItem string) bool {
+func StringArrContains(strArr []string, lookupItem string) bool {
 	for _, elem := range strArr {
 		if elem == lookupItem {
 			return true
