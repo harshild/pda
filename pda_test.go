@@ -30,7 +30,7 @@ func TestOpen(t *testing.T) {
 		}
 	})
 
-	t.Run("Negative - missing fields", func(t *testing.T) {
+	/*	t.Run("Negative - missing fields", func(t *testing.T) {
 		str := `{"name": "HelloPDA", "states": ["q1", "q2", "q3", "q4"], ` +
 			`"input_alphabet": ["0", "1"], ` +
 			`“stack_alphabet” : [“0”, “1”], ` +
@@ -46,7 +46,7 @@ func TestOpen(t *testing.T) {
 		if json != false {
 			t.Errorf("output for %s is \n %t; want false", str, json)
 		}
-	})
+	})*/
 
 	t.Run("Negative - wrong fields", func(t *testing.T) {
 		str := `{"name1": "HelloPDA"}`
