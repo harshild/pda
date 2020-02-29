@@ -18,16 +18,6 @@ func (pda *PDA) is_accepted() bool {
 	return pda.stack.isEmpty() && stringArrContains(pda.pdaConf.acceptingStates, pda.state)
 }
 
-func stringArrContains(str_arr []string, lookup_item string) bool {
-	for _, elem := range str_arr {
-		if elem == lookup_item {
-			return true
-		}
-	}
-	return false
-
-}
-
 func (pda *PDA) current_state() string {
 	return pda.state
 }
