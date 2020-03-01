@@ -2,10 +2,12 @@ package src
 
 import (
 	"encoding/json"
+	"strings"
 )
 
 func (pda *PdaController) Open(in []byte) bool {
 	err := json.Unmarshal(in, &(pda.PdaConf))
+	pda.State = pda.PdaConf.StartState
 	if err != nil {
 		return false
 	}
@@ -34,7 +36,8 @@ func (pda *PdaController) Close() {
 
 func (pda *PdaController) Put(token string) int {
 	numberOfTransitions := 0
-	tokenToBeProcessed := " " + token + pda.PdaConf.Eos
+	tokenToBeProcessed := " " + token + " "
+	print("Start State ", pda.State)
 	for _, alphabet := range tokenToBeProcessed {
 		transition := GetTransition(pda.State, pda.PdaConf.Transitions, string(alphabet))
 
@@ -46,6 +49,7 @@ func (pda *PdaController) Put(token string) int {
 
 		if transition.NextState != "" {
 			pda.State = transition.NextState
+			print("  =>  ", pda.State)
 		}
 
 		if transition.ElementToBePushed != "" {
@@ -55,12 +59,13 @@ func (pda *PdaController) Put(token string) int {
 		numberOfTransitions++
 
 	}
+
 	return numberOfTransitions
 }
 
 func GetTransition(currentState string, allTransitions [][]string, alphabet string) PDATransition {
 	for _, transitions := range allTransitions {
-		if transitions[0] == currentState && transitions[1] == alphabet {
+		if transitions[0] == currentState && transitions[1] == strings.TrimSpace(alphabet) {
 			return PDATransition{
 				CurrentState:      currentState,
 				CurrentAlphabet:   alphabet,

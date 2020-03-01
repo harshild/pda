@@ -1,0 +1,1 @@
+go build ./main/driver.go && ./driver ./sample/samplePDA-1 0011
