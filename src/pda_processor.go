@@ -5,55 +5,55 @@ import (
 	"strings"
 )
 
-func (pda *PdaController) Open(in []byte) bool {
-	err := json.Unmarshal(in, &(pda.PdaConf))
-	pda.State = pda.PdaConf.StartState
+func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
+	err := json.Unmarshal(in, &(pdaProcessor.PdaConf))
+	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	if err != nil {
 		return false
 	}
 	return true
 }
 
-func (pda *PdaController) Reset() {
-	pda.Stack = Stack{}
+func (pdaProcessor *PdaProcessor) Reset() {
+	pdaProcessor.Stack = Stack{}
 }
 
-func (pda *PdaController) Is_accepted() bool {
-	return pda.Stack.IsEmpty() && StringArrContains(pda.PdaConf.AcceptingStates, pda.State)
+func (pdaProcessor *PdaProcessor) Is_accepted() bool {
+	return pdaProcessor.Stack.IsEmpty() && StringArrContains(pdaProcessor.PdaConf.AcceptingStates, pdaProcessor.State)
 }
 
-func (pda *PdaController) Current_state() string {
-	return pda.State
+func (pdaProcessor *PdaProcessor) Current_state() string {
+	return pdaProcessor.State
 }
 
-func (pda *PdaController) Peek(k int) []string {
-	return pda.Stack.Peek(k)
+func (pdaProcessor *PdaProcessor) Peek(k int) []string {
+	return pdaProcessor.Stack.Peek(k)
 }
 
-func (pda *PdaController) Close() {
+func (pdaProcessor *PdaProcessor) Close() {
 	//TODO: garbage-collect/return any (re-usable) resources used by the PDA.
 }
 
-func (pda *PdaController) Put(token string) int {
+func (pdaProcessor *PdaProcessor) Put(token string) int {
 	numberOfTransitions := 0
 	tokenToBeProcessed := " " + token + " "
-	print("Start State ", pda.State)
+	print("Start State ", pdaProcessor.State)
 	for _, alphabet := range tokenToBeProcessed {
-		transition := GetTransition(pda.State, pda.PdaConf.Transitions, string(alphabet))
+		transition := GetTransition(pdaProcessor.State, pdaProcessor.PdaConf.Transitions, string(alphabet))
 
 		if transition.ElementToBePopped != "" {
-			if pda.Stack.Pop() != transition.ElementToBePopped {
+			if pdaProcessor.Stack.Pop() != transition.ElementToBePopped {
 				return -1
 			}
 		}
 
 		if transition.NextState != "" {
-			pda.State = transition.NextState
-			print("  =>  ", pda.State)
+			pdaProcessor.State = transition.NextState
+			print("  =>  ", pdaProcessor.State)
 		}
 
 		if transition.ElementToBePushed != "" {
-			pda.Stack.Push(transition.ElementToBePushed)
+			pdaProcessor.Stack.Push(transition.ElementToBePushed)
 		}
 
 		numberOfTransitions++
@@ -78,18 +78,18 @@ func GetTransition(currentState string, allTransitions [][]string, alphabet stri
 	return PDATransition{}
 }
 
-type PdaController struct {
+type PdaProcessor struct {
 	Stack   Stack
 	PdaConf PDAConf
 	State   string
 }
 
 type PDATransition struct {
-	CurrentState      string `json:"currentState"`
-	CurrentAlphabet   string `json:"currentAlphabet"`
-	ElementToBePopped string `json:"elementToBePopped"`
-	NextState         string `json:"nextState"`
-	ElementToBePushed string `json:"elementToBePushed"`
+	CurrentState      string
+	CurrentAlphabet   string
+	ElementToBePopped string
+	NextState         string
+	ElementToBePushed string
 }
 
 type PDAConf struct {

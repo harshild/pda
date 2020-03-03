@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	pda := PdaController{}
+	pdaProcessor := PdaProcessor{}
 
 	if len(os.Args) == 3 {
 		if os.Args[1] == "" {
@@ -15,16 +15,16 @@ func main() {
 		} else {
 
 			specJSON, _ := ioutil.ReadFile(os.Args[1])
-			if pda.Open(specJSON) {
+			if pdaProcessor.Open(specJSON) {
 				if os.Args[2] != "" {
 					inputBytes, err := ioutil.ReadFile(os.Args[2])
 					inputString := string(inputBytes)
 					if err != nil {
 						inputString := os.Args[2]
-						count := pda.Put(inputString)
+						count := pdaProcessor.Put(inputString)
 						print("\nNumber of transitons are ", count, "...\nDone!!")
 					} else {
-						count := pda.Put(inputString)
+						count := pdaProcessor.Put(inputString)
 						print("\nNumber of transitons are ", count, "...\nDone!!")
 					}
 				} else {

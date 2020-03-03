@@ -5,7 +5,7 @@ import . "../src"
 
 func TestOpen(t *testing.T) {
 	t.Run("Negative", func(t *testing.T) {
-		pda := PdaController{}
+		pda := PdaProcessor{}
 		str := "{a = a}"
 		isParsingSuccess := pda.Open([]byte(str))
 		if isParsingSuccess != false {
@@ -14,20 +14,20 @@ func TestOpen(t *testing.T) {
 	})
 
 	t.Run("Positive", func(t *testing.T) {
-		pda := PdaController{}
+		pda := PdaProcessor{}
 		str := `{"name": "HelloPDA",
-  "states": ["q1", "q2", "q3", "q4"],
-  "input_alphabet": ["0", "1"],
-  "stack_alphabet" : ["0", "1"],
-  "accepting_states": ["q1", "q4"],
-  "start_state": "q1",
-  "transitions": [
-    ["q1", null, null, "q2", "$"],
-    ["q2", "0", null, "q2", "0"],
-    ["q2", "1", "0", "q3", null],
-    ["q3", "1", "0", "q3", null],
-    ["q3", null, "$", "q4", null]],
-  "eos": "$"}`
+  				"states": ["q1", "q2", "q3", "q4"],
+  				"input_alphabet": ["0", "1"],
+  				"stack_alphabet" : ["0", "1"],
+  				"accepting_states": ["q1", "q4"],
+  				"start_state": "q1",
+  				"transitions": [
+  				  ["q1", null, null, "q2", "$"],
+  				  ["q2", "0", null, "q2", "0"],
+  				  ["q2", "1", "0", "q3", null],
+  				  ["q3", "1", "0", "q3", null],
+  				  ["q3", null, "$", "q4", null]],
+  				"eos": "$"}`
 		isParsingSuccess := pda.Open([]byte(str))
 		if isParsingSuccess != true {
 			t.Errorf("output for %s is \n %t; want true", str, isParsingSuccess)
@@ -38,38 +38,11 @@ func TestOpen(t *testing.T) {
 		}
 	})
 
-	/*	t.Run("Negative - missing fields", func(t *testing.T) {
-		pda := PdaController{}
-			str := `{"name": "HelloPDA", "states": ["q1", "q2", "q3", "q4"], ` +
-				`"input_alphabet": ["0", "1"], ` +
-				`“stack_alphabet” : [“0”, “1”], ` +
-				`"accepting_states": ["q1", "q4"], ` +
-				`"start_state": "q1", ` +
-				`"transitions": [ ` +
-				`["q1", null, null, "q2", "$"], ` +
-				`["q2", "0", null, "q2", "0"], ` +
-				`["q2", "1", "0", "q3", null], ` +
-				`["q3", "1", "0", "q3", null], ` +
-				`["q3", null, "$", "q4", null]]}`
-			isParsingSuccess := open([]byte(str))
-			if isParsingSuccess != false {
-				t.Errorf("output for %s is \n %t; want false", str, isParsingSuccess)
-			}
-		})*/
-
-	/*	t.Run("Negative - wrong fields", func(t *testing.T) {
-		pda := PdaController{}
-		str := `{"name1": "HelloPDA"}`
-		json := pda.Open([]byte(str))
-		if json != false {
-			t.Errorf("output for %s is \n %t; want false", str, json)
-		}
-	})*/
 }
 
 func TestReset(t *testing.T) {
 	t.Run("should reset the pda stack to empty", func(t *testing.T) {
-		pda := PdaController{}
+		pda := PdaProcessor{}
 		pda.Stack.Push("a")
 		if pda.Stack.IsEmpty() {
 			t.Errorf("initial stack is empty")
@@ -84,8 +57,8 @@ func TestReset(t *testing.T) {
 }
 
 func TestIsAccepted(t *testing.T) {
-	t.Run("return True if PdaController is currently at an accepting state with empty stack", func(t *testing.T) {
-		pda := PdaController{}
+	t.Run("return True if PdaProcessor is currently at an accepting state with empty stack", func(t *testing.T) {
+		pda := PdaProcessor{}
 		pda.PdaConf.AcceptingStates = append(pda.PdaConf.AcceptingStates, "q1", "q2")
 
 		pda.State = "q1"
@@ -99,7 +72,7 @@ func TestIsAccepted(t *testing.T) {
 
 func TestCurrentState(t *testing.T) {
 	t.Run("check current pda state", func(t *testing.T) {
-		pda := PdaController{}
+		pda := PdaProcessor{}
 		state := "q1"
 		pda.State = state
 		got := pda.Current_state()
@@ -112,7 +85,7 @@ func TestCurrentState(t *testing.T) {
 
 func TestPutToken(t *testing.T) {
 	t.Run("Put token should return transitions taken", func(t *testing.T) {
-		pda := PdaController{
+		pda := PdaProcessor{
 			PdaConf: PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4"},
@@ -137,7 +110,7 @@ func TestPutToken(t *testing.T) {
 
 func TestProcessAlphabet(t *testing.T) {
 	t.Run("Process alphabet should return transition required for current scenario", func(t *testing.T) {
-		pda := PdaController{
+		pda := PdaProcessor{
 			PdaConf: PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4"},
