@@ -2,6 +2,7 @@ package main
 
 import (
 	. "../src"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -11,31 +12,41 @@ func main() {
 
 	if len(os.Args) == 3 {
 		if os.Args[1] == "" {
-			print("Give PDA specifications ")
+			println("Give PDA specifications ")
 		} else {
 
+			transition := 1
 			specJSON, _ := ioutil.ReadFile(os.Args[1])
 			if pdaProcessor.Open(specJSON) {
 				if os.Args[2] != "" {
+					inputString := ""
 					inputBytes, err := ioutil.ReadFile(os.Args[2])
-					inputString := string(inputBytes)
 					if err != nil {
-						inputString := os.Args[2]
-						count := pdaProcessor.Put(inputString)
-						print("\nNumber of transitons are ", count, "...\nDone!!")
+						inputString = os.Args[2]
 					} else {
-						count := pdaProcessor.Put(inputString)
-						print("\nNumber of transitons are ", count, "...\nDone!!")
+						inputString = string(inputBytes)
 					}
+					fmt.Printf("PDA Name=%s \tMethod=Is_Accepted =%t \n", pdaProcessor.GetPDAName(), pdaProcessor.Is_accepted())
+
+					pdaProcessor.Reset()
+					fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=1\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock())
+
+					for _, alphabet := range inputString {
+						transition = pdaProcessor.Put(string(alphabet))
+						fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), string(alphabet), transition, pdaProcessor.GetClock())
+					}
+					pdaProcessor.Eos()
+					fmt.Printf("PDA Name=%s \tToken=EOS \t Transitions Took=1\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock())
+
 				} else {
-					print("\nPDA no input stream specified")
+					println("PDA no input stream specified")
 				}
 
 			} else {
-				print("\nPDA open (spec) API failed!!")
+				println("PDA open (spec) API failed!!")
 			}
 		}
 	} else {
-		print("Wrong number of inputs ", len(os.Args))
+		println("Wrong number of inputs provided, Input length", len(os.Args))
 	}
 }
