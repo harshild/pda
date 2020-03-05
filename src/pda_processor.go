@@ -35,30 +35,33 @@ func (pdaProcessor *PdaProcessor) Reset() {
 
 func (pdaProcessor *PdaProcessor) Put(token string) int {
 
+	transitions :=0
 	if StringArrContains(pdaProcessor.PdaConf.InputAlphabet, token) || token == " " || token == pdaProcessor.PdaConf.Eos {
-		transition, err := GetTransition(pdaProcessor.State, pdaProcessor.PdaConf.Transitions, token)
+		transition:= GetTransition(pdaProcessor.State ,pdaProcessor.PdaConf.Transitions, token)
 
-		if err != nil {
-			Crash(err)
-		}
-
-		if transition.elementToBePopped != "" {
-			if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
-				Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
+			if transition.elementToBePopped != "" {
+				if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
+					Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
+				}
+				pdaProcessor.Stack.Pop()
 			}
-			pdaProcessor.Stack.Pop()
+
+			fmt.Printf("  %s => %s  ", pdaProcessor.State, transition.nextState)
+
+			pdaProcessor.State = transition.nextState
+
+			if transition.elementToBePushed != "" {
+				pdaProcessor.Stack.Push(transition.elementToBePushed)
+			}
+
+			pdaProcessor.clock++
+
+			transitions = 1 + pdaProcessor.takeEagerSteps()
 		}
-
-		fmt.Printf("  %s => %s  ", pdaProcessor.State, transition.nextState)
-
-		pdaProcessor.State = transition.nextState
-
-		if transition.elementToBePushed != "" {
-			pdaProcessor.Stack.Push(transition.elementToBePushed)
+		if transitions < 1 {
+			Crash(&PDARuntimeError{message: "No transition found in configuration for STATE="+pdaProcessor.Current_state()+" Token="+token})
 		}
-
-		pdaProcessor.clock++
-		return 1
+		return transitions
 	} else {
 		Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
 		return 0
@@ -97,7 +100,11 @@ func (pdaProcessor *PdaProcessor) GetClock() int {
 	return pdaProcessor.clock
 }
 
-func GetTransition(currentState string, allTransitions [][]string, alphabet string) (PDATransition, error) {
+func (pdaProcessor *PdaProcessor) takeEagerSteps() {
+
+}
+
+func GetTransition(currentState string, allTransitions [][]string,alphabet string) PDATransition {
 	for _, transitions := range allTransitions {
 		if transitions[0] == currentState && transitions[1] == strings.TrimSpace(alphabet) {
 			return PDATransition{
@@ -106,10 +113,10 @@ func GetTransition(currentState string, allTransitions [][]string, alphabet stri
 				elementToBePopped: transitions[2],
 				nextState:         transitions[3],
 				elementToBePushed: transitions[4],
-			}, nil
+			}
 		}
 	}
-	return PDATransition{}, &PDARuntimeError{message: "No transition found in configuration for current scenario"}
+	return PDATransition{}
 }
 
 type PdaProcessor struct {
