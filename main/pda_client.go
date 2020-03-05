@@ -2,6 +2,7 @@ package main
 
 import (
 	. "../src"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -14,19 +15,26 @@ func main() {
 			print("Give PDA specifications ")
 		} else {
 
+			trannsactionCount := 1
 			specJSON, _ := ioutil.ReadFile(os.Args[1])
 			if pdaProcessor.Open(specJSON) {
 				if os.Args[2] != "" {
+					inputString := ""
 					inputBytes, err := ioutil.ReadFile(os.Args[2])
-					inputString := string(inputBytes)
 					if err != nil {
-						inputString := os.Args[2]
-						count := pdaProcessor.Put(inputString)
-						print("\nNumber of transitons are ", count, "...\nDone!!")
+						inputString = os.Args[2]
 					} else {
-						count := pdaProcessor.Put(inputString)
-						print("\nNumber of transitons are ", count, "...\nDone!!")
+						inputString = string(inputBytes)
 					}
+					pdaProcessor.Reset()
+					fmt.Printf("PDA Name=%s ,Token=START ,Transaction Number=%d \n", pdaProcessor.PdaConf.Name, trannsactionCount)
+					for _, alphabet := range inputString {
+						trannsactionCount = pdaProcessor.Put(string(alphabet))
+						fmt.Printf("PDA Name=%s ,Token=%s ,Transaction Number=%d \n", pdaProcessor.PdaConf.Name, string(alphabet), trannsactionCount)
+					}
+					pdaProcessor.Eos()
+					fmt.Printf("PDA Name=%s ,Token=%s ,Transaction Number=%d \n", pdaProcessor.PdaConf.Name, pdaProcessor.PdaConf.Eos, trannsactionCount+1)
+
 				} else {
 					print("\nPDA no input stream specified")
 				}

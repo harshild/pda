@@ -1,5 +1,10 @@
 package src
 
+import (
+	"os"
+	"reflect"
+)
+
 func StringArrContains(strArr []string, lookupItem string) bool {
 	for _, elem := range strArr {
 		if elem == lookupItem {
@@ -8,4 +13,9 @@ func StringArrContains(strArr []string, lookupItem string) bool {
 	}
 	return false
 
+}
+
+func Crash(err error) {
+	_, _ = os.Stderr.WriteString("Error type = " + reflect.TypeOf(err).String() + "; Error Message = " + err.Error() + " ;\n")
+	os.Exit(-1)
 }
