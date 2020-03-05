@@ -102,29 +102,20 @@ func TestPutToken(t *testing.T) {
 			},
 			State: "q1",
 		}
-		transitionCount, err := pda.Put("")
+		transitionCount := pda.Put("")
 
-		if err != nil {
-			t.Errorf("%s", err)
-		}
 		if transitionCount != 1 {
 			t.Errorf("Expected transition count to be 1 got %d", transitionCount)
 		}
 
-		transitionCount, err = pda.Put("0")
+		transitionCount = pda.Put("0")
 
-		if err != nil {
-			t.Errorf("%s", err)
-		}
 		if transitionCount != 2 {
 			t.Errorf("Expected transition count to be 1 got %d", transitionCount)
 		}
 
-		transitionCount, err = pda.Put("0")
+		transitionCount = pda.Put("0")
 
-		if err != nil {
-			t.Errorf("%s", err)
-		}
 		if transitionCount != 3 {
 			t.Errorf("Expected transition count to be 2 got %d", transitionCount)
 		}

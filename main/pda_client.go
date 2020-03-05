@@ -12,7 +12,7 @@ func main() {
 
 	if len(os.Args) == 3 {
 		if os.Args[1] == "" {
-			print("Give PDA specifications ")
+			println("Give PDA specifications ")
 		} else {
 
 			trannsactionCount := 1
@@ -27,23 +27,23 @@ func main() {
 						inputString = string(inputBytes)
 					}
 					pdaProcessor.Reset()
-					fmt.Printf("PDA Name=%s ,Token=START ,Transaction Number=%d \n", pdaProcessor.PdaConf.Name, trannsactionCount)
+					fmt.Printf("PDA Name=%s ,Token=START ,Transition Number=%d \n", pdaProcessor.PdaConf.Name, trannsactionCount)
 					for _, alphabet := range inputString {
 						trannsactionCount = pdaProcessor.Put(string(alphabet))
-						fmt.Printf("PDA Name=%s ,Token=%s ,Transaction Number=%d \n", pdaProcessor.PdaConf.Name, string(alphabet), trannsactionCount)
+						fmt.Printf("PDA Name=%s ,Token=%s ,Transition Number=%d \n", pdaProcessor.PdaConf.Name, string(alphabet), trannsactionCount)
 					}
 					pdaProcessor.Eos()
-					fmt.Printf("PDA Name=%s ,Token=%s ,Transaction Number=%d \n", pdaProcessor.PdaConf.Name, pdaProcessor.PdaConf.Eos, trannsactionCount+1)
+					fmt.Printf("PDA Name=%s ,Token=%s ,Transition Number=%d \n", pdaProcessor.PdaConf.Name, pdaProcessor.PdaConf.Eos, trannsactionCount+1)
 
 				} else {
-					print("\nPDA no input stream specified")
+					println("PDA no input stream specified")
 				}
 
 			} else {
-				print("\nPDA open (spec) API failed!!")
+				println("PDA open (spec) API failed!!")
 			}
 		}
 	} else {
-		print("Wrong number of inputs ", len(os.Args))
+		println("Wrong number of inputs provided, Input length", len(os.Args))
 	}
 }

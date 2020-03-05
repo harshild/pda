@@ -67,12 +67,13 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 			pdaProcessor.Stack.Pop()
 		}
 
+		fmt.Printf("  %s => %s  ", pdaProcessor.State, transition.NextState)
+
 		pdaProcessor.State = transition.NextState
 
 		if transition.ElementToBePushed != "" {
 			pdaProcessor.Stack.Push(transition.ElementToBePushed)
 		}
-		fmt.Printf("  %s =>  ", pdaProcessor.State)
 
 		pdaProcessor.Transitions++
 		return pdaProcessor.Transitions
@@ -98,7 +99,7 @@ func GetTransition(currentState string, allTransitions [][]string, alphabet stri
 			}, nil
 		}
 	}
-	return PDATransition{}, &PDARuntimeError{"No transaction found in configuration for current scenario"}
+	return PDATransition{}, &PDARuntimeError{"No transition found in configuration for current scenario"}
 }
 
 type PdaProcessor struct {
