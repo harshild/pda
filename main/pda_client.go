@@ -27,13 +27,13 @@ func main() {
 						inputString = string(inputBytes)
 					}
 					pdaProcessor.Reset()
-					fmt.Printf("PDA Name=%s ,Token=START ,Transition Number=%d \n", pdaProcessor.PdaConf.Name, trannsactionCount)
+					fmt.Printf("PDA Name=%s ,\tToken=START ,\tTransition Number=%d \n", pdaProcessor.GetPDAName(), trannsactionCount)
 					for _, alphabet := range inputString {
 						trannsactionCount = pdaProcessor.Put(string(alphabet))
-						fmt.Printf("PDA Name=%s ,Token=%s ,Transition Number=%d \n", pdaProcessor.PdaConf.Name, string(alphabet), trannsactionCount)
+						fmt.Printf("PDA Name=%s ,Token=%s ,\tTransition Number=%d \n", pdaProcessor.GetPDAName(), string(alphabet), trannsactionCount)
 					}
 					pdaProcessor.Eos()
-					fmt.Printf("PDA Name=%s ,Token=%s ,Transition Number=%d \n", pdaProcessor.PdaConf.Name, pdaProcessor.PdaConf.Eos, trannsactionCount+1)
+					fmt.Printf("PDA Name=%s ,\tToken=EOS ,\tTransition Number=%d \n", pdaProcessor.GetPDAName(), trannsactionCount+1)
 
 				} else {
 					println("PDA no input stream specified")

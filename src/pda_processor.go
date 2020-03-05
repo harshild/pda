@@ -16,7 +16,6 @@ func (e *PDARuntimeError) Error() string {
 
 func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	err := json.Unmarshal(in, &(pdaProcessor.PdaConf))
-	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	if err != nil {
 		return false
 	}
@@ -24,6 +23,7 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 }
 
 func (pdaProcessor *PdaProcessor) Reset() {
+	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	pdaProcessor.Stack = Stack{}
 	pdaProcessor.Put(" ")
 }
@@ -41,17 +41,14 @@ func (pdaProcessor *PdaProcessor) Peek(k int) []string {
 }
 
 func (pdaProcessor *PdaProcessor) Close() {
-	//TODO: garbage-collect/return any (re-usable) resources used by the PDA.
+	pdaProcessor.PdaConf = PDAConf{}
+	pdaProcessor.Stack = Stack{}
+	pdaProcessor.State = ""
+	pdaProcessor.transitions = 0
+
 }
 
 func (pdaProcessor *PdaProcessor) Put(token string) int {
-	//numberOfTransitions := 0
-	//tokenToBeProcessed := " " + token + " "
-	//print("Start State ", pdaProcessor.State)
-	//for _, alphabet := range tokenToBeProcessed {
-	//if len(token) != 1 {
-	//	return nilIntValue,&PDARuntimeError{"Invalid token length"}
-	//}
 
 	if StringArrContains(pdaProcessor.PdaConf.InputAlphabet, token) || token == " " || token == pdaProcessor.PdaConf.Eos {
 		transition, err := GetTransition(pdaProcessor.State, pdaProcessor.PdaConf.Transitions, token)
@@ -60,23 +57,23 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 			Crash(err)
 		}
 
-		if transition.ElementToBePopped != "" {
-			if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.ElementToBePopped {
+		if transition.elementToBePopped != "" {
+			if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
 				Crash(&PDARuntimeError{"Element to be popped from Stack not found on top"})
 			}
 			pdaProcessor.Stack.Pop()
 		}
 
-		fmt.Printf("  %s => %s  ", pdaProcessor.State, transition.NextState)
+		fmt.Printf("  %s => %s  ", pdaProcessor.State, transition.nextState)
 
-		pdaProcessor.State = transition.NextState
+		pdaProcessor.State = transition.nextState
 
-		if transition.ElementToBePushed != "" {
-			pdaProcessor.Stack.Push(transition.ElementToBePushed)
+		if transition.elementToBePushed != "" {
+			pdaProcessor.Stack.Push(transition.elementToBePushed)
 		}
 
-		pdaProcessor.Transitions++
-		return pdaProcessor.Transitions
+		pdaProcessor.transitions++
+		return pdaProcessor.transitions
 	} else {
 		Crash(&PDARuntimeError{"Invalid input sequence provided"})
 		return -1
@@ -87,15 +84,19 @@ func (pdaProcessor *PdaProcessor) Eos() {
 	pdaProcessor.Put(" ")
 }
 
+func (pdaProcessor *PdaProcessor) GetPDAName() string {
+	return pdaProcessor.PdaConf.Name
+}
+
 func GetTransition(currentState string, allTransitions [][]string, alphabet string) (PDATransition, error) {
 	for _, transitions := range allTransitions {
 		if transitions[0] == currentState && transitions[1] == strings.TrimSpace(alphabet) {
 			return PDATransition{
-				CurrentState:      currentState,
-				CurrentAlphabet:   alphabet,
-				ElementToBePopped: transitions[2],
-				NextState:         transitions[3],
-				ElementToBePushed: transitions[4],
+				currentState:      currentState,
+				currentAlphabet:   alphabet,
+				elementToBePopped: transitions[2],
+				nextState:         transitions[3],
+				elementToBePushed: transitions[4],
 			}, nil
 		}
 	}
@@ -106,15 +107,15 @@ type PdaProcessor struct {
 	Stack       Stack
 	PdaConf     PDAConf
 	State       string
-	Transitions int
+	transitions int
 }
 
 type PDATransition struct {
-	CurrentState      string
-	CurrentAlphabet   string
-	ElementToBePopped string
-	NextState         string
-	ElementToBePushed string
+	currentState      string
+	currentAlphabet   string
+	elementToBePopped string
+	nextState         string
+	elementToBePushed string
 }
 
 type PDAConf struct {
