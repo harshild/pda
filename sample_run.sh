@@ -30,5 +30,9 @@ echo "Input = abc "
 echo "Should fail because, getting an unknown input transition or undefined transition"
 echo "================================="
 go build ./main/pda_client.go && ./pda_client ./sample/samplePDA-3.json abc #getting an unknown input transition or undefined transition
+echo "================================="
+echo "Input = 0011 "
+echo "================================="
+go build ./main/pda_client.go && ./pda_client ./sample/samplePDA-4.json 0011
 
 

@@ -29,14 +29,15 @@ func main() {
 					fmt.Printf("PDA Name=%s \tMethod=Is_Accepted =%t \n", pdaProcessor.GetPDAName(), pdaProcessor.Is_accepted())
 
 					pdaProcessor.Reset()
-					fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=1\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock())
+					fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock(), pdaProcessor.GetClock())
 
 					for _, alphabet := range inputString {
 						transition = pdaProcessor.Put(string(alphabet))
 						fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), string(alphabet), transition, pdaProcessor.GetClock())
 					}
+					prevClock := pdaProcessor.GetClock()
 					pdaProcessor.Eos()
-					fmt.Printf("PDA Name=%s \tToken=EOS \t Transitions Took=1\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock())
+					fmt.Printf("PDA Name=%s \tToken=EOS \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock()-prevClock, pdaProcessor.GetClock())
 
 				} else {
 					println("PDA no input stream specified")
