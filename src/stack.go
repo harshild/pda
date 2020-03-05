@@ -2,6 +2,14 @@ package src
 
 type Stack []string
 
+type StackRuntimeError struct {
+	message string
+}
+
+func (e *StackRuntimeError) Error() string {
+	return e.message
+}
+
 func (stack *Stack) Size() int {
 	return len(*stack)
 }
@@ -30,7 +38,10 @@ func (stack *Stack) TopElement() string {
 	return (*stack)[elementIndex]
 }
 
-func (stack *Stack) Peek(k int) []string {
-	topKValues := stack.Size() - k - 1
+func (stack *Stack) Peek(len int) []string {
+	if stack.Size() > len {
+		Crash(&StackRuntimeError{"Peek length is " + string(len) + ", But the size of stack is " + string(stack.Size())})
+	}
+	topKValues := stack.Size() - len - 1
 	return (*stack)[topKValues:(stack.Size() - 1)]
 }

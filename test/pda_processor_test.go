@@ -65,6 +65,10 @@ func Test_Reset(t *testing.T) {
 		if !pda.Stack.IsEmpty() {
 			t.Errorf("stack is not reset")
 		}
+
+		if pda.GetClock() != 1 {
+			t.Errorf("Start state has not been processed")
+		}
 	})
 }
 
@@ -116,19 +120,19 @@ func Test_Put(t *testing.T) {
 		}
 		transitionCount := pda.Put(" ")
 
-		if transitionCount != 1 {
+		if transitionCount != 1 || pda.GetClock() != 1 {
 			t.Errorf("Expected transition count to be 1 got %d", transitionCount)
 		}
 
 		transitionCount = pda.Put("0")
 
-		if transitionCount != 2 {
+		if transitionCount != 1 || pda.GetClock() != 2 {
 			t.Errorf("Expected transition count to be 1 got %d", transitionCount)
 		}
 
 		transitionCount = pda.Put("0")
 
-		if transitionCount != 3 {
+		if transitionCount != 1 || pda.GetClock() != 3 {
 			t.Errorf("Expected transition count to be 2 got %d", transitionCount)
 		}
 	})

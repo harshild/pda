@@ -15,7 +15,7 @@ func main() {
 			println("Give PDA specifications ")
 		} else {
 
-			trannsactionCount := 1
+			transition := 1
 			specJSON, _ := ioutil.ReadFile(os.Args[1])
 			if pdaProcessor.Open(specJSON) {
 				if os.Args[2] != "" {
@@ -26,14 +26,17 @@ func main() {
 					} else {
 						inputString = string(inputBytes)
 					}
+					fmt.Printf("PDA Name=%s \tMethod=Is_Accepted =%t \n", pdaProcessor.GetPDAName(), pdaProcessor.Is_accepted())
+
 					pdaProcessor.Reset()
-					fmt.Printf("PDA Name=%s ,\tToken=START ,\tTransition Number=%d \n", pdaProcessor.GetPDAName(), trannsactionCount)
+					fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=1\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock())
+
 					for _, alphabet := range inputString {
-						trannsactionCount = pdaProcessor.Put(string(alphabet))
-						fmt.Printf("PDA Name=%s ,Token=%s ,\tTransition Number=%d \n", pdaProcessor.GetPDAName(), string(alphabet), trannsactionCount)
+						transition = pdaProcessor.Put(string(alphabet))
+						fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), string(alphabet), transition, pdaProcessor.GetClock())
 					}
 					pdaProcessor.Eos()
-					fmt.Printf("PDA Name=%s ,\tToken=EOS ,\tTransition Number=%d \n", pdaProcessor.GetPDAName(), trannsactionCount+1)
+					fmt.Printf("PDA Name=%s \tToken=EOS \tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock())
 
 				} else {
 					println("PDA no input stream specified")
