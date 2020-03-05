@@ -102,33 +102,60 @@ func TestPutToken(t *testing.T) {
 			},
 			State: "q1",
 		}
+		transitionCount, err := pda.Put("")
 
-		result := pda.Put("0011")
-		print(result)
-	})
-}
-
-func TestProcessAlphabet(t *testing.T) {
-	t.Run("Process alphabet should return transition required for current scenario", func(t *testing.T) {
-		pda := PdaProcessor{
-			PdaConf: PDAConf{
-				Name:            "Test PDA",
-				States:          []string{"q1", "q2", "q3", "q4"},
-				InputAlphabet:   []string{"0", "1"},
-				StackAlphabet:   []string{"0", "1"},
-				AcceptingStates: []string{"q1", "q4"},
-				StartState:      "q1",
-				Transitions: [][]string{{"q1", "", "", "q2", "$"},
-					{"q2", "0", "", "q2", "0"},
-					{"q2", "1", "0", "q3", ""},
-					{"q3", "1", "0", "q3", ""},
-					{"q3", "", "$", "q4", ""}},
-				Eos: "$",
-			},
-			State: "q1",
+		if err != nil {
+			t.Errorf("%s", err)
+		}
+		if transitionCount != 1 {
+			t.Errorf("Expected transition count to be 1 got %d", transitionCount)
 		}
 
-		result := pda.Put("0011")
-		print(result)
+		transitionCount, err = pda.Put("0")
+
+		if err != nil {
+			t.Errorf("%s", err)
+		}
+		if transitionCount != 2 {
+			t.Errorf("Expected transition count to be 1 got %d", transitionCount)
+		}
+
+		transitionCount, err = pda.Put("0")
+
+		if err != nil {
+			t.Errorf("%s", err)
+		}
+		if transitionCount != 3 {
+			t.Errorf("Expected transition count to be 2 got %d", transitionCount)
+		}
 	})
 }
+
+//func TestProcessAlphabet(t *testing.T) {
+//	t.Run("Process alphabet should return transition required for current scenario", func(t *testing.T) {
+//		pda := PdaProcessor{
+//			PdaConf: PDAConf{
+//				Name:            "Test PDA",
+//				States:          []string{"q1", "q2", "q3", "q4"},
+//				InputAlphabet:   []string{"0", "1"},
+//				StackAlphabet:   []string{"0", "1"},
+//				AcceptingStates: []string{"q1", "q4"},
+//				StartState:      "q1",
+//				Transitions: [][]string{{"q1", "", "", "q2", "$"},
+//					{"q2", "0", "", "q2", "0"},
+//					{"q2", "1", "0", "q3", ""},
+//					{"q3", "1", "0", "q3", ""},
+//					{"q3", "", "$", "q4", ""}},
+//				Eos: "$",
+//			},
+//			State: "q1",
+//		}
+//
+//		result,err := pda.Put("0011")
+//
+//		if err != nil{
+//			t.Errorf("%s",err)
+//		}
+//		print(result)
+//	})
+//}
