@@ -3,6 +3,7 @@ package src
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -12,11 +13,11 @@ type PDARuntimeError struct {
 }
 
 func (e *PDARuntimeError) Error() string {
-	pdaInfo := ""
+	pdaInfo := "No PDA Info available for \t"
 	if e.forPDA != nil && e.forPDA.PdaConf.Name != "" {
-		pdaInfo = "Error occurred for PDA=" + e.forPDA.PdaConf.Name + " At clock=" + string(e.forPDA.clock) + " At state=" + e.forPDA.State
+		pdaInfo = "Error occurred for PDA=" + e.forPDA.PdaConf.Name + " At clock=" + strconv.Itoa(e.forPDA.clock) + " At state=" + e.forPDA.State
 	}
-	return e.message + "\n" + pdaInfo
+	return e.message + " || " + pdaInfo
 }
 
 func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
@@ -62,7 +63,7 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 		}
 
 		if transitionCount < 1 {
-			Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state() + " Token=" + token})
+			Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
 		}
 		return transitionCount
 	} else {

@@ -1,0 +1,94 @@
+=================================
+Input = 0011
+=================================
+PDA Name=HelloPDA 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=HelloPDA 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+  q2 => q2  PDA Name=HelloPDA 	Token=0 	 Transitions Took=1	Clock Ticks=2 
+  q2 => q2  PDA Name=HelloPDA 	Token=0 	 Transitions Took=1	Clock Ticks=3 
+  q2 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=4 
+  q3 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=5 
+  q3 => q4  PDA Name=HelloPDA 	Token=EOS 	 Transitions Took=1	Clock Ticks=6 
+=================================
+Input = 000111 (Using file)
+=================================
+PDA Name=HelloPDA 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=HelloPDA 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+  q2 => q2  PDA Name=HelloPDA 	Token=0 	 Transitions Took=1	Clock Ticks=2 
+  q2 => q2  PDA Name=HelloPDA 	Token=0 	 Transitions Took=1	Clock Ticks=3 
+  q2 => q2  PDA Name=HelloPDA 	Token=0 	 Transitions Took=1	Clock Ticks=4 
+  q2 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=5 
+  q3 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=6 
+  q3 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=7 
+  q3 => q4  PDA Name=HelloPDA 	Token=EOS 	 Transitions Took=1	Clock Ticks=8 
+=================================
+Input = aabcc
+=================================
+PDA Name=testPDA2 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=testPDA2 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+  q2 => q2  PDA Name=testPDA2 	Token=a 	 Transitions Took=1	Clock Ticks=2 
+  q2 => q2  PDA Name=testPDA2 	Token=a 	 Transitions Took=1	Clock Ticks=3 
+  q2 => q3  PDA Name=testPDA2 	Token=b 	 Transitions Took=1	Clock Ticks=4 
+  q3 => q3  PDA Name=testPDA2 	Token=c 	 Transitions Took=1	Clock Ticks=5 
+  q3 => q3  PDA Name=testPDA2 	Token=c 	 Transitions Took=1	Clock Ticks=6 
+  q3 => q4  PDA Name=testPDA2 	Token=EOS 	 Transitions Took=1	Clock Ticks=7 
+=================================
+Input = 0101220101
+=================================
+PDA Name=testPDA3 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=testPDA3 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=2 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=3 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=4 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=5 
+  q2 => q4  PDA Name=testPDA3 	Token=2 	 Transitions Took=1	Clock Ticks=6 
+  q4 => q4  PDA Name=testPDA3 	Token=2 	 Transitions Took=1	Clock Ticks=7 
+  q4 => q5  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=8 
+  q5 => q4  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=9 
+  q4 => q5  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=10 
+  q5 => q4  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=11 
+  q4 => q6  PDA Name=testPDA3 	Token=EOS 	 Transitions Took=1	Clock Ticks=12 
+=================================
+Input = 01010101   
+Should fail because, endup in no final state
+=================================
+PDA Name=testPDA3 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=testPDA3 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=2 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=3 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=4 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=5 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=6 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=7 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=8 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=9 
+=================================
+Input = 0101330101  
+Should fail because, stuck in middle of the PDA because of an undefined transition occurence
+=================================
+PDA Name=testPDA3 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=testPDA3 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=2 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=3 
+  q2 => q3  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=4 
+  q3 => q2  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=5 
+=================================
+Input =  
+Should fail because, no input string found
+=================================
+=================================
+Input = abc 
+Should fail because, getting an unknown input transition or undefined transition
+=================================
+PDA Name=testPDA3 	Method=Is_Accepted =true 
+  q1 => q2  PDA Name=testPDA3 	Token=START 	 Transitions Took=1	Clock Ticks=1 
+=================================
+Input = 0011 
+=================================
+PDA Name=HelloPDA-EagerTest 	Method=Is_Accepted =true 
+  q1 => q2  
+  q2 => q3  PDA Name=HelloPDA-EagerTest 	Token=START 	 Transitions Took=2	Clock Ticks=2 
+  q3 => q3  PDA Name=HelloPDA-EagerTest 	Token=0 	 Transitions Took=1	Clock Ticks=3 
+  q3 => q3  PDA Name=HelloPDA-EagerTest 	Token=0 	 Transitions Took=1	Clock Ticks=4 
+  q3 => q4  PDA Name=HelloPDA-EagerTest 	Token=1 	 Transitions Took=1	Clock Ticks=5 
+  q4 => q4  PDA Name=HelloPDA-EagerTest 	Token=1 	 Transitions Took=1	Clock Ticks=6 
+  q4 => q5  PDA Name=HelloPDA-EagerTest 	Token=EOS 	 Transitions Took=1	Clock Ticks=7 
