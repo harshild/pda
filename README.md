@@ -2,6 +2,12 @@
 
 This is an implementation of pushdown automata. For project definition refer the description file in root folder.
 
+#Contributors
+
+1. Meera Patel
+2. Harshil Dhariwal
+
+# Project Info
 ### Assumptions
 
 For the purposes of tasks of this project, you may make the following assumptions:
