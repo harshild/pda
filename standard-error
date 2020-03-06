@@ -1,4 +1,9 @@
+Error type = *src.StackRuntimeError; Error Message = Peek length is 5, But the size of stack is 0 ;
+Error type = *src.StackRuntimeError; Error Message = Peek length is 5, But the size of stack is 0 ;
+Error type = *src.StackRuntimeError; Error Message = Peek length is 5, But the size of stack is 0 ;
+Error type = *src.StackRuntimeError; Error Message = Peek length is 5, But the size of stack is 0 ;
 Error type = *src.PDARuntimeError; Error Message = No transition found in configuration for STATE=q2 || Error occurred for PDA=testPDA3 At clock=9 At state=q2 ;
 Error type = *src.PDARuntimeError; Error Message = Invalid input sequence provided || Error occurred for PDA=testPDA3 At clock=5 At state=q2 ;
 Wrong number of inputs provided, Input length 2
 Error type = *src.PDARuntimeError; Error Message = Invalid input sequence provided || Error occurred for PDA=testPDA3 At clock=1 At state=q2 ;
+Error type = *src.StackRuntimeError; Error Message = Peek length is 5, But the size of stack is 0 ;

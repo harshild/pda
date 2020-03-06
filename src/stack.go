@@ -1,5 +1,7 @@
 package src
 
+import "strconv"
+
 type Stack []string
 
 type StackRuntimeError struct {
@@ -39,8 +41,8 @@ func (stack *Stack) TopElement() string {
 }
 
 func (stack *Stack) Peek(len int) []string {
-	if stack.Size() > len {
-		Crash(&StackRuntimeError{"Peek length is " + string(len) + ", But the size of stack is " + string(stack.Size())})
+	if stack.Size() < len {
+		Crash(&StackRuntimeError{"Peek length is " + strconv.Itoa(len) + ", But the size of stack is " + strconv.Itoa(stack.Size())})
 	}
 	topKValues := stack.Size() - len - 1
 	return (*stack)[topKValues:(stack.Size() - 1)]

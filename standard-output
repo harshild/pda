@@ -8,6 +8,7 @@ PDA Name=HelloPDA 	Method=Is_Accepted =true
   q2 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=4 
   q3 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=5 
   q3 => q4  PDA Name=HelloPDA 	Token=EOS 	 Transitions Took=1	Clock Ticks=6 
+For PDA=HelloPDA	 Current State=q4
 =================================
 Input = 000111 (Using file)
 =================================
@@ -20,6 +21,7 @@ PDA Name=HelloPDA 	Method=Is_Accepted =true
   q3 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=6 
   q3 => q3  PDA Name=HelloPDA 	Token=1 	 Transitions Took=1	Clock Ticks=7 
   q3 => q4  PDA Name=HelloPDA 	Token=EOS 	 Transitions Took=1	Clock Ticks=8 
+For PDA=HelloPDA	 Current State=q4
 =================================
 Input = aabcc
 =================================
@@ -31,6 +33,7 @@ PDA Name=testPDA2 	Method=Is_Accepted =true
   q3 => q3  PDA Name=testPDA2 	Token=c 	 Transitions Took=1	Clock Ticks=5 
   q3 => q3  PDA Name=testPDA2 	Token=c 	 Transitions Took=1	Clock Ticks=6 
   q3 => q4  PDA Name=testPDA2 	Token=EOS 	 Transitions Took=1	Clock Ticks=7 
+For PDA=testPDA2	 Current State=q4
 =================================
 Input = 0101220101
 =================================
@@ -47,6 +50,7 @@ PDA Name=testPDA3 	Method=Is_Accepted =true
   q4 => q5  PDA Name=testPDA3 	Token=0 	 Transitions Took=1	Clock Ticks=10 
   q5 => q4  PDA Name=testPDA3 	Token=1 	 Transitions Took=1	Clock Ticks=11 
   q4 => q6  PDA Name=testPDA3 	Token=EOS 	 Transitions Took=1	Clock Ticks=12 
+For PDA=testPDA3	 Current State=q6
 =================================
 Input = 01010101   
 Should fail because, endup in no final state
@@ -92,3 +96,4 @@ PDA Name=HelloPDA-EagerTest 	Method=Is_Accepted =true
   q3 => q4  PDA Name=HelloPDA-EagerTest 	Token=1 	 Transitions Took=1	Clock Ticks=5 
   q4 => q4  PDA Name=HelloPDA-EagerTest 	Token=1 	 Transitions Took=1	Clock Ticks=6 
   q4 => q5  PDA Name=HelloPDA-EagerTest 	Token=EOS 	 Transitions Took=1	Clock Ticks=7 
+For PDA=HelloPDA-EagerTest	 Current State=q5
