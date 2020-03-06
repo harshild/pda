@@ -24,6 +24,8 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	if err != nil {
 		return false
 	}
+	pdaProcessor.Stack = Stack{}
+	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	return true
 }
 
@@ -34,7 +36,6 @@ func (pdaProcessor *PdaProcessor) Reset() {
 }
 
 func (pdaProcessor *PdaProcessor) Put(token string) int {
-
 	transitionCount := 0
 	if StringArrContains(pdaProcessor.PdaConf.InputAlphabet, token) || token == " " || token == pdaProcessor.PdaConf.Eos {
 		transition := GetTransition(pdaProcessor.State, pdaProcessor.PdaConf.Transitions, token)
@@ -91,7 +92,7 @@ func (pdaProcessor *PdaProcessor) Close() {
 	pdaProcessor.Stack = Stack{}
 	pdaProcessor.State = ""
 	pdaProcessor.clock = 0
-
+	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 }
 
 func (pdaProcessor *PdaProcessor) GetPDAName() string {

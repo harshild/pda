@@ -3,6 +3,10 @@ echo "Input = 0011"
 echo "================================="
 go build ./main/pda_client.go && ./pda_client ./sample/samplePDA-1.json 0011
 echo "================================="
+echo "Input = 000111 (Using file)"
+echo "================================="
+go build ./main/pda_client.go && ./pda_client ./sample/samplePDA-1.json ./sample/samplePDA-1-in.txt
+echo "================================="
 echo "Input = aabcc"
 echo "================================="
 go build ./main/pda_client.go && ./pda_client ./sample/samplePDA-2.json aabcc
