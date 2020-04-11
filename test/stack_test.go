@@ -1,6 +1,8 @@
 package test
 
-import . "../src"
+import (
+	"utility"
+)
 
 import (
 	"testing"
@@ -8,7 +10,7 @@ import (
 
 func TestStack(t *testing.T) {
 	t.Run("Push new element should result in size increase", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		size := stack.Size()
 		if size != 0 {
 			t.Errorf("Expected initial size to be 0 but got %d", size)
@@ -22,7 +24,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("Size of stack should increment with number of variables", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		size := stack.Size()
 		if size != 0 {
 			t.Errorf("Expected initial size to be 0 but got %d", size)
@@ -51,7 +53,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("isEmpty Positive", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		empty := stack.IsEmpty()
 		if !empty {
 			t.Errorf("Expected isEmpty to return false got %t", empty)
@@ -59,7 +61,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("isEmpty Negative", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		stack.Push("a")
 		empty := stack.IsEmpty()
 		if empty {
@@ -68,7 +70,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("We should be able to get top element on the stack", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		stack.Push("a")
 		stack.Push("b")
 		stack.Push("c")
@@ -79,7 +81,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("Pop element should pop last added element", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		stack.Push("a")
 		stack.Push("b")
 		stack.Push("c")
@@ -90,7 +92,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("Pop should return null when stack is empty", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		element := stack.Pop()
 		if element != "" {
 			t.Errorf("Empty stack pop:Expected null got %s", element)
@@ -99,7 +101,7 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("Peek should return top 3 elements", func(t *testing.T) {
-		stack := Stack{}
+		stack := utility.Stack{}
 		stack.Push("a")
 		stack.Push("b")
 		stack.Push("c")
@@ -108,7 +110,7 @@ func TestStack(t *testing.T) {
 		stack.Push("f")
 		stack.Push("g")
 		got := stack.Peek(3)
-		if len(got) != 3 && StringArrContains(got, "e") && StringArrContains(got, "f") && StringArrContains(got, "g") {
+		if len(got) != 3 && utility.StringArrContains(got, "e") && utility.StringArrContains(got, "f") && utility.StringArrContains(got, "g") {
 			t.Errorf("Peek should return top 3 elements got %d and elements as %s", len(got), got)
 		}
 

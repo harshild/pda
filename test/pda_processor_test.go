@@ -1,11 +1,13 @@
 package test
 
-import "testing"
-import . "../src"
+import (
+	"core"
+	"testing"
+)
 
 func Test_Open(t *testing.T) {
 	t.Run("open should fail", func(t *testing.T) {
-		pda := PdaProcessor{}
+		pda := core.PdaProcessor{}
 		str := "{a = a}"
 		isParsingSuccess := pda.Open([]byte(str))
 		if isParsingSuccess != false {
@@ -14,7 +16,7 @@ func Test_Open(t *testing.T) {
 	})
 
 	t.Run("open should work as expected", func(t *testing.T) {
-		pda := PdaProcessor{}
+		pda := core.PdaProcessor{}
 		str := `{"name": "HelloPDA",
   				"states": ["q1", "q2", "q3", "q4"],
   				"input_alphabet": ["0", "1"],
@@ -42,8 +44,8 @@ func Test_Open(t *testing.T) {
 
 func Test_Reset(t *testing.T) {
 	t.Run("should reset the pda ", func(t *testing.T) {
-		pda := PdaProcessor{
-			PdaConf: PDAConf{
+		pda := core.PdaProcessor{
+			PdaConf: core.PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4"},
 				InputAlphabet:   []string{"0", "1"},
@@ -74,7 +76,7 @@ func Test_Reset(t *testing.T) {
 
 func Test_Is_Accepted(t *testing.T) {
 	t.Run("return True if PdaProcessor is currently at an accepting state with empty stack", func(t *testing.T) {
-		pda := PdaProcessor{}
+		pda := core.PdaProcessor{}
 		pda.PdaConf.AcceptingStates = append(pda.PdaConf.AcceptingStates, "q1", "q2")
 
 		pda.State = "q1"
@@ -88,7 +90,7 @@ func Test_Is_Accepted(t *testing.T) {
 
 func Test_Current_State(t *testing.T) {
 	t.Run("check current pda state", func(t *testing.T) {
-		pda := PdaProcessor{}
+		pda := core.PdaProcessor{}
 		state := "q1"
 		pda.State = state
 		got := pda.Current_state()
@@ -101,8 +103,8 @@ func Test_Current_State(t *testing.T) {
 
 func Test_Put(t *testing.T) {
 	t.Run("Put token should return transitions taken - multiple transitions", func(t *testing.T) {
-		pda := PdaProcessor{
-			PdaConf: PDAConf{
+		pda := core.PdaProcessor{
+			PdaConf: core.PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4", "q5"},
 				InputAlphabet:   []string{"0", "1"},
@@ -140,8 +142,8 @@ func Test_Put(t *testing.T) {
 	})
 
 	t.Run("Put token should return transitions taken", func(t *testing.T) {
-		pda := PdaProcessor{
-			PdaConf: PDAConf{
+		pda := core.PdaProcessor{
+			PdaConf: core.PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4"},
 				InputAlphabet:   []string{"0", "1"},

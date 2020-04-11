@@ -1,10 +1,11 @@
-package src
+package core
 
 import (
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
+	"utility"
 )
 
 type PDARuntimeError struct {
@@ -25,26 +26,26 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	if err != nil {
 		return false
 	}
-	pdaProcessor.Stack = Stack{}
+	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	return true
 }
 
 func (pdaProcessor *PdaProcessor) Reset() {
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
-	pdaProcessor.Stack = Stack{}
+	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.Put(" ")
 }
 
 func (pdaProcessor *PdaProcessor) Put(token string) int {
 	transitionCount := 0
-	if StringArrContains(pdaProcessor.PdaConf.InputAlphabet, token) || token == " " || token == pdaProcessor.PdaConf.Eos {
+	if utility.StringArrContains(pdaProcessor.PdaConf.InputAlphabet, token) || token == " " || token == pdaProcessor.PdaConf.Eos {
 		transition := GetTransition(pdaProcessor.State, pdaProcessor.PdaConf.Transitions, token)
 
 		if transition.currentAlphabet != "" && transition.currentState != "" && transition.nextState != "" {
 			if transition.elementToBePopped != "" {
 				if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
-					Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
+					utility.Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
 				}
 				pdaProcessor.Stack.Pop()
 			}
@@ -63,11 +64,11 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 		}
 
 		if transitionCount < 1 {
-			Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
+			utility.Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
 		}
 		return transitionCount
 	} else {
-		Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
+		utility.Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
 		return 0
 	}
 }
@@ -77,7 +78,7 @@ func (pdaProcessor *PdaProcessor) Eos() {
 }
 
 func (pdaProcessor *PdaProcessor) Is_accepted() bool {
-	return pdaProcessor.Stack.IsEmpty() && StringArrContains(pdaProcessor.PdaConf.AcceptingStates, pdaProcessor.State)
+	return pdaProcessor.Stack.IsEmpty() && utility.StringArrContains(pdaProcessor.PdaConf.AcceptingStates, pdaProcessor.State)
 }
 
 func (pdaProcessor *PdaProcessor) Peek(len int) []string {
@@ -90,7 +91,7 @@ func (pdaProcessor *PdaProcessor) Current_state() string {
 
 func (pdaProcessor *PdaProcessor) Close() {
 	pdaProcessor.PdaConf = PDAConf{}
-	pdaProcessor.Stack = Stack{}
+	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = ""
 	pdaProcessor.clock = 0
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
@@ -111,7 +112,7 @@ func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
 
 		if transition.elementToBePopped != "" {
 			if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
-				Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
+				utility.Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
 			}
 			pdaProcessor.Stack.Pop()
 		}
@@ -147,7 +148,7 @@ func GetTransition(currentState string, allTransitions [][]string, alphabet stri
 	return PDATransition{}
 }
 
-func GetEagerTransition(currentState string, allTransitions [][]string, stack Stack, eos string) PDATransition {
+func GetEagerTransition(currentState string, allTransitions [][]string, stack utility.Stack, eos string) PDATransition {
 	for _, transitions := range allTransitions {
 		if transitions[0] == currentState && transitions[1] == "" && (transitions[2] == "" || transitions[2] == stack.TopElement()) &&
 			transitions[2] != eos && transitions[4] != eos { //whitespace is used to indicate null I/P
@@ -164,7 +165,7 @@ func GetEagerTransition(currentState string, allTransitions [][]string, stack St
 }
 
 type PdaProcessor struct {
-	Stack   Stack
+	Stack   utility.Stack
 	PdaConf PDAConf
 	State   string
 	clock   int
