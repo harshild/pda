@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -9,11 +8,10 @@ type PdaController struct {
 }
 
 func (pdaController *PdaController) Gotopdas(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "go to PDA list: sadhjg")
+
 }
 
-func (pdaController *PdaController) pdalist(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Select one PDA and Enter the ID of it\n\n ")
+func (pdaController *PdaController) Closepda(w http.ResponseWriter, r *http.Request) {
 
 	//TODO: Here "null" is going to create a problem, We are yet to handle it
 	//
