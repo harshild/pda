@@ -1,14 +1,14 @@
 package main
 
 import (
-	. "../src"
+	"core"
 	"fmt"
 	"io/ioutil"
 	"os"
 )
 
 func main() {
-	pdaProcessor := PdaProcessor{}
+	pdaProcessor := core.PdaProcessor{}
 
 	if len(os.Args) == 3 {
 		if os.Args[1] == "" {
@@ -56,4 +56,3 @@ func main() {
 		println("Wrong number of inputs provided, Input length", len(os.Args))
 	}
 }
-
