@@ -8,6 +8,29 @@ This is an implementation of pushdown automata. For project definition refer the
 2. Harshil Dhariwal
 
 # Project Info
+
+### Project Structure
+#### Source Code (src/ main/)
+##### PDA Client (main/pda_client.go)
+
+This the main class which is supposed  to act as a driver for PDA 
+
+##### PDA Processor (src/pda_processor.go)
+
+The class which simuates the given PDA and processes all the input. All the required PDA API's are located in this file.
+
+##### Stack (src/stack.go)
+
+A stack data structure implementation
+
+##### Utility (src/utility.go)
+
+Some helper functions and Utility
+
+#### Test Code (test/)
+
+Some basic unit tests are written for all the source file
+
 ### Assumptions
 
 For the purposes of tasks of this project, you may make the following assumptions:

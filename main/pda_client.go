@@ -43,6 +43,11 @@ func main() {
 					pdaProcessor.Eos()
 					fmt.Printf("PDA Name=%s \tToken=EOS \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock()-prevClock, pdaProcessor.GetClock())
 
+					fmt.Print("For PDA=" + pdaProcessor.GetPDAName() + "\t Current State=" + pdaProcessor.Current_state() + "\n")
+					pdaProcessor.Peek(5)
+
+					pdaProcessor.Close()
+
 				} else {
 					println("PDA no input stream specified")
 				}
