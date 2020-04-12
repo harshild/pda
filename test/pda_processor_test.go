@@ -2,6 +2,7 @@ package test
 
 import (
 	"core"
+	"entity"
 	"testing"
 )
 
@@ -45,7 +46,7 @@ func Test_Open(t *testing.T) {
 func Test_Reset(t *testing.T) {
 	t.Run("should reset the pda ", func(t *testing.T) {
 		pda := core.PdaProcessor{
-			PdaConf: core.PDAConf{
+			PdaConf: entity.PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4"},
 				InputAlphabet:   []string{"0", "1"},
@@ -104,7 +105,7 @@ func Test_Current_State(t *testing.T) {
 func Test_Put(t *testing.T) {
 	t.Run("Put token should return transitions taken - multiple transitions", func(t *testing.T) {
 		pda := core.PdaProcessor{
-			PdaConf: core.PDAConf{
+			PdaConf: entity.PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4", "q5"},
 				InputAlphabet:   []string{"0", "1"},
@@ -143,7 +144,7 @@ func Test_Put(t *testing.T) {
 
 	t.Run("Put token should return transitions taken", func(t *testing.T) {
 		pda := core.PdaProcessor{
-			PdaConf: core.PDAConf{
+			PdaConf: entity.PDAConf{
 				Name:            "Test PDA",
 				States:          []string{"q1", "q2", "q3", "q4"},
 				InputAlphabet:   []string{"0", "1"},

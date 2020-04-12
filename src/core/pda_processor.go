@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/json"
+	"entity"
 	"fmt"
 	"strconv"
 	"strings"
@@ -90,7 +91,7 @@ func (pdaProcessor *PdaProcessor) Current_state() string {
 }
 
 func (pdaProcessor *PdaProcessor) Close() {
-	pdaProcessor.PdaConf = PDAConf{}
+	pdaProcessor.PdaConf = entity.PDAConf{}
 	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = ""
 	pdaProcessor.clock = 0
@@ -166,7 +167,7 @@ func GetEagerTransition(currentState string, allTransitions [][]string, stack ut
 
 type PdaProcessor struct {
 	Stack   utility.Stack
-	PdaConf PDAConf
+	PdaConf entity.PDAConf
 	State   string
 	clock   int
 }
@@ -177,15 +178,4 @@ type PDATransition struct {
 	elementToBePopped string
 	nextState         string
 	elementToBePushed string
-}
-
-type PDAConf struct {
-	Name            string     `json:"name"`
-	States          []string   `json:"states"`
-	InputAlphabet   []string   `json:"input_alphabet"`
-	StackAlphabet   []string   `json:"stack_alphabet"`
-	AcceptingStates []string   `json:"accepting_states"`
-	StartState      string     `json:"start_state"`
-	Transitions     [][]string `json:"transitions"`
-	Eos             string     `json:"eos"`
 }
