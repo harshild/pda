@@ -58,8 +58,9 @@ func (pdaController *PdaController) Calleos(writer http.ResponseWriter, request 
 	fmt.Println("calleos")
 	params := mux.Vars(request)
 	pda_id := params["id"]
+	eos := params["eos"]
 	position := params["position"]
-	fmt.Println(pda_id, position)
+	fmt.Println(pda_id, eos, position)
 	//call manager to call eos for pda_id, ignore position of eos
 }
 

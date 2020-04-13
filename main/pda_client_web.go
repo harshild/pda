@@ -32,7 +32,7 @@ func main() {
 	router.HandleFunc("/pdas/{id}", ctrl.Callopen).Methods("PUT")
 	router.HandleFunc("/pdas/{id}/reset", ctrl.Callreset).Methods("PUT")
 	router.HandleFunc("/pdas/{id}/{tokens}/{position}", ctrl.Calltoken).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/eos/{position}", ctrl.Calleos).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/{eos}/{position}", ctrl.Calleos).Methods("PUT")
 	router.HandleFunc("/pdas/{id}/is_accepted", ctrl.Callis_accepted).Methods("GET")
 	router.HandleFunc("/pdas/{id}/stack/top/{k}", ctrl.Callpeek).Methods("GET")
 	router.HandleFunc("/pdas/{id}/stack/len", ctrl.CallStackSize).Methods("GET")
