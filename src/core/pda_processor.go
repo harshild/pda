@@ -22,6 +22,24 @@ func (e *PDARuntimeError) Error() string {
 	return e.message + " || " + pdaInfo
 }
 
+func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
+	if pdaProcessor.InputQueue == nil {
+		pdaProcessor.InputQueue = make([]string, 0)
+	}
+	pdaProcessor.InputQueue[position] = token
+
+	if pdaProcessor.LastConsumedIndex == position-1 {
+		checkQueue(*pdaProcessor)
+	}
+}
+
+func checkQueue(pdaProcessor PdaProcessor) {
+	if pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex+1)] != "" {
+		pdaProcessor.Put(pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)])
+		checkQueue(pdaProcessor)
+	}
+}
+
 func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	err := json.Unmarshal(in, &(pdaProcessor.PdaConf))
 	if err != nil {
@@ -67,6 +85,7 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 		if transitionCount < 1 {
 			utility.Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
 		}
+		pdaProcessor.LastConsumedIndex++
 		return transitionCount
 	} else {
 		utility.Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
@@ -174,10 +193,12 @@ func GetEagerTransition(currentState string, allTransitions [][]string, stack ut
 }
 
 type PdaProcessor struct {
-	Stack   utility.Stack
-	PdaConf entity.PDAConf
-	State   string
-	clock   int
+	Stack             utility.Stack
+	PdaConf           entity.PDAConf
+	State             string
+	clock             int
+	InputQueue        []string
+	LastConsumedIndex int
 }
 
 type PDATransition struct {
