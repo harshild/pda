@@ -134,6 +134,14 @@ func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
 
 }
 
+func GetAllPDANames(pdas []PdaProcessor) []string {
+	pdaNames := make([]string, 0)
+	for _, pda := range pdas {
+		pdaNames = append(pdaNames, pda.PdaConf.Name)
+	}
+	return pdaNames
+}
+
 func GetTransition(currentState string, allTransitions [][]string, alphabet string) PDATransition {
 	for _, transitions := range allTransitions {
 		if transitions[0] == currentState && transitions[1] == strings.TrimSpace(alphabet) {

@@ -2,14 +2,29 @@ package main
 
 import (
 	"controller"
+	"core"
+	"db"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"usecase"
 )
 
 func main() {
 
-	ctrl := controller.PdaController{}
+	store := db.PDAStore{
+		"sqlite3",
+		"./test.db",
+		nil,
+		nil,
+	}
+	ctrl := controller.PdaController{
+		usecase.PDAManager{
+			core.PdaProcessor{},
+			store,
+		},
+	}
+	store.InitDB()
 
 	router := mux.NewRouter().StrictSlash(true)
 

@@ -9,34 +9,34 @@ import (
 )
 
 type PDAStore struct {
-	dbType string
-	dsn    string
-	db     *sql.DB
-	ctx    context.Context
+	DbType string
+	Dsn    string
+	Db     *sql.DB
+	Ctx    context.Context
 }
 
-func (pdaStore *PDAStore) initDB() {
-	pdaStore.db, _ = sql.Open(pdaStore.dbType, pdaStore.dsn)
-	statement, _ := pdaStore.db.Prepare("CREATE TABLE IF NOT EXISTS PDA (id TEXT PRIMARY KEY, pda TEXT)")
+func (pdaStore *PDAStore) InitDB() {
+	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
+	statement, _ := pdaStore.Db.Prepare("CREATE TABLE IF NOT EXISTS PDA (id TEXT PRIMARY KEY, pda TEXT)")
 	statement.Exec()
 
 }
 
 func (pdaStore *PDAStore) Save(pdaId string, processor core.PdaProcessor) {
-	pdaStore.db, _ = sql.Open(pdaStore.dbType, pdaStore.dsn)
+	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
 	_, err := pdaStore.Get(pdaId)
 	if err != nil {
-		statement, _ := pdaStore.db.Prepare("update PDA pda=? where id=?")
+		statement, _ := pdaStore.Db.Prepare("update PDA pda=? where id=?")
 		statement.Exec("some json file content", pdaId)
 	} else {
-		statement, _ := pdaStore.db.Prepare("insert into PDA(id,pda) values(?,?)")
+		statement, _ := pdaStore.Db.Prepare("insert into PDA(id,pda) values(?,?)")
 		statement.Exec(pdaId, "some json file content")
 	}
 }
 
 func (pdaStore *PDAStore) Get(pdaId string) (string, error) {
-	pdaStore.db, _ = sql.Open(pdaStore.dbType, pdaStore.dsn)
-	rows, err := pdaStore.db.QueryContext(pdaStore.ctx, "SELECT pda FROM PDA WHERE id=?", pdaId)
+	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
+	rows, err := pdaStore.Db.QueryContext(pdaStore.Ctx, "SELECT pda FROM PDA WHERE id=?", pdaId)
 	var jsonconfig string
 
 	if err != nil {
@@ -48,4 +48,37 @@ func (pdaStore *PDAStore) Get(pdaId string) (string, error) {
 	}
 
 	return jsonconfig, err
+}
+
+func (pdaStore *PDAStore) GetAllPDA() []string {
+	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
+	rows, err := pdaStore.Db.QueryContext(pdaStore.Ctx, "SELECT pda FROM PDA")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	pdas := make([]string, 0)
+
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			log.Fatal(err)
+		}
+		pdas = append(pdas, name)
+	}
+	// If the database is being written to ensure to check for Close
+	// errors that may be returned from the driver. The query may
+	// encounter an auto-commit error and be forced to rollback changes.
+	rerr := rows.Close()
+	if rerr != nil {
+		log.Fatal(err)
+	}
+
+	// Rows.Err will report the last error encountered by Rows.Scan.
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return pdas
 }
