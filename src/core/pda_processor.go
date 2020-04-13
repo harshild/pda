@@ -23,9 +23,6 @@ func (e *PDARuntimeError) Error() string {
 }
 
 func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
-	if pdaProcessor.InputQueue == nil {
-		pdaProcessor.InputQueue = make([]string, 0)
-	}
 	pdaProcessor.InputQueue[position] = token
 
 	if pdaProcessor.LastConsumedIndex == position-1 {
@@ -47,6 +44,8 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	}
 	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
+	pdaProcessor.LastConsumedIndex = -1
+	pdaProcessor.InputQueue = make([]string, 0)
 	return true
 }
 
