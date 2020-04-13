@@ -25,15 +25,16 @@ func (pdaStore *PDAStore) InitDB() {
 
 func (pdaStore *PDAStore) Save(pdaId string, processor core.PdaProcessor) {
 	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
-	//_, err := pdaStore.Get(pdaId)
-	//if err != nil {
-	//	statement, _ := pdaStore.Db.Prepare("update PDA pda=? where id=?")
-	//	statement.Exec("some json file content", pdaId)
-	//} else {
 	statement, _ := pdaStore.Db.Prepare("insert into PDA(id,pda) values(?,?)")
 	marshal, _ := json.Marshal(processor)
 	statement.Exec(pdaId, marshal)
-	//}
+}
+
+func (pdaStore *PDAStore) Update(pdaId string, processor core.PdaProcessor) {
+	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
+	statement, _ := pdaStore.Db.Prepare("update PDA pda=? where id=?")
+	marshal, _ := json.Marshal(processor)
+	statement.Exec(pdaId, marshal)
 }
 
 func (pdaStore *PDAStore) Get(pdaId string) (string, error) {
@@ -50,6 +51,19 @@ func (pdaStore *PDAStore) Get(pdaId string) (string, error) {
 	}
 
 	return jsonconfig, err
+}
+
+func (pdaStore *PDAStore) idExists(pdaId string) bool {
+	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
+	rows, _ := pdaStore.Db.QueryContext(pdaStore.Ctx, "SELECT count(*) FROM PDA WHERE id=?", pdaId)
+	var count int
+	for rows.Next() {
+		if rows.Scan(&count); count > 0 {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (pdaStore *PDAStore) GetAllPDA() []string {
