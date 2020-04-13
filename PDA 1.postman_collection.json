@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "892f1650-37f6-4f35-b72b-c00cebc03840",
+		"name": "PDA 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/pdas/4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/reset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "03c5b020-a8b9-4b99-8943-e3989610239d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/reset",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/a/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "38d2c570-fad1-4eb6-af80-701626e9e4c0",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/a/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"a",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/eos/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e270314f-0968-4b18-8c1c-fd079ae19c22",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/eos/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"eos",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/close",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "51175ede-fdbe-4c4f-8853-f117a72d321a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/close",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"close"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/stack/top/6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "65a3a21d-7175-48ff-bc55-5c6bac7f957b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/stack/top/6",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"stack",
+						"top",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/is_accepted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe86946b-4781-404c-b3c7-64efa4298e7f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/is_accepted",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"is_accepted"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/4/delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eb0dd982-33b8-41a9-922e-e2e7ec7c3a61",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/4/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"4",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
