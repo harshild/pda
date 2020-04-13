@@ -25,6 +25,12 @@ func (pdaManager *PDAManager) ListAllPDAs() []string {
 	return pdaNames
 }
 
+func (pdaManager *PDAManager) CreateNewPDA(id string, conf string) {
+	if pdaManager.PdaProcessor.Open([]byte(conf)) {
+		pdaManager.PdaStore.Save(id, pdaManager.PdaProcessor)
+	}
+}
+
 func MapStringToPDAProcessor(pdas []string) []core.PdaProcessor {
 	pdaProcessors := make([]core.PdaProcessor, 0)
 	for _, pdaProcessorString := range pdas {

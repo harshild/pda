@@ -4,6 +4,7 @@ import (
 	"context"
 	"core"
 	"database/sql"
+	"encoding/json"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 )
@@ -24,14 +25,15 @@ func (pdaStore *PDAStore) InitDB() {
 
 func (pdaStore *PDAStore) Save(pdaId string, processor core.PdaProcessor) {
 	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
-	_, err := pdaStore.Get(pdaId)
-	if err != nil {
-		statement, _ := pdaStore.Db.Prepare("update PDA pda=? where id=?")
-		statement.Exec("some json file content", pdaId)
-	} else {
-		statement, _ := pdaStore.Db.Prepare("insert into PDA(id,pda) values(?,?)")
-		statement.Exec(pdaId, "some json file content")
-	}
+	//_, err := pdaStore.Get(pdaId)
+	//if err != nil {
+	//	statement, _ := pdaStore.Db.Prepare("update PDA pda=? where id=?")
+	//	statement.Exec("some json file content", pdaId)
+	//} else {
+	statement, _ := pdaStore.Db.Prepare("insert into PDA(id,pda) values(?,?)")
+	marshal, _ := json.Marshal(processor)
+	statement.Exec(pdaId, marshal)
+	//}
 }
 
 func (pdaStore *PDAStore) Get(pdaId string) (string, error) {
@@ -52,7 +54,7 @@ func (pdaStore *PDAStore) Get(pdaId string) (string, error) {
 
 func (pdaStore *PDAStore) GetAllPDA() []string {
 	pdaStore.Db, _ = sql.Open(pdaStore.DbType, pdaStore.Dsn)
-	rows, err := pdaStore.Db.QueryContext(pdaStore.Ctx, "SELECT pda FROM PDA")
+	rows, err := pdaStore.Db.Query("SELECT pda FROM PDA")
 
 	if err != nil {
 		log.Fatal(err)

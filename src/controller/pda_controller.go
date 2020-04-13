@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/json"
-	"entity"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"net/http"
 	"usecase"
 )
@@ -22,17 +22,17 @@ func (pdaController *PdaController) Gotopdas(writer http.ResponseWriter, request
 }
 
 func (pdaController *PdaController) Callopen(writer http.ResponseWriter, request *http.Request) {
-	pda_id := mux.Vars(request)
-	fmt.Println(pda_id)
+	params := mux.Vars(request)
+	pda_id := params["id"]
 
-	var conf entity.PDAConf
-	err := json.NewDecoder(request.Body).Decode(&conf)
+	all, err := ioutil.ReadAll(request.Body)
+	pdaConf := string(all)
+
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Fprintf(writer, "GOT IT!!!!!: %+v", conf)
-	//call manager and pass pda_id and conf
+	pdaController.PdaManager.CreateNewPDA(pda_id, pdaConf)
 
 }
 func (pdaController *PdaController) Callreset(writer http.ResponseWriter, request *http.Request) {
