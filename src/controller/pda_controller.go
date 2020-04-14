@@ -51,7 +51,9 @@ func (pdaController *PdaController) Calltoken(writer http.ResponseWriter, reques
 	fmt.Println("calltoken")
 	params := mux.Vars(request)
 	pda_id := params["id"]
-	token := params["tokens"]
+
+	all, _ := ioutil.ReadAll(request.Body)
+	token := string(all)
 	position, _ := strconv.Atoi(params["position"])
 
 	fmt.Println(pda_id, token, position)
