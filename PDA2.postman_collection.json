@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "e098d034-6a9c-4c09-8db7-0e4090a4a2e4",
-		"name": "PDA1",
+		"_postman_id": "1cb0f13a-4314-422c-b71b-d12ff9ca73c9",
+		"name": "PDA2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -24,47 +24,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"HelloPDA1\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/pdas/1",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"pdas",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:8080/pdas/1",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"HelloPDA1\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", \"null\", \"null\", \"q2\", \"$\"],\n    [\"q2\", \"0\", \"null\", \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"1\", \"0\", \"q3\", \"null\"],\n    [\"q3\", \"null\", \"$\", \"q4\", \"null\"]\n  ],\n  \"eos\": \"$\"\n}",
+					"raw": "{\n  \"name\": \"HelloPDA1\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"0\", null, \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -139,11 +99,49 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/2/reset",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"2",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/2/reset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -155,20 +153,22 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas",
+					"raw": "localhost:8080/pdas/2/reset",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pdas"
+						"pdas",
+						"2",
+						"reset"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/1/0",
+			"name": "localhost:8080/pdas/2/tokens/0",
 			"event": [
 				{
 					"listen": "test",
@@ -186,7 +186,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "a",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -194,15 +194,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/1/0",
+					"raw": "localhost:8080/pdas/2/tokens/0",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
-						"1",
+						"2",
+						"tokens",
 						"0"
 					]
 				}
@@ -210,7 +210,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/1/1",
+			"name": "localhost:8080/pdas/2/tokens/1",
 			"event": [
 				{
 					"listen": "test",
@@ -228,7 +228,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "a",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -236,15 +236,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/1/1",
+					"raw": "localhost:8080/pdas/2/tokens/1",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
-						"1",
+						"2",
+						"tokens",
 						"1"
 					]
 				}
@@ -252,7 +252,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/0/2",
+			"name": "localhost:8080/pdas/2/tokens/2",
 			"event": [
 				{
 					"listen": "test",
@@ -270,7 +270,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "b",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -278,15 +278,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/0/2",
+					"raw": "localhost:8080/pdas/2/tokens/2",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
-						"0",
+						"2",
+						"tokens",
 						"2"
 					]
 				}
@@ -294,7 +294,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/0/3",
+			"name": "localhost:8080/pdas/2/tokens/3",
 			"event": [
 				{
 					"listen": "test",
@@ -312,7 +312,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "c",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -320,15 +320,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/0/3",
+					"raw": "localhost:8080/pdas/2/tokens/3",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
-						"0",
+						"2",
+						"tokens",
 						"3"
 					]
 				}
@@ -336,7 +336,49 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/$/4",
+			"name": "localhost:8080/pdas/2/tokens/4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "c",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/2/tokens/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"2",
+						"tokens",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/2/eos/5",
 			"event": [
 				{
 					"listen": "test",
@@ -362,7 +404,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/$/4",
+					"raw": "localhost:8080/pdas/1/eos/5",
 					"host": [
 						"localhost"
 					],
@@ -370,15 +412,15 @@
 					"path": [
 						"pdas",
 						"1",
-						"$",
-						"4"
+						"eos",
+						"5"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/is_accepted",
+			"name": "localhost:8080/pdas/2/is_accepted",
 			"event": [
 				{
 					"listen": "test",
@@ -407,14 +449,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/is_accepted",
+					"raw": "localhost:8080/pdas/2/is_accepted",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
+						"2",
 						"is_accepted"
 					]
 				}
@@ -422,7 +464,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/stack/top/2",
+			"name": "localhost:8080/pdas/2/stack/top/2",
 			"event": [
 				{
 					"listen": "test",
@@ -451,14 +493,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/stack/top/2",
+					"raw": "localhost:8080/pdas/2/stack/top/2",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
+						"2",
 						"stack",
 						"top",
 						"2"
@@ -468,7 +510,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/stack/len",
+			"name": "localhost:8080/pdas/2/stack/len",
 			"event": [
 				{
 					"listen": "test",
@@ -497,14 +539,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/stack/len",
+					"raw": "localhost:8080/pdas/2/stack/len",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
+						"2",
 						"stack",
 						"len"
 					]
@@ -513,7 +555,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/state",
+			"name": "localhost:8080/pdas/2/tokens",
 			"event": [
 				{
 					"listen": "test",
@@ -542,58 +584,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/state",
+					"raw": "localhost:8080/pdas/2/tokens",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
-						"state"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:8080/pdas/1/tokens",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/pdas/1/tokens",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"pdas",
-						"1",
+						"2",
 						"tokens"
 					]
 				}
@@ -601,7 +599,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/snapshot/2",
+			"name": "localhost:8080/pdas/2/snapshot/2",
 			"event": [
 				{
 					"listen": "test",
@@ -630,14 +628,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/snapshot/2",
+					"raw": "localhost:8080/pdas/2/snapshot/2",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
+						"2",
 						"snapshot",
 						"2"
 					]
@@ -646,7 +644,51 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/close",
+			"name": "localhost:8080/pdas/2/state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/2/state",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"2",
+						"state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/pdas/2/close",
 			"event": [
 				{
 					"listen": "test",
@@ -672,14 +714,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/close",
+					"raw": "localhost:8080/pdas/2/close",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
+						"2",
 						"close"
 					]
 				}
@@ -687,7 +729,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/pdas/1/delete",
+			"name": "localhost:8080/pdas/2/delete",
 			"event": [
 				{
 					"listen": "test",
@@ -713,14 +755,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/1/delete",
+					"raw": "localhost:8080/pdas/2/delete",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"1",
+						"2",
 						"delete"
 					]
 				}

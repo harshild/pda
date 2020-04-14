@@ -35,6 +35,7 @@ func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
 func checkQueue(pdaProcessor PdaProcessor) {
 	if _, ok := pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)]; ok {
 		pdaProcessor.Put(pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)])
+		pdaProcessor.LastConsumedIndex++
 		checkQueue(pdaProcessor)
 	}
 }
@@ -86,10 +87,12 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 		if transitionCount < 1 {
 			utility.Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
 		}
-		pdaProcessor.LastConsumedIndex++
+
+		print("Put method called: %d transitions taken", transitionCount)
 		return transitionCount
 	} else {
 		utility.Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
+		print("Put method called: No transition ")
 		return 0
 	}
 }

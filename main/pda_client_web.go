@@ -2,7 +2,6 @@ package main
 
 import (
 	"controller"
-	"core"
 	"db"
 	"github.com/gorilla/mux"
 	"log"
@@ -25,7 +24,6 @@ func main() {
 
 	ctrl := controller.PdaController{
 		usecase.PDAManager{
-			core.PdaProcessor{},
 			db.InMemoryStore{},
 		},
 	}

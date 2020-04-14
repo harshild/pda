@@ -4,11 +4,12 @@ import (
 	"core"
 	"db"
 	"encoding/json"
+	"fmt"
 )
 
 type PDAManager struct {
-	PdaProcessor core.PdaProcessor
-	PdaStore     db.InMemoryStore
+	//PdaProcessor core.PdaProcessor
+	PdaStore db.InMemoryStore
 }
 
 //func (pdaManager *PDAManager) NewPDA(id int, json string) {
@@ -26,8 +27,9 @@ func (pdaManager *PDAManager) ListAllPDAs() []string {
 }
 
 func (pdaManager *PDAManager) CreateNewPDA(id string, conf string) {
-	if pdaManager.PdaProcessor.Open([]byte(conf)) {
-		pdaManager.PdaStore.Save(id, pdaManager.PdaProcessor)
+	pdaProcessor := core.PdaProcessor{}
+	if pdaProcessor.Open([]byte(conf)) {
+		pdaManager.PdaStore.Save(id, pdaProcessor)
 	}
 }
 
@@ -48,59 +50,62 @@ func parsePdaProcessor(pdaProcessorString string) core.PdaProcessor {
 
 func (pdaManager *PDAManager) PdaProcessorcallsreset(id string) {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	pdaManager.PdaProcessor.Reset()
-	pdaManager.PdaStore.Update(id, pdaManager.PdaProcessor)
+	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.Reset()
+	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
 func (pdaManager *PDAManager) PdaProcessorcallputs(id string, token string, position int) {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	pdaManager.PdaProcessor.Puts(position, token)
-	pdaManager.PdaStore.Update(id, pdaManager.PdaProcessor)
+	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.Puts(position, token)
+	fmt.Printf("PDA Name=%s \tToken=%s\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), token, pdaProcessor.GetClock())
+
+	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
 func (pdaManager *PDAManager) PdaProcessorcallis_accepted(id string) bool {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	return pdaManager.PdaProcessor.Is_accepted()
+	pdaProcessor := parsePdaProcessor(get)
+	print("Is Accepted called ", pdaProcessor.Is_accepted())
+	return pdaProcessor.Is_accepted()
 }
 
 func (pdaManager *PDAManager) Peek(id string, k int) []string {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	return pdaManager.PdaProcessor.Peek(k)
+	pdaProcessor := parsePdaProcessor(get)
+	return pdaProcessor.Peek(k)
 
 }
 
 func (pdaManager *PDAManager) Callsize(id string) int {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	return pdaManager.PdaProcessor.Stack.Size()
+	pdaProcessor := parsePdaProcessor(get)
+	return pdaProcessor.Stack.Size()
 }
 
 func (pdaManager *PDAManager) Currentstate(id string) string {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	return pdaManager.PdaProcessor.Current_state()
+	pdaProcessor := parsePdaProcessor(get)
+	return pdaProcessor.Current_state()
 }
 
 func (pdaManager *PDAManager) Q_token(id string) []string {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	return pdaManager.PdaProcessor.Queued_tokens()
+	pdaProcessor := parsePdaProcessor(get)
+	return pdaProcessor.Queued_tokens()
 }
 
 func (pdaManager *PDAManager) Callclose(id string) {
 	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	pdaManager.PdaProcessor.Close()
-	pdaManager.PdaStore.Update(id, pdaManager.PdaProcessor)
+	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.Close()
+	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
 func (pdaManager *PDAManager) Deletepda(id string) {
-	get, _ := pdaManager.PdaStore.Get(id)
-	pdaManager.PdaProcessor = parsePdaProcessor(get)
+	//get, _ := pdaManager.PdaStore.Get(id)
+
 	//  TODO: a query to delete the pda
 
 }
