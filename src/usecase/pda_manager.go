@@ -52,6 +52,7 @@ func (pdaManager *PDAManager) PdaProcessorcallsreset(id string) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	pdaProcessor.Reset()
+	fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock(), pdaProcessor.GetClock())
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
@@ -59,16 +60,15 @@ func (pdaManager *PDAManager) PdaProcessorcallputs(id string, token string, posi
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	pdaProcessor.Puts(position, token)
-	fmt.Printf("PDA Name=%s \tToken=%s\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), token, pdaProcessor.GetClock())
-
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
 func (pdaManager *PDAManager) PdaProcessorcallis_accepted(id string) bool {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
-	print("Is Accepted called ", pdaProcessor.Is_accepted())
-	return pdaProcessor.Is_accepted()
+	isAccepted := pdaProcessor.Is_accepted()
+	fmt.Printf("PDA Name=%s \tMethod=Is_Accepted =%t \n", pdaProcessor.GetPDAName(), isAccepted)
+	return isAccepted
 }
 
 func (pdaManager *PDAManager) Peek(id string, k int) []string {

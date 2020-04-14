@@ -38,7 +38,6 @@ func (pdaController *PdaController) Callopen(writer http.ResponseWriter, request
 
 }
 func (pdaController *PdaController) Callreset(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callreset")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -48,7 +47,6 @@ func (pdaController *PdaController) Callreset(writer http.ResponseWriter, reques
 }
 
 func (pdaController *PdaController) Calltoken(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("calltoken")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 
@@ -62,10 +60,9 @@ func (pdaController *PdaController) Calltoken(writer http.ResponseWriter, reques
 }
 
 func (pdaController *PdaController) Calleos(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("calleos")
 	params := mux.Vars(request)
 	pda_id := params["id"]
-	eos := ""
+	eos := " "
 	position, _ := strconv.Atoi(params["position"])
 	fmt.Println(pda_id, position)
 	//call manager to call eos for pda_id, ignore position of eos
@@ -73,7 +70,6 @@ func (pdaController *PdaController) Calleos(writer http.ResponseWriter, request 
 }
 
 func (pdaController *PdaController) Callis_accepted(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callis_accepted")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -83,7 +79,6 @@ func (pdaController *PdaController) Callis_accepted(writer http.ResponseWriter, 
 }
 
 func (pdaController *PdaController) Callpeek(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callpeek")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	peek_k, _ := strconv.Atoi(params["k"])
@@ -94,7 +89,6 @@ func (pdaController *PdaController) Callpeek(writer http.ResponseWriter, request
 }
 
 func (pdaController *PdaController) CallStackSize(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callstacksize")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -104,7 +98,6 @@ func (pdaController *PdaController) CallStackSize(writer http.ResponseWriter, re
 }
 
 func (pdaController *PdaController) Callcurrent_state(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callcurrent state")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -114,7 +107,6 @@ func (pdaController *PdaController) Callcurrent_state(writer http.ResponseWriter
 }
 
 func (pdaController *PdaController) Callqueued_token(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callqueued token")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -123,7 +115,6 @@ func (pdaController *PdaController) Callqueued_token(writer http.ResponseWriter,
 	writer.Write(q_token)
 }
 func (pdaController *PdaController) Callthree_methods(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callthree methods")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	peek_k, _ := strconv.Atoi(params["k"])
@@ -138,7 +129,6 @@ func (pdaController *PdaController) Callthree_methods(writer http.ResponseWriter
 	writer.Write(top_k)
 }
 func (pdaController *PdaController) Callclose(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("callclose")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -146,7 +136,6 @@ func (pdaController *PdaController) Callclose(writer http.ResponseWriter, reques
 	pdaController.PdaManager.Callclose(pda_id)
 }
 func (pdaController *PdaController) Calldelete(writer http.ResponseWriter, request *http.Request) {
-	fmt.Println("calldelete")
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)

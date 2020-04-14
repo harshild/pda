@@ -18,7 +18,7 @@ type PDARuntimeError struct {
 func (e *PDARuntimeError) Error() string {
 	pdaInfo := "No PDA Info available for \t"
 	if e.forPDA != nil && e.forPDA.PdaConf.Name != "" {
-		pdaInfo = "Error occurred for PDA=" + e.forPDA.PdaConf.Name + " At clock=" + strconv.Itoa(e.forPDA.clock) + " At state=" + e.forPDA.State
+		pdaInfo = "Error occurred for PDA=" + e.forPDA.PdaConf.Name + " At Clock=" + strconv.Itoa(e.forPDA.Clock) + " At state=" + e.forPDA.State
 	}
 	return e.message + " || " + pdaInfo
 }
@@ -28,15 +28,15 @@ func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
 	pdaProcessor.InputQueue[position] = token
 
 	if pdaProcessor.LastConsumedIndex == position-1 {
-		checkQueue(*pdaProcessor)
+		pdaProcessor.checkQueue()
 	}
 }
 
-func checkQueue(pdaProcessor PdaProcessor) {
+func (pdaProcessor *PdaProcessor) checkQueue() {
 	if _, ok := pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)]; ok {
 		pdaProcessor.Put(pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)])
 		pdaProcessor.LastConsumedIndex++
-		checkQueue(pdaProcessor)
+		pdaProcessor.checkQueue()
 	}
 }
 
@@ -79,7 +79,7 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 				pdaProcessor.Stack.Push(transition.elementToBePushed)
 			}
 
-			pdaProcessor.clock++
+			pdaProcessor.Clock++
 
 			transitionCount = 1 + pdaProcessor.takeEagerSteps()
 		}
@@ -88,7 +88,7 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 			utility.Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
 		}
 
-		print("Put method called: %d transitions taken", transitionCount)
+		fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), token, transition, pdaProcessor.GetClock())
 		return transitionCount
 	} else {
 		utility.Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
@@ -117,7 +117,7 @@ func (pdaProcessor *PdaProcessor) Close() {
 	pdaProcessor.PdaConf = entity.PDAConf{}
 	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = ""
-	pdaProcessor.clock = 0
+	pdaProcessor.Clock = 0
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 }
 
@@ -126,7 +126,7 @@ func (pdaProcessor *PdaProcessor) GetPDAName() string {
 }
 
 func (pdaProcessor *PdaProcessor) GetClock() int {
-	return pdaProcessor.clock
+	return pdaProcessor.Clock
 }
 
 func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
@@ -149,7 +149,7 @@ func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
 			pdaProcessor.Stack.Push(transition.elementToBePushed)
 		}
 
-		pdaProcessor.clock++
+		pdaProcessor.Clock++
 
 		return 1 + pdaProcessor.takeEagerSteps()
 	}
@@ -217,7 +217,7 @@ type PdaProcessor struct {
 	Stack             utility.Stack
 	PdaConf           entity.PDAConf
 	State             string
-	clock             int
+	Clock             int
 	InputQueue        map[int]string
 	LastConsumedIndex int
 }
