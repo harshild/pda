@@ -88,7 +88,7 @@ func (pdaManager *PDAManager) Currentstate(id string) string {
 func (pdaManager *PDAManager) Q_token(id string) []string {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaManager.PdaProcessor = parsePdaProcessor(get)
-	return pdaManager.PdaProcessor.InputQueue
+	return pdaManager.PdaProcessor.Queued_tokens()
 }
 
 func (pdaManager *PDAManager) Callclose(id string) {

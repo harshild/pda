@@ -23,6 +23,7 @@ func (e *PDARuntimeError) Error() string {
 }
 
 func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
+
 	pdaProcessor.InputQueue[position] = token
 
 	if pdaProcessor.LastConsumedIndex == position-1 {
@@ -31,7 +32,7 @@ func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
 }
 
 func checkQueue(pdaProcessor PdaProcessor) {
-	if pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex+1)] != "" {
+	if _, ok := pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)]; ok {
 		pdaProcessor.Put(pdaProcessor.InputQueue[(pdaProcessor.LastConsumedIndex + 1)])
 		checkQueue(pdaProcessor)
 	}
@@ -45,7 +46,7 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	pdaProcessor.LastConsumedIndex = -1
-	pdaProcessor.InputQueue = make([]string, 0)
+	pdaProcessor.InputQueue = make(map[int]string, 0)
 	return true
 }
 
@@ -152,6 +153,17 @@ func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
 
 }
 
+func (pdaProcessor *PdaProcessor) Queued_tokens() []string {
+	queuedTokens := make([]string, 0)
+	for key, value := range pdaProcessor.InputQueue {
+		if key > pdaProcessor.LastConsumedIndex {
+			queuedTokens = append(queuedTokens, value)
+		}
+	}
+
+	return queuedTokens
+}
+
 func GetAllPDANames(pdas []PdaProcessor) []string {
 	pdaNames := make([]string, 0)
 	for _, pda := range pdas {
@@ -196,7 +208,7 @@ type PdaProcessor struct {
 	PdaConf           entity.PDAConf
 	State             string
 	clock             int
-	InputQueue        []string
+	InputQueue        map[int]string
 	LastConsumedIndex int
 }
 
