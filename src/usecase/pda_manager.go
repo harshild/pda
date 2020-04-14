@@ -8,7 +8,7 @@ import (
 
 type PDAManager struct {
 	PdaProcessor core.PdaProcessor
-	PdaStore     db.PDAStore
+	PdaStore     db.InMemoryStore
 }
 
 //func (pdaManager *PDAManager) NewPDA(id int, json string) {

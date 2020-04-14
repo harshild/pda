@@ -15,6 +15,7 @@ type PdaController struct {
 }
 
 func (pdaController *PdaController) Gotopdas(writer http.ResponseWriter, request *http.Request) {
+
 	writer.WriteHeader(200)
 	names := pdaController.PdaManager.ListAllPDAs()
 	json, _ := json.Marshal(names)

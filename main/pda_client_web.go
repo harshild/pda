@@ -23,14 +23,14 @@ func main() {
 	//	"./test.db",
 	//}
 
-	store := db.InMemoryStore{}
 	ctrl := controller.PdaController{
 		usecase.PDAManager{
 			core.PdaProcessor{},
-			store,
+			db.InMemoryStore{},
 		},
 	}
-	store.InitStore()
+
+	ctrl.PdaManager.PdaStore.InitStore()
 
 	router := mux.NewRouter().StrictSlash(true)
 
