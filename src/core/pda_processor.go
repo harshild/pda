@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"entity"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"utility"
@@ -154,10 +155,16 @@ func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
 }
 
 func (pdaProcessor *PdaProcessor) Queued_tokens() []string {
+	keys := make([]int, 0, len(pdaProcessor.InputQueue))
+	for k := range pdaProcessor.InputQueue {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
 	queuedTokens := make([]string, 0)
-	for key, value := range pdaProcessor.InputQueue {
-		if key > pdaProcessor.LastConsumedIndex {
-			queuedTokens = append(queuedTokens, value)
+
+	for _, k := range keys {
+		if k > pdaProcessor.LastConsumedIndex {
+			queuedTokens = append(queuedTokens, pdaProcessor.InputQueue[k])
 		}
 	}
 
