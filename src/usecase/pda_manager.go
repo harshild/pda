@@ -48,7 +48,7 @@ func parsePdaProcessor(pdaProcessorString string) core.PdaProcessor {
 	return pdaProcessor
 }
 
-func (pdaManager *PDAManager) PdaProcessorcallsreset(id string) {
+func (pdaManager *PDAManager) Reset(id string) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	pdaProcessor.Reset()
@@ -56,14 +56,14 @@ func (pdaManager *PDAManager) PdaProcessorcallsreset(id string) {
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
-func (pdaManager *PDAManager) PdaProcessorcallputs(id string, token string, position int) {
+func (pdaManager *PDAManager) Puts(id string, token string, position int) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	pdaProcessor.Puts(position, token)
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
-func (pdaManager *PDAManager) PdaProcessorcallis_accepted(id string) bool {
+func (pdaManager *PDAManager) Is_accepted(id string) bool {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	isAccepted := pdaProcessor.Is_accepted()
@@ -78,7 +78,7 @@ func (pdaManager *PDAManager) Peek(id string, k int) []string {
 
 }
 
-func (pdaManager *PDAManager) Callsize(id string) int {
+func (pdaManager *PDAManager) Size(id string) int {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	return pdaProcessor.Stack.Size()
@@ -90,13 +90,13 @@ func (pdaManager *PDAManager) Currentstate(id string) string {
 	return pdaProcessor.Current_state()
 }
 
-func (pdaManager *PDAManager) Q_token(id string) []string {
+func (pdaManager *PDAManager) Queued_token(id string) []string {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	return pdaProcessor.Queued_tokens()
 }
 
-func (pdaManager *PDAManager) Callclose(id string) {
+func (pdaManager *PDAManager) Close(id string) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	pdaProcessor.Close()

@@ -14,7 +14,7 @@ type PdaController struct {
 	PdaManager usecase.PDAManager
 }
 
-func (pdaController *PdaController) Gotopdas(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) ListAllPDA(writer http.ResponseWriter, request *http.Request) {
 
 	writer.WriteHeader(200)
 	names := pdaController.PdaManager.ListAllPDAs()
@@ -23,7 +23,7 @@ func (pdaController *PdaController) Gotopdas(writer http.ResponseWriter, request
 
 }
 
-func (pdaController *PdaController) Callopen(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) OpenPDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 
@@ -37,16 +37,15 @@ func (pdaController *PdaController) Callopen(writer http.ResponseWriter, request
 	pdaController.PdaManager.CreateNewPDA(pda_id, pdaConf)
 
 }
-func (pdaController *PdaController) Callreset(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) ResetPDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
-	fmt.Println(pda_id)
 
 	//call manager for resetting the pda_id
-	pdaController.PdaManager.PdaProcessorcallsreset(pda_id)
+	pdaController.PdaManager.Reset(pda_id)
 }
 
-func (pdaController *PdaController) Calltoken(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) PutsToken(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 
@@ -56,29 +55,29 @@ func (pdaController *PdaController) Calltoken(writer http.ResponseWriter, reques
 
 	fmt.Println(pda_id, token, position)
 	//call manager to pass a token with position
-	pdaController.PdaManager.PdaProcessorcallputs(pda_id, token, position)
+	pdaController.PdaManager.Puts(pda_id, token, position)
 }
 
-func (pdaController *PdaController) Calleos(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) PutsEOS(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	eos := " "
 	position, _ := strconv.Atoi(params["position"])
 	fmt.Println(pda_id, position)
 	//call manager to call eos for pda_id, ignore position of eos
-	pdaController.PdaManager.PdaProcessorcallputs(pda_id, eos, position)
+	pdaController.PdaManager.Puts(pda_id, eos, position)
 }
 
-func (pdaController *PdaController) Callis_accepted(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) IsPDAAccepted(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
 	//call manager to call is_accepted method for pda_id
-	accepted, _ := json.Marshal(pdaController.PdaManager.PdaProcessorcallis_accepted(pda_id))
+	accepted, _ := json.Marshal(pdaController.PdaManager.Is_accepted(pda_id))
 	writer.Write(accepted)
 }
 
-func (pdaController *PdaController) Callpeek(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) PeekStack(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	peek_k, _ := strconv.Atoi(params["k"])
@@ -88,16 +87,16 @@ func (pdaController *PdaController) Callpeek(writer http.ResponseWriter, request
 	writer.Write(top_k)
 }
 
-func (pdaController *PdaController) CallStackSize(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) StackSize(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
 	//call manager to return the value of stack.Size() for pda_id
-	stacksize, _ := json.Marshal(pdaController.PdaManager.Callsize(pda_id))
+	stacksize, _ := json.Marshal(pdaController.PdaManager.Size(pda_id))
 	writer.Write(stacksize)
 }
 
-func (pdaController *PdaController) Callcurrent_state(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) CurrentStatePDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
@@ -106,36 +105,36 @@ func (pdaController *PdaController) Callcurrent_state(writer http.ResponseWriter
 	writer.Write(currentstate)
 }
 
-func (pdaController *PdaController) Callqueued_token(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) QueuedTokenPDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
 	//call manager to return the value of queued tokens( that method id yet to be implemented) for pda_id
-	q_token, _ := json.Marshal(pdaController.PdaManager.Q_token(pda_id))
+	q_token, _ := json.Marshal(pdaController.PdaManager.Queued_token(pda_id))
 	writer.Write(q_token)
 }
-func (pdaController *PdaController) Callthree_methods(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) SnapshotPDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	peek_k, _ := strconv.Atoi(params["k"])
 	fmt.Println(pda_id, peek_k)
 	//call manager to call three methods for pda_id: pdaprocessor.current_state(), queued tokens, peek(peek_k)
 	currentstate, _ := json.Marshal(pdaController.PdaManager.Currentstate(pda_id))
-	q_token, _ := json.Marshal(pdaController.PdaManager.Q_token(pda_id))
+	q_token, _ := json.Marshal(pdaController.PdaManager.Queued_token(pda_id))
 	top_k, _ := json.Marshal(pdaController.PdaManager.Peek(pda_id, peek_k))
 
 	writer.Write(currentstate)
 	writer.Write(q_token)
 	writer.Write(top_k)
 }
-func (pdaController *PdaController) Callclose(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) ClosePDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)
 	//call manager to close the pda_id
-	pdaController.PdaManager.Callclose(pda_id)
+	pdaController.PdaManager.Close(pda_id)
 }
-func (pdaController *PdaController) Calldelete(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) DeletePDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	pda_id := params["id"]
 	fmt.Println(pda_id)

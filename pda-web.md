@@ -22,3 +22,15 @@ This is an implementation of pushdown automata. For project definition refer the
 |GET | base/pdas/id/snapshot/k |Return a JSON message (array) three components: the current_state(), queued_tokens(), and peek(k)
 |PUT | base/pdas/id/close |Call close()
 |DELETE | base/pdas/id/delete |Delete the PDA with name from the server
+
+### Build 
+
+To build , from the project root
+
+`go build ./main/pda_client_web.go`
+
+### Run
+
+`./pda_client_web [port(optional)]`
+
+The default port is **8080**
