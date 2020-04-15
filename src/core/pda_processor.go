@@ -24,8 +24,7 @@ func (e *PDARuntimeError) Error() string {
 }
 
 func (pdaProcessor *PdaProcessor) Puts(position int, token string) error {
-
-	if pdaProcessor.LastConsumedIndex == -1 {
+	if pdaProcessor.Is_accepted() {
 		return &PDARuntimeError{Message: "You have to reset the PDA first. Token DISCARDED"}
 	}
 
