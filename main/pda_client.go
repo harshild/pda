@@ -32,7 +32,7 @@ func main() {
 					fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock(), pdaProcessor.GetClock())
 
 					for _, alphabet := range inputString {
-						transition = pdaProcessor.Put(string(alphabet))
+						transition, _ = pdaProcessor.Put(string(alphabet))
 						fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), string(alphabet), transition, pdaProcessor.GetClock())
 					}
 					prevClock := pdaProcessor.GetClock()

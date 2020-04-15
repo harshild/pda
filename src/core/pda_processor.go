@@ -52,13 +52,15 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 	return true
 }
 
-func (pdaProcessor *PdaProcessor) Reset() {
+func (pdaProcessor *PdaProcessor) Reset() error {
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	pdaProcessor.Stack = utility.Stack{}
-	pdaProcessor.Put(" ")
+
+	_, err := pdaProcessor.Put(" ")
+	return err
 }
 
-func (pdaProcessor *PdaProcessor) Put(token string) int {
+func (pdaProcessor *PdaProcessor) Put(token string) (int, error) {
 	transitionCount := 0
 	if utility.StringArrContains(pdaProcessor.PdaConf.InputAlphabet, token) || token == " " || token == pdaProcessor.PdaConf.Eos {
 		transition := GetTransition(pdaProcessor.State, pdaProcessor.PdaConf.Transitions, token)
@@ -66,7 +68,7 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 		if transition.currentAlphabet != "" && transition.currentState != "" && transition.nextState != "" {
 			if transition.elementToBePopped != "" {
 				if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
-					utility.Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
+					return 0, &PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor}
 				}
 				pdaProcessor.Stack.Pop()
 			}
@@ -85,15 +87,14 @@ func (pdaProcessor *PdaProcessor) Put(token string) int {
 		}
 
 		if transitionCount < 1 {
-			utility.Crash(&PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor})
+			return 0, &PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor}
 		}
 
-		fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), token, transition, pdaProcessor.GetClock())
-		return transitionCount
+		fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), token, transitionCount, pdaProcessor.GetClock())
+		return transitionCount, nil
 	} else {
-		utility.Crash(&PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor})
 		print("Put method called: No transition ")
-		return 0
+		return 0, &PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor}
 	}
 }
 
@@ -105,7 +106,7 @@ func (pdaProcessor *PdaProcessor) Is_accepted() bool {
 	return pdaProcessor.Stack.IsEmpty() && utility.StringArrContains(pdaProcessor.PdaConf.AcceptingStates, pdaProcessor.State)
 }
 
-func (pdaProcessor *PdaProcessor) Peek(len int) []string {
+func (pdaProcessor *PdaProcessor) Peek(len int) ([]string, error) {
 	return pdaProcessor.Stack.Peek(len)
 }
 

@@ -51,14 +51,15 @@ func parsePdaProcessor(pdaProcessorString string) core.PdaProcessor {
 func (pdaManager *PDAManager) Reset(id string) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
+	fmt.Printf(" Name:%s  Token:%s Position: N/A  \n", pdaProcessor.PdaConf.Name, "START")
 	pdaProcessor.Reset()
-	fmt.Printf("PDA Name=%s \tToken=START \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), pdaProcessor.GetClock(), pdaProcessor.GetClock())
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
 
 func (pdaManager *PDAManager) Puts(id string, token string, position int) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
+	fmt.Printf(" Name:%s  Token:%s Position:%d  \n", pdaProcessor.PdaConf.Name, token, position)
 	pdaProcessor.Puts(position, token)
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
@@ -71,7 +72,7 @@ func (pdaManager *PDAManager) Is_accepted(id string) bool {
 	return isAccepted
 }
 
-func (pdaManager *PDAManager) Peek(id string, k int) []string {
+func (pdaManager *PDAManager) Peek(id string, k int) ([]string, error) {
 	get, _ := pdaManager.PdaStore.Get(id)
 	pdaProcessor := parsePdaProcessor(get)
 	return pdaProcessor.Peek(k)
@@ -108,4 +109,12 @@ func (pdaManager *PDAManager) Deletepda(id string) {
 
 	//  TODO: a query to delete the pda
 
+}
+
+func (pdaManager *PDAManager) PutsEOS(id string, position int) {
+	get, _ := pdaManager.PdaStore.Get(id)
+	pdaProcessor := parsePdaProcessor(get)
+	fmt.Printf(" Name:%s  Token:%s Position:%d  \n", pdaProcessor.PdaConf.Name, pdaProcessor.PdaConf.Eos, position)
+	pdaProcessor.Puts(position, " ")
+	pdaManager.PdaStore.Update(id, pdaProcessor)
 }
