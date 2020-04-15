@@ -1,3 +1,4 @@
+# Normal execution, in order tokens provided to PDA
 printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/1' --header 'Content-Type: application/json' --data-binary "@./sample/samplePDA-1.json"
 printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas'
 printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/1/reset' --data-raw ''
@@ -14,3 +15,54 @@ printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' 
 printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/1/snapshot/2'
 printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/1/close' --data-raw ''
 printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request DELETE 'localhost:8080/pdas/1/delete' --data-raw ''
+
+# out of order tokens provided to PDA2
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2' --header 'Content-Type: application/json' --data-binary "@./sample/samplePDA-2.json"
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/reset' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/tokens/0' --header 'Content-Type: application/json' --data-raw 'a'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/tokens/1' --header 'Content-Type: application/json' --data-raw 'a'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/tokens/3' --header 'Content-Type: application/json' --data-raw 'c'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/tokens/4' --header 'Content-Type: application/json' --data-raw 'c'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/tokens/2' --header 'Content-Type: application/json' --data-raw 'b'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/eos/5' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/2/is_accepted'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/2/stack/top/2'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/2/stack/len'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/2/state'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/2/tokens'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/2/snapshot/2'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/2/close' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request DELETE 'localhost:8080/pdas/2/delete' --data-raw ''
+
+# two PDAs running simultaneously, out of order tokens provided to PDA3 and PDA4, also showing queued tokens for PDA4 in case of out of order execution
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3' --header 'Content-Type: application/json' --data-binary "@./sample/samplePDA-1.json"
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4' --header 'Content-Type: application/json' --data-binary "@./sample/samplePDA-2.json"
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/reset' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/reset' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/tokens/0' --header 'Content-Type: application/json' --data-raw '0'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/tokens/0' --header 'Content-Type: application/json' --data-raw 'a'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/tokens/1' --header 'Content-Type: application/json' --data-raw '0'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/tokens/2' --header 'Content-Type: application/json' --data-raw '1'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/tokens/3' --header 'Content-Type: application/json' --data-raw 'c'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/tokens/3' --header 'Content-Type: application/json' --data-raw '1'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/4/tokens'  #showing queued tokens for PDA4
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/tokens/1' --header 'Content-Type: application/json' --data-raw 'a'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/tokens/4' --header 'Content-Type: application/json' --data-raw 'c'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/tokens/2' --header 'Content-Type: application/json' --data-raw 'b'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/eos/5' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/eos/4' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/3/is_accepted'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/4/is_accepted'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/3/stack/top/2'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/3/stack/len'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/3/state'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/3/tokens'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/3/snapshot/2'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/3/close' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request DELETE 'localhost:8080/pdas/3/delete' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request GET 'localhost:8080/pdas/4/state'
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request PUT 'localhost:8080/pdas/4/close' --data-raw ''
+printf "\n-------------------\n" && curl -sw '\nResponse Status : %{http_code}' --location --request DELETE 'localhost:8080/pdas/4/delete' --data-raw ''
+
