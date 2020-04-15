@@ -11,25 +11,30 @@ import (
 )
 
 type PDARuntimeError struct {
-	message string
-	forPDA  *PdaProcessor
+	Message string
+	ForPDA  *PdaProcessor
 }
 
 func (e *PDARuntimeError) Error() string {
 	pdaInfo := "No PDA Info available for \t"
-	if e.forPDA != nil && e.forPDA.PdaConf.Name != "" {
-		pdaInfo = "Error occurred for PDA=" + e.forPDA.PdaConf.Name + " At Clock=" + strconv.Itoa(e.forPDA.Clock) + " At state=" + e.forPDA.State
+	if e.ForPDA != nil && e.ForPDA.PdaConf.Name != "" {
+		pdaInfo = "Error occurred for PDA=" + e.ForPDA.PdaConf.Name + " At Clock=" + strconv.Itoa(e.ForPDA.Clock) + " At state=" + e.ForPDA.State
 	}
-	return e.message + " || " + pdaInfo
+	return e.Message + " || " + pdaInfo
 }
 
-func (pdaProcessor *PdaProcessor) Puts(position int, token string) {
+func (pdaProcessor *PdaProcessor) Puts(position int, token string) error {
+
+	if pdaProcessor.LastConsumedIndex == -1 {
+		return &PDARuntimeError{Message: "You have to reset the PDA first. Token DISCARDED"}
+	}
 
 	pdaProcessor.InputQueue[position] = token
 
 	if pdaProcessor.LastConsumedIndex == position-1 {
 		pdaProcessor.checkQueue()
 	}
+	return nil
 }
 
 func (pdaProcessor *PdaProcessor) checkQueue() {
@@ -55,6 +60,9 @@ func (pdaProcessor *PdaProcessor) Open(in []byte) bool {
 func (pdaProcessor *PdaProcessor) Reset() error {
 	pdaProcessor.State = pdaProcessor.PdaConf.StartState
 	pdaProcessor.Stack = utility.Stack{}
+	pdaProcessor.Clock = 0
+	pdaProcessor.InputQueue = make(map[int]string, 0)
+	pdaProcessor.LastConsumedIndex = -1
 
 	_, err := pdaProcessor.Put(" ")
 	return err
@@ -68,7 +76,7 @@ func (pdaProcessor *PdaProcessor) Put(token string) (int, error) {
 		if transition.currentAlphabet != "" && transition.currentState != "" && transition.nextState != "" {
 			if transition.elementToBePopped != "" {
 				if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
-					return 0, &PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor}
+					return 0, &PDARuntimeError{Message: "Element to be popped from Stack not found on top", ForPDA: pdaProcessor}
 				}
 				pdaProcessor.Stack.Pop()
 			}
@@ -87,14 +95,13 @@ func (pdaProcessor *PdaProcessor) Put(token string) (int, error) {
 		}
 
 		if transitionCount < 1 {
-			return 0, &PDARuntimeError{message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), forPDA: pdaProcessor}
+			return 0, &PDARuntimeError{Message: "No transition found in configuration for STATE=" + pdaProcessor.Current_state(), ForPDA: pdaProcessor}
 		}
 
 		fmt.Printf("PDA Name=%s \tToken=%s \t Transitions Took=%d\tClock Ticks=%d \n", pdaProcessor.GetPDAName(), token, transitionCount, pdaProcessor.GetClock())
 		return transitionCount, nil
 	} else {
-		print("Put method called: No transition ")
-		return 0, &PDARuntimeError{message: "Invalid input sequence provided", forPDA: pdaProcessor}
+		return 0, &PDARuntimeError{Message: "Put method called: No transition  Invalid input sequence provided Input:" + token, ForPDA: pdaProcessor}
 	}
 }
 
@@ -115,7 +122,6 @@ func (pdaProcessor *PdaProcessor) Current_state() string {
 }
 
 func (pdaProcessor *PdaProcessor) Close() {
-	pdaProcessor.PdaConf = entity.PDAConf{}
 	pdaProcessor.Stack = utility.Stack{}
 	pdaProcessor.State = ""
 	pdaProcessor.Clock = 0
@@ -137,7 +143,7 @@ func (pdaProcessor *PdaProcessor) takeEagerSteps() int {
 
 		if transition.elementToBePopped != "" {
 			if !pdaProcessor.Stack.IsEmpty() && pdaProcessor.Stack.TopElement() != transition.elementToBePopped {
-				utility.Crash(&PDARuntimeError{message: "Element to be popped from Stack not found on top", forPDA: pdaProcessor})
+				utility.Crash(&PDARuntimeError{Message: "Element to be popped from Stack not found on top", ForPDA: pdaProcessor})
 			}
 			pdaProcessor.Stack.Pop()
 		}

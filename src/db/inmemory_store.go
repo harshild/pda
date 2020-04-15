@@ -13,10 +13,13 @@ func (inMemoryStore *InMemoryStore) InitStore() {
 	inMemoryStore.PdaProcessors = make(map[string]core.PdaProcessor, 0)
 }
 
-func (inMemoryStore *InMemoryStore) Save(pdaId string, processor core.PdaProcessor) {
+func (inMemoryStore *InMemoryStore) Save(pdaId string, processor core.PdaProcessor) error {
 	if !inMemoryStore.idExists(pdaId) {
 		inMemoryStore.PdaProcessors[pdaId] = processor
+	} else {
+		return &core.PDARuntimeError{Message: "Overriding existing PDA not allowed. DELETE first and then ADD"}
 	}
+	return nil
 }
 
 func (inMemoryStore *InMemoryStore) Update(pdaId string, processor core.PdaProcessor) {
@@ -28,7 +31,7 @@ func (inMemoryStore *InMemoryStore) Get(pdaId string) (string, error) {
 		jsonVal, _ := json.Marshal(inMemoryStore.PdaProcessors[pdaId])
 		return string(jsonVal), nil
 	}
-	return "", nil
+	return "", &core.PDARuntimeError{Message: "No PDA found with id " + pdaId}
 }
 
 func (inMemoryStore *InMemoryStore) idExists(pdaId string) bool {
@@ -44,4 +47,8 @@ func (inMemoryStore *InMemoryStore) GetAllPDA() []string {
 	}
 
 	return pdaStr
+}
+
+func (inMemoryStore *InMemoryStore) Delete(pdaId string) {
+	delete(inMemoryStore.PdaProcessors, pdaId)
 }
