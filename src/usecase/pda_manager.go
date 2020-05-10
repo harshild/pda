@@ -29,8 +29,7 @@ func (pdaManager *PDAManager) ListAllPDAs() []string {
 func (pdaManager *PDAManager) CreateNewPDA(id string, conf string) error {
 	pdaProcessor := core.PdaProcessor{}
 	if pdaProcessor.Open([]byte(conf)) {
-		err := pdaManager.PdaStore.Save(id, pdaProcessor)
-		return err
+		pdaManager.PdaStore.Save(id, pdaProcessor)
 	}
 	return nil
 }
