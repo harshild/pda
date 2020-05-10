@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"usecase"
 )
 
@@ -150,26 +151,26 @@ func (pdaController *PdaController) SnapshotPDA(writer http.ResponseWriter, requ
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	currentstate, _ := json.Marshal(state)
 	token, err := pdaController.PdaManager.Queued_token(pda_id)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	q_token, _ := json.Marshal(token)
 	peek, err := pdaController.PdaManager.Peek(pda_id, peek_k)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	top_k, _ := json.Marshal(peek)
+	out := make([]string, 0)
 
-	// TODO MAke json output
-	writer.Write(currentstate)
-	writer.Write(q_token)
-	writer.Write(top_k)
+	out = append(out, state)
+	out = append(out, strings.Join(token, ","))
+	out = append(out, strings.Join(peek, " "))
 
+	json_out, _ := json.Marshal(out)
+
+	writer.Write(json_out)
 }
 func (pdaController *PdaController) ClosePDA(writer http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
