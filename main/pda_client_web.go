@@ -22,28 +22,30 @@ func main() {
 	//	"./test.db",
 	//}
 
-	ctrl := controller.PdaController{
+	pdaController := controller.PdaController{
 		usecase.PDAManager{
 			db.InMemoryStore{},
 		},
 	}
 
-	ctrl.PdaManager.PdaStore.InitStore()
+	pdaController.PdaManager.PdaStore.InitStore()
 
+	replicaController := controller.ReplicaController{}
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/pdas", ctrl.ListAllPDA).Methods("GET")
-	router.HandleFunc("/pdas/{id}", ctrl.OpenPDA).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/reset", ctrl.ResetPDA).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/tokens/{position}", ctrl.PutsToken).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/eos/{position}", ctrl.PutsEOS).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/is_accepted", ctrl.IsPDAAccepted).Methods("GET")
-	router.HandleFunc("/pdas/{id}/stack/top/{k}", ctrl.PeekStack).Methods("GET")
-	router.HandleFunc("/pdas/{id}/stack/len", ctrl.StackSize).Methods("GET")
-	router.HandleFunc("/pdas/{id}/state", ctrl.CurrentStatePDA).Methods("GET")
-	router.HandleFunc("/pdas/{id}/tokens", ctrl.QueuedTokenPDA).Methods("GET")
-	router.HandleFunc("/pdas/{id}/snapshot/{k}", ctrl.SnapshotPDA).Methods("GET")
-	router.HandleFunc("/pdas/{id}/close", ctrl.ClosePDA).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/delete", ctrl.DeletePDA).Methods("DELETE")
+	router.HandleFunc("/pdas", pdaController.ListAllPDA).Methods("GET")
+	router.HandleFunc("/pdas/{id}", pdaController.OpenPDA).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/reset", pdaController.ResetPDA).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/tokens/{position}", pdaController.PutsToken).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/eos/{position}", pdaController.PutsEOS).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/is_accepted", pdaController.IsPDAAccepted).Methods("GET")
+	router.HandleFunc("/pdas/{id}/stack/top/{k}", pdaController.PeekStack).Methods("GET")
+	router.HandleFunc("/pdas/{id}/stack/len", pdaController.StackSize).Methods("GET")
+	router.HandleFunc("/pdas/{id}/state", pdaController.CurrentStatePDA).Methods("GET")
+	router.HandleFunc("/pdas/{id}/tokens", pdaController.QueuedTokenPDA).Methods("GET")
+	router.HandleFunc("/pdas/{id}/snapshot/{k}", pdaController.SnapshotPDA).Methods("GET")
+	router.HandleFunc("/pdas/{id}/close", pdaController.ClosePDA).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/delete", pdaController.DeletePDA).Methods("DELETE")
+	router.HandleFunc("/replica_pdas", replicaController.GetAllReplicaIds).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
