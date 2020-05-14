@@ -46,6 +46,17 @@ func main() {
 	router.HandleFunc("/pdas/{id}/snapshot/{k}", pdaController.SnapshotPDA).Methods("GET")
 	router.HandleFunc("/pdas/{id}/close", pdaController.ClosePDA).Methods("PUT")
 	router.HandleFunc("/pdas/{id}/delete", pdaController.DeletePDA).Methods("DELETE")
+
 	router.HandleFunc("/replica_pdas", replicaController.GetAllReplicaIds).Methods("GET")
+	router.HandleFunc("/replica_pdas/{gid}", replicaController.CreateReplicagrp).Methods("PUT") //takes pda specification and group member ids
+	router.HandleFunc("/replica_pdas/{gid}/reset", replicaController.ResetAllMembers).Methods("PUT")
+	router.HandleFunc("/replica_pdas/{gid}/members", replicaController.GetMembersAddress).Methods("GET")
+	router.HandleFunc("/replica_pdas/{gid}/connect", replicaController.ConnectToAMember).Methods("GET")   //Return the address of a random member that a client could connect to
+	router.HandleFunc("/replica_pdas/{gid}/close", replicaController.CloseReplicaGrp).Methods("PUT")      //close all members
+	router.HandleFunc("/replica_pdas/{gid}/delete", replicaController.DeleteReplicaGrp).Methods("DELETE") //close all members
+	router.HandleFunc("/pdas/{id}/join", replicaController.Joinpda).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/code", replicaController.Pdacode).Methods("GET")
+	router.HandleFunc("/pdas/{id}/c3state", replicaController.Pdacode).Methods("GET") //state information
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

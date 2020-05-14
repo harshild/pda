@@ -235,3 +235,11 @@ type PDATransition struct {
 	nextState         string
 	elementToBePushed string
 }
+
+type cookie struct {
+	Stack             utility.Stack
+	State             string
+	Clock             int
+	InputQueue        map[int]string
+	LastConsumedIndex int
+}
