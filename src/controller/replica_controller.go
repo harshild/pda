@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"github.com/gorilla/mux"
+	"io/ioutil"
 	"net/http"
 	"usecase"
 )
@@ -14,6 +16,17 @@ func (replicaController *ReplicaController) GetAllReplicaIds(writer http.Respons
 }
 
 func (replicaController *ReplicaController) CreateReplicagrp(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	Replica_id := params["gid"]
+
+	all, err := ioutil.ReadAll(request.Body)
+	conf := string(all)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = replicaController.ReplicaManager.CreateNewReplicagrp(Replica_id, conf)
 
 }
 

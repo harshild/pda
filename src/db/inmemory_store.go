@@ -7,6 +7,7 @@ import (
 
 type InMemoryStore struct {
 	PdaProcessors map[string]core.PdaProcessor
+	Replicas      []string
 }
 
 func (inMemoryStore *InMemoryStore) InitStore() {
@@ -46,4 +47,11 @@ func (inMemoryStore *InMemoryStore) GetAllPDA() []string {
 
 func (inMemoryStore *InMemoryStore) Delete(pdaId string) {
 	delete(inMemoryStore.PdaProcessors, pdaId)
+}
+
+func (inMemoryStore *InMemoryStore) SaveReplica(gid string, processor core.PdaProcessor, add []string) {
+	for _, s := range add {
+		Replica_Pda_Id := gid + s
+		inMemoryStore.PdaProcessors[Replica_Pda_Id] = processor
+	}
 }
