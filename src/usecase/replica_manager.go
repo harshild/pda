@@ -16,6 +16,9 @@ type ReplicaManager struct {
 func (replicamanager *ReplicaManager) CreateNewReplicagrp(gid string, conf string) error {
 	var Replica entity.ReplicaConf
 	err := json.Unmarshal([]byte(conf), &Replica)
+	if err != nil {
+		print("Jason unmarshalling of replica failed!")
+	}
 	Replica.Gid = gid
 	//fmt.Printf("%+v\n", Replica.Group_members)
 

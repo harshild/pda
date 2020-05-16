@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "1228dd0a-ab25-4327-8a45-cd83727c043a",
+		"name": "Replica1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/replica_pdas/Mee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"pda_code\":{\n\t\t\t\t\"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"0\", null, \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"w\",\"x\",\"y\",\"z\"]\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/replica_pdas/Mee",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"Mee"
+					]
+				},
+				"description": "replica create request "
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

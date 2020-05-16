@@ -6,8 +6,8 @@ import (
 )
 
 type InMemoryStore struct {
-	PdaProcessors map[string]core.PdaProcessor
-	Replicas      []string
+	PdaProcessors   map[string]core.PdaProcessor
+	Replica_members map[string][]string
 }
 
 func (inMemoryStore *InMemoryStore) InitStore() {
@@ -50,8 +50,7 @@ func (inMemoryStore *InMemoryStore) Delete(pdaId string) {
 }
 
 func (inMemoryStore *InMemoryStore) SaveReplica(gid string, processor core.PdaProcessor, add []string) {
-	for _, s := range add {
-		Replica_Pda_Id := gid + s
-		inMemoryStore.PdaProcessors[Replica_Pda_Id] = processor
-	}
+	inMemoryStore.Replica_members[gid] = add
+	inMemoryStore.PdaProcessors[gid] = processor
+	print("replica saved!!!!!!!!")
 }

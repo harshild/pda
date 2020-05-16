@@ -16,6 +16,7 @@ func (replicaController *ReplicaController) GetAllReplicaIds(writer http.Respons
 }
 
 func (replicaController *ReplicaController) CreateReplicagrp(writer http.ResponseWriter, request *http.Request) {
+
 	params := mux.Vars(request)
 	Replica_id := params["gid"]
 
