@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1228dd0a-ab25-4327-8a45-cd83727c043a",
+		"_postman_id": "1a60e69f-5520-4d18-8e2e-b5e31a818607",
 		"name": "Replica1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"id": "f8b2145d-bf1c-49b3-89e3-60cdf1fe2898",
 						"exec": [
 							""
 						],
@@ -43,6 +43,24 @@
 					]
 				},
 				"description": "replica create request "
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/replica_pdas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas"
+					]
+				}
 			},
 			"response": []
 		}
