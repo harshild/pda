@@ -23,7 +23,8 @@ func (replicamanager *ReplicaManager) CreateNewReplicagrp(gid string, conf strin
 	//fmt.Printf("%+v\n", Replica.Group_members)
 
 	pdaProcessor := core.PdaProcessor{}
-	if pdaProcessor.Open([]byte(Replica.Pda_code)) {
+	marshal, err := json.Marshal(Replica.Pda_code)
+	if pdaProcessor.Open(marshal) {
 		replicamanager.ReplicaStore.SaveReplica(Replica.Gid, pdaProcessor, Replica.Group_members)
 	}
 	return nil
