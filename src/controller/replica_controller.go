@@ -12,7 +12,7 @@ type ReplicaController struct {
 }
 
 func (replicaController *ReplicaController) GetAllReplicaIds(writer http.ResponseWriter, request *http.Request) {
-
+	replicaController.ReplicaManager.GetAllReplicaIds()
 }
 
 func (replicaController *ReplicaController) CreateReplicaGroup(writer http.ResponseWriter, request *http.Request) {

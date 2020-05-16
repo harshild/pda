@@ -8,7 +8,7 @@ import (
 )
 
 type ReplicaManager struct {
-	ReplicaStore db.InMemoryStore
+	ReplicaStore db.ReplicaInMemoryStore
 }
 
 func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid string, conf string) error {
@@ -26,4 +26,8 @@ func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid string, conf str
 		replicamanager.ReplicaStore.SaveReplica(Replica.Gid, pdaProcessor, Replica.Group_members)
 	}
 	return nil
+}
+
+func (replicamanager *ReplicaManager) GetAllReplicaIds() {
+
 }
