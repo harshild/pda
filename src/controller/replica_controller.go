@@ -15,10 +15,10 @@ func (replicaController *ReplicaController) GetAllReplicaIds(writer http.Respons
 
 }
 
-func (replicaController *ReplicaController) CreateReplicagrp(writer http.ResponseWriter, request *http.Request) {
+func (replicaController *ReplicaController) CreateReplicaGroup(writer http.ResponseWriter, request *http.Request) {
 
 	params := mux.Vars(request)
-	Replica_id := params["gid"]
+	replicaId := params["gid"]
 
 	all, err := ioutil.ReadAll(request.Body)
 	conf := string(all)
@@ -27,7 +27,7 @@ func (replicaController *ReplicaController) CreateReplicagrp(writer http.Respons
 		return
 	}
 
-	err = replicaController.ReplicaManager.CreateNewReplicagrp(Replica_id, conf)
+	err = replicaController.ReplicaManager.CreateNewReplicagrp(replicaId, conf)
 
 }
 

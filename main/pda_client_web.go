@@ -52,7 +52,7 @@ func main() {
 	router.HandleFunc("/pdas/{id}/delete", pdaController.DeletePDA).Methods("DELETE")
 
 	router.HandleFunc("/replica_pdas", replicaController.GetAllReplicaIds).Methods("GET")
-	router.HandleFunc("/replica_pdas/{gid}", replicaController.CreateReplicagrp).Methods("PUT") //takes pda specification and group member ids
+	router.HandleFunc("/replica_pdas/{gid}", replicaController.CreateReplicaGroup).Methods("PUT") //takes pda specification and group member ids
 	router.HandleFunc("/replica_pdas/{gid}/reset", replicaController.ResetAllMembers).Methods("PUT")
 	router.HandleFunc("/replica_pdas/{gid}/members", replicaController.GetMembersAddress).Methods("GET")
 	router.HandleFunc("/replica_pdas/{gid}/connect", replicaController.ConnectToAMember).Methods("GET")   //Return the address of a random member that a client could connect to
