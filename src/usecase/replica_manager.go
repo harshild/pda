@@ -28,6 +28,6 @@ func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid string, conf str
 	return nil
 }
 
-func (replicamanager *ReplicaManager) GetAllReplicaIds() {
-
+func (replicamanager *ReplicaManager) GetAllReplicaIds() []string {
+	return replicamanager.ReplicaStore.GetAllReplicaIds()
 }

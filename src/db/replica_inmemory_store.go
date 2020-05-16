@@ -54,3 +54,14 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) SaveReplica(gid string, proces
 	replicaInMemoryStore.ReplicaMembers[gid] = group_members
 	replicaInMemoryStore.PdaProcessors[gid] = processor
 }
+
+func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []string {
+	var keys []string
+
+	if replicaInMemoryStore.ReplicaMembers != nil {
+		for key, _ := range replicaInMemoryStore.ReplicaMembers {
+			keys = append(keys, key)
+		}
+	}
+	return keys
+}

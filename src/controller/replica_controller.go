@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
@@ -12,7 +13,10 @@ type ReplicaController struct {
 }
 
 func (replicaController *ReplicaController) GetAllReplicaIds(writer http.ResponseWriter, request *http.Request) {
-	replicaController.ReplicaManager.GetAllReplicaIds()
+	data, _ := json.Marshal(replicaController.ReplicaManager.GetAllReplicaIds())
+	writer.WriteHeader(200)
+
+	writer.Write(data)
 }
 
 func (replicaController *ReplicaController) CreateReplicaGroup(writer http.ResponseWriter, request *http.Request) {
