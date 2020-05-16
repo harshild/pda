@@ -5,15 +5,13 @@ import (
 	"db"
 	"encoding/json"
 	"entity"
-
-	"utility"
 )
 
 type ReplicaManager struct {
 	ReplicaStore db.InMemoryStore
 }
 
-func (replicamanager *ReplicaManager) CreateNewReplicagrp(gid string, conf string) error {
+func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid string, conf string) error {
 	var Replica entity.ReplicaConf
 	err := json.Unmarshal([]byte(conf), &Replica)
 	if err != nil {
@@ -28,12 +26,4 @@ func (replicamanager *ReplicaManager) CreateNewReplicagrp(gid string, conf strin
 		replicamanager.ReplicaStore.SaveReplica(Replica.Gid, pdaProcessor, Replica.Group_members)
 	}
 	return nil
-}
-
-type Cookie struct {
-	Stack             utility.Stack
-	State             string
-	Clock             int
-	InputQueue        map[int]string
-	LastConsumedIndex int
 }

@@ -27,7 +27,7 @@ func (replicaController *ReplicaController) CreateReplicaGroup(writer http.Respo
 		return
 	}
 
-	err = replicaController.ReplicaManager.CreateNewReplicagrp(replicaId, conf)
+	err = replicaController.ReplicaManager.CreateNewReplicaGroup(replicaId, conf)
 
 }
 
