@@ -30,7 +30,11 @@ func main() {
 
 	pdaController.PdaManager.PdaStore.InitStore()
 
-	replicaController := controller.ReplicaController{}
+	replicaController := controller.ReplicaController{
+		ReplicaManager: usecase.ReplicaManager{ReplicaStore: db.InMemoryStore{}},
+	}
+
+	replicaController.ReplicaManager.ReplicaStore.InitStore()
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/pdas", pdaController.ListAllPDA).Methods("GET")

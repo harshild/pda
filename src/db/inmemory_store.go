@@ -12,6 +12,7 @@ type InMemoryStore struct {
 
 func (inMemoryStore *InMemoryStore) InitStore() {
 	inMemoryStore.PdaProcessors = make(map[string]core.PdaProcessor, 0)
+	inMemoryStore.Replica_members = make(map[string][]string, 0)
 }
 
 func (inMemoryStore *InMemoryStore) Save(pdaId string, processor core.PdaProcessor) {
