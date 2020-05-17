@@ -45,3 +45,15 @@ func (replicamanager *ReplicaManager) GetRandomMemberAddress(id int) string {
 	}
 	return members[rand.Intn(i)]
 }
+
+func (replicamanager *ReplicaManager) GetCookieFor(gid int, memberId string) entity.Cookie {
+	return entity.Cookie{
+		Stack:             nil,
+		State:             "",
+		Clock:             0,
+		InputQueue:        nil,
+		LastConsumedIndex: 0,
+		PdaName:           "",
+		ReplicaName:       "",
+	}
+}

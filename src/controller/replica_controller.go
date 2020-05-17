@@ -17,7 +17,6 @@ type ReplicaController struct {
 func (replicaController *ReplicaController) GetAllReplicaIds(writer http.ResponseWriter, request *http.Request) {
 	data, _ := json.Marshal(replicaController.ReplicaManager.GetAllReplicaIds())
 	writer.WriteHeader(200)
-
 	writer.Write(data)
 }
 
@@ -66,9 +65,17 @@ func (replicaController *ReplicaController) ConnectToAMember(writer http.Respons
 		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
 		return
 	}
-	groupMembers := replicaController.ReplicaManager.GetRandomMemberAddress(replicaId)
+	groupMember := replicaController.ReplicaManager.GetRandomMemberAddress(replicaId)
+	cookieDetails := replicaController.ReplicaManager.GetCookieFor(replicaId, groupMember)
+	val, _ := json.Marshal(cookieDetails)
+
+	cookie := &http.Cookie{
+		Name:  "pda",
+		Value: string(val),
+	}
+	http.SetCookie(writer, cookie)
+	data, _ := json.Marshal(groupMember)
 	writer.WriteHeader(200)
-	data, _ := json.Marshal(groupMembers)
 	writer.Write(data)
 }
 

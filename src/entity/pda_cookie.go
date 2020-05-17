@@ -8,4 +8,6 @@ type Cookie struct {
 	Clock             int
 	InputQueue        map[int]string
 	LastConsumedIndex int
+	PdaName           string
+	ReplicaName       string
 }
