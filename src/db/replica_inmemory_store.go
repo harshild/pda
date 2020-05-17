@@ -7,12 +7,12 @@ import (
 
 type ReplicaInMemoryStore struct {
 	PdaProcessors  map[string]core.PdaProcessor
-	ReplicaMembers map[string][]string
+	ReplicaMembers map[int][]string
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) InitStore() {
 	replicaInMemoryStore.PdaProcessors = make(map[string]core.PdaProcessor, 0)
-	replicaInMemoryStore.ReplicaMembers = make(map[string][]string, 0)
+	replicaInMemoryStore.ReplicaMembers = make(map[int][]string, 0)
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) Save(pdaId string, processor core.PdaProcessor) {
@@ -50,13 +50,14 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) Delete(pdaId string) {
 	delete(replicaInMemoryStore.PdaProcessors, pdaId)
 }
 
-func (replicaInMemoryStore *ReplicaInMemoryStore) SaveReplica(gid string, processor core.PdaProcessor, group_members []string) {
+func (replicaInMemoryStore *ReplicaInMemoryStore) SaveReplica(gid int, processor core.PdaProcessor, group_members []string) {
 	replicaInMemoryStore.ReplicaMembers[gid] = group_members
-	replicaInMemoryStore.PdaProcessors[gid] = processor
+	// TODO correct usage of id for storing pda processor
+	replicaInMemoryStore.PdaProcessors["gid"] = processor
 }
 
-func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []string {
-	var keys []string
+func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []int {
+	var keys []int
 
 	if replicaInMemoryStore.ReplicaMembers != nil {
 		for key, _ := range replicaInMemoryStore.ReplicaMembers {

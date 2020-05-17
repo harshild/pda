@@ -1,10 +1,12 @@
 package controller
 
+import "C"
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"usecase"
 )
 
@@ -22,7 +24,12 @@ func (replicaController *ReplicaController) GetAllReplicaIds(writer http.Respons
 func (replicaController *ReplicaController) CreateReplicaGroup(writer http.ResponseWriter, request *http.Request) {
 
 	params := mux.Vars(request)
-	replicaId := params["gid"]
+	replicaId, err := strconv.Atoi(params["gid"])
+
+	if err != nil {
+		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
+		return
+	}
 
 	all, err := ioutil.ReadAll(request.Body)
 	conf := string(all)

@@ -11,7 +11,7 @@ type ReplicaManager struct {
 	ReplicaStore db.ReplicaInMemoryStore
 }
 
-func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid string, conf string) error {
+func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid int, conf string) error {
 	var Replica entity.ReplicaConf
 	err := json.Unmarshal([]byte(conf), &Replica)
 	if err != nil {
@@ -28,6 +28,6 @@ func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid string, conf str
 	return nil
 }
 
-func (replicamanager *ReplicaManager) GetAllReplicaIds() []string {
+func (replicamanager *ReplicaManager) GetAllReplicaIds() []int {
 	return replicamanager.ReplicaStore.GetAllReplicaIds()
 }

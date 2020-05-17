@@ -17,7 +17,7 @@ pda_client
 pda_client_web
 driver
 pkg
-.idea/
+.idea
 out-web-client.txt
 out-web-server.txt
 standard-error
