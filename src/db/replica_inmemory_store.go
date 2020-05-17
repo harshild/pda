@@ -68,3 +68,7 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []int {
 	}
 	return keys
 }
+
+func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllMembers(id int) []string {
+	return replicaInMemoryStore.ReplicaMembers[id]
+}

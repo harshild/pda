@@ -31,3 +31,7 @@ func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid int, conf string
 func (replicamanager *ReplicaManager) GetAllReplicaIds() []int {
 	return replicamanager.ReplicaStore.GetAllReplicaIds()
 }
+
+func (replicamanager *ReplicaManager) GetMemberAddress(id int) []string {
+	return replicamanager.ReplicaStore.GetAllMembers(id)
+}

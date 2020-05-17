@@ -45,7 +45,17 @@ func (replicaController *ReplicaController) ResetAllMembers(writer http.Response
 }
 
 func (replicaController *ReplicaController) GetMembersAddress(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	replicaId, err := strconv.Atoi(params["gid"])
 
+	if err != nil {
+		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
+		return
+	}
+	groupMembers := replicaController.ReplicaManager.GetMemberAddress(replicaId)
+	writer.WriteHeader(200)
+	data, _ := json.Marshal(groupMembers)
+	writer.Write(data)
 }
 
 func (replicaController *ReplicaController) ConnectToAMember(writer http.ResponseWriter, request *http.Request) {
