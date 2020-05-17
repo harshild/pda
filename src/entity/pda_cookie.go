@@ -2,7 +2,7 @@ package entity
 
 import "utility"
 
-type Cookie struct {
+type PDAStatus struct {
 	Stack             utility.Stack
 	State             string
 	Clock             int

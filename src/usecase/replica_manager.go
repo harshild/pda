@@ -46,8 +46,8 @@ func (replicamanager *ReplicaManager) GetRandomMemberAddress(id int) string {
 	return members[rand.Intn(i)]
 }
 
-func (replicamanager *ReplicaManager) GetCookieFor(gid int, memberId string) entity.Cookie {
-	return entity.Cookie{
+func (replicamanager *ReplicaManager) GetCookieFor(gid int, memberId string) entity.PDAStatus {
+	return entity.PDAStatus{
 		Stack:             nil,
 		State:             "",
 		Clock:             0,

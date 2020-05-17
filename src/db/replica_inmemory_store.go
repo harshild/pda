@@ -3,17 +3,16 @@ package db
 import (
 	"core"
 	"encoding/json"
-	"strconv"
 )
 
 type ReplicaInMemoryStore struct {
 	PdaProcessors  map[string]core.PdaProcessor
-	ReplicaMembers map[int][]string
+	ReplicaMembers map[int]map[string]core.PdaProcessor
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) InitStore() {
 	replicaInMemoryStore.PdaProcessors = make(map[string]core.PdaProcessor, 0)
-	replicaInMemoryStore.ReplicaMembers = make(map[int][]string, 0)
+	replicaInMemoryStore.ReplicaMembers = make(map[int]map[string]core.PdaProcessor, 0)
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) Save(pdaId string, processor core.PdaProcessor) {
@@ -52,10 +51,16 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) Delete(pdaId string) {
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) SaveReplica(gid int, processor core.PdaProcessor, group_members []string) {
-	replicaInMemoryStore.ReplicaMembers[gid] = group_members
+	//replicaInMemoryStore.ReplicaMembers[gid] = group_members
 	// TODO correct usage of id for storing pda processor
-	gidStr := strconv.Itoa(gid)
-	replicaInMemoryStore.PdaProcessors[gidStr] = processor
+	//gidStr := strconv.Itoa(gid)
+	members := make(map[string]core.PdaProcessor, 0)
+
+	for pdaid := range group_members {
+		members[group_members[pdaid]] = processor
+	}
+
+	replicaInMemoryStore.ReplicaMembers[gid] = members
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []int {
@@ -70,5 +75,11 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []int {
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllMembers(id int) []string {
-	return replicaInMemoryStore.ReplicaMembers[id]
+	abc := make([]string, 0)
+
+	for k, _ := range replicaInMemoryStore.ReplicaMembers[id] {
+		abc = append(abc, k)
+	}
+
+	return abc
 }
