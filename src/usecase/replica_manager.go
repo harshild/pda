@@ -5,6 +5,7 @@ import (
 	"db"
 	"encoding/json"
 	"entity"
+	"math/rand"
 )
 
 type ReplicaManager struct {
@@ -34,4 +35,13 @@ func (replicamanager *ReplicaManager) GetAllReplicaIds() []int {
 
 func (replicamanager *ReplicaManager) GetMemberAddress(id int) []string {
 	return replicamanager.ReplicaStore.GetAllMembers(id)
+}
+
+func (replicamanager *ReplicaManager) GetRandomMemberAddress(id int) string {
+	members := replicamanager.ReplicaStore.GetAllMembers(id)
+	i := len(members)
+	if i < 1 {
+		return ""
+	}
+	return members[rand.Intn(i)]
 }
