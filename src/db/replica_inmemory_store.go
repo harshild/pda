@@ -3,6 +3,7 @@ package db
 import (
 	"core"
 	"encoding/json"
+	"strconv"
 )
 
 type ReplicaInMemoryStore struct {
@@ -53,7 +54,8 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) Delete(pdaId string) {
 func (replicaInMemoryStore *ReplicaInMemoryStore) SaveReplica(gid int, processor core.PdaProcessor, group_members []string) {
 	replicaInMemoryStore.ReplicaMembers[gid] = group_members
 	// TODO correct usage of id for storing pda processor
-	replicaInMemoryStore.PdaProcessors["gid"] = processor
+	gidStr := strconv.Itoa(gid)
+	replicaInMemoryStore.PdaProcessors[gidStr] = processor
 }
 
 func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []int {

@@ -15,13 +15,13 @@ func (replicamanager *ReplicaManager) CreateNewReplicaGroup(gid int, conf string
 	var Replica entity.ReplicaConf
 	err := json.Unmarshal([]byte(conf), &Replica)
 	if err != nil {
-		print("Jason unmarshalling of replica failed!")
+		return err
 	}
 	Replica.Gid = gid
 	//fmt.Printf("%+v\n", Replica.Group_members)
 
 	pdaProcessor := core.PdaProcessor{}
-	marshal, err := json.Marshal(Replica.Pda_code)
+	marshal, _ := json.Marshal(Replica.Pda_code)
 	if pdaProcessor.Open(marshal) {
 		replicamanager.ReplicaStore.SaveReplica(Replica.Gid, pdaProcessor, Replica.Group_members)
 	}

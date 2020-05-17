@@ -22,7 +22,6 @@ func (replicaController *ReplicaController) GetAllReplicaIds(writer http.Respons
 }
 
 func (replicaController *ReplicaController) CreateReplicaGroup(writer http.ResponseWriter, request *http.Request) {
-
 	params := mux.Vars(request)
 	replicaId, err := strconv.Atoi(params["gid"])
 
@@ -39,7 +38,6 @@ func (replicaController *ReplicaController) CreateReplicaGroup(writer http.Respo
 	}
 
 	err = replicaController.ReplicaManager.CreateNewReplicaGroup(replicaId, conf)
-
 }
 
 func (replicaController *ReplicaController) ResetAllMembers(writer http.ResponseWriter, request *http.Request) {
