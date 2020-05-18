@@ -83,3 +83,7 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllMembers(id int) []string
 
 	return abc
 }
+
+func (replicaInMemoryStore *ReplicaInMemoryStore) GetPDA(gid int, pdaId string) core.PdaProcessor {
+	return replicaInMemoryStore.ReplicaMembers[gid][pdaId]
+}

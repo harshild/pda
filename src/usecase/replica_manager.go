@@ -47,13 +47,14 @@ func (replicamanager *ReplicaManager) GetRandomMemberAddress(id int) string {
 }
 
 func (replicamanager *ReplicaManager) GetCookieFor(gid int, memberId string) entity.PDAStatus {
+	pda := replicamanager.ReplicaStore.GetPDA(gid, memberId)
 	return entity.PDAStatus{
-		Stack:             nil,
-		State:             "",
-		Clock:             0,
-		InputQueue:        nil,
-		LastConsumedIndex: 0,
-		PdaName:           "",
-		ReplicaName:       "",
+		Stack:             pda.Stack,
+		State:             pda.State,
+		Clock:             pda.Clock,
+		InputQueue:        pda.InputQueue,
+		LastConsumedIndex: pda.LastConsumedIndex,
+		PdaId:             memberId,
+		ReplicaId:         gid,
 	}
 }

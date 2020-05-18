@@ -8,6 +8,6 @@ type PDAStatus struct {
 	Clock             int
 	InputQueue        map[int]string
 	LastConsumedIndex int
-	PdaName           string
-	ReplicaName       string
+	PdaId             string
+	ReplicaId         int
 }
