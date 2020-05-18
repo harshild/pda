@@ -63,6 +63,10 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) SaveReplica(gid int, processor
 	replicaInMemoryStore.ReplicaMembers[gid] = members
 }
 
+func (replicaInMemoryStore *ReplicaInMemoryStore) SavePDA(gid int, pdaid string, processor core.PdaProcessor) {
+	replicaInMemoryStore.ReplicaMembers[gid][pdaid] = processor
+}
+
 func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllReplicaIds() []int {
 	var keys []int
 

@@ -33,6 +33,19 @@ func (replicamanager *ReplicaManager) GetAllReplicaIds() []int {
 	return replicamanager.ReplicaStore.GetAllReplicaIds()
 }
 
+func (replicamanager *ReplicaManager) ResetReplicaMembers(gid string) error {
+	get, err := replicamanager.ReplicaStore.Get(gid)
+
+	if err != nil {
+		return err
+	}
+	pdaProcessor := parsePdaProcessor(get)
+	//fmt.Printf(" Name:%s  Token:%s Position: N/A  \n", pdaProcessor.PdaConf.Name, "START")
+	pdaProcessor.Reset()
+	replicamanager.ReplicaStore.Update(gid, pdaProcessor)
+	return err
+}
+
 func (replicamanager *ReplicaManager) GetMemberAddress(id int) []string {
 	return replicamanager.ReplicaStore.GetAllMembers(id)
 }
@@ -57,4 +70,12 @@ func (replicamanager *ReplicaManager) GetCookieFor(gid int, memberId string) ent
 		PdaId:             memberId,
 		ReplicaId:         gid,
 	}
+}
+
+func (replicamanager *ReplicaManager) CloseReplicaGrpAndMembers(id int) {
+
+}
+
+func (replicamanager *ReplicaManager) JoinAReplicaGrp(pdaId string, replicaId int) {
+
 }

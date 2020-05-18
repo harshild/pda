@@ -40,7 +40,10 @@ func (replicaController *ReplicaController) CreateReplicaGroup(writer http.Respo
 }
 
 func (replicaController *ReplicaController) ResetAllMembers(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	replica_id := params["gid"]
 
+	replicaController.ReplicaManager.ResetReplicaMembers(replica_id)
 }
 
 func (replicaController *ReplicaController) GetMembersAddress(writer http.ResponseWriter, request *http.Request) {
@@ -80,6 +83,14 @@ func (replicaController *ReplicaController) ConnectToAMember(writer http.Respons
 }
 
 func (replicaController *ReplicaController) CloseReplicaGrp(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	replicaId, err := strconv.Atoi(params["gid"])
+
+	if err != nil {
+		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
+		return
+	}
+	replicaController.ReplicaManager.CloseReplicaGrpAndMembers(replicaId)
 
 }
 
@@ -88,7 +99,18 @@ func (replicaController *ReplicaController) DeleteReplicaGrp(writer http.Respons
 }
 
 func (replicaController *ReplicaController) Joinpda(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	pdaId := params["id"]
 
+	all, err := ioutil.ReadAll(request.Body)
+	replicaId, _ := strconv.Atoi(string(all))
+
+	if err != nil {
+		http.Error(writer, "Please pass Replica ID in request body", http.StatusBadRequest)
+		return
+	}
+
+	replicaController.ReplicaManager.JoinAReplicaGrp(pdaId, replicaId)
 }
 
 func (replicaController *ReplicaController) Pdacode(writer http.ResponseWriter, request *http.Request) {
