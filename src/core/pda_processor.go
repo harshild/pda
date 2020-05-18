@@ -180,6 +180,14 @@ func (pdaProcessor *PdaProcessor) Queued_tokens() []string {
 	return queuedTokens
 }
 
+func (pdaProcessor *PdaProcessor) UpdateStatus(status entity.PDAStatus) {
+	pdaProcessor.LastConsumedIndex = status.LastConsumedIndex
+	pdaProcessor.State = status.State
+	pdaProcessor.Stack = status.Stack
+	pdaProcessor.InputQueue = status.InputQueue
+	pdaProcessor.Clock = status.Clock
+}
+
 func GetAllPDANames(pdas []PdaProcessor) []string {
 	pdaNames := make([]string, 0)
 	for _, pda := range pdas {

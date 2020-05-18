@@ -22,9 +22,10 @@ func main() {
 	//	"./test.db",
 	//}
 
+	store := db.InMemoryStore{}
 	pdaController := controller.PdaController{
 		usecase.PDAManager{
-			db.InMemoryStore{},
+			store,
 		},
 	}
 
@@ -45,6 +46,17 @@ func main() {
 	router.HandleFunc("/pdas/{id}/snapshot/{k}", pdaController.SnapshotPDA).Methods("GET")
 	router.HandleFunc("/pdas/{id}/close", pdaController.ClosePDA).Methods("PUT")
 	router.HandleFunc("/pdas/{id}/delete", pdaController.DeletePDA).Methods("DELETE")
+
+	router.HandleFunc("/replica_pdas", pdaController.GetAllReplicaIds).Methods("GET")
+	router.HandleFunc("/replica_pdas/{gid}", pdaController.CreateReplicaGroup).Methods("PUT") //takes pda specification and group member ids
+	router.HandleFunc("/replica_pdas/{gid}/reset", pdaController.ResetAllMembers).Methods("PUT")
+	router.HandleFunc("/replica_pdas/{gid}/members", pdaController.GetMembersAddress).Methods("GET")
+	router.HandleFunc("/replica_pdas/{gid}/connect", pdaController.ConnectToAMember).Methods("GET") //Return the address of a random member that a client could connect to
+	router.HandleFunc("/replica_pdas/{gid}/close", pdaController.CloseReplicaGrp).Methods("PUT")    //close all members
+	router.HandleFunc("/replica_pdas/{gid}/delete", pdaController.DeleteReplicaGrp).Methods("DELETE")
+	router.HandleFunc("/pdas/{id}/join", pdaController.Joinpda).Methods("PUT")
+	router.HandleFunc("/pdas/{id}/code", pdaController.Pdacode).Methods("GET")
+	router.HandleFunc("/pdas/{id}/c3state", pdaController.Pdacode).Methods("GET") //state information
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

@@ -4,7 +4,9 @@ import (
 	"core"
 	"db"
 	"encoding/json"
+	"entity"
 	"fmt"
+	"math/rand"
 )
 
 type PDAManager struct {
@@ -62,13 +64,14 @@ func (pdaManager *PDAManager) Reset(id string) error {
 	return err
 }
 
-func (pdaManager *PDAManager) Puts(id string, token string, position int) error {
+func (pdaManager *PDAManager) Puts(id string, token string, position int, pdaStatus entity.PDAStatus) error {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
 	fmt.Printf(" Name:%s  Token:%s Position:%d  \n", pdaProcessor.PdaConf.Name, token, position)
 	err = pdaProcessor.Puts(position, token)
 	if err != nil {
@@ -78,56 +81,64 @@ func (pdaManager *PDAManager) Puts(id string, token string, position int) error 
 	return err
 }
 
-func (pdaManager *PDAManager) Is_accepted(id string) (bool, error) {
+func (pdaManager *PDAManager) Is_accepted(id string, pdaStatus entity.PDAStatus) (bool, error) {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return false, err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
 	isAccepted := pdaProcessor.Is_accepted()
 	fmt.Printf("PDA Name=%s \tMethod=Is_Accepted =%t \n", pdaProcessor.GetPDAName(), isAccepted)
 	return isAccepted, err
 }
 
-func (pdaManager *PDAManager) Peek(id string, k int) ([]string, error) {
+func (pdaManager *PDAManager) Peek(id string, k int, pdaStatus entity.PDAStatus) ([]string, error) {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return nil, err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
 	return pdaProcessor.Peek(k)
 
 }
 
-func (pdaManager *PDAManager) Size(id string) (int, error) {
+func (pdaManager *PDAManager) Size(id string, pdaStatus entity.PDAStatus) (int, error) {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return -1, err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
+
 	return pdaProcessor.Stack.Size(), nil
 }
 
-func (pdaManager *PDAManager) Currentstate(id string) (string, error) {
+func (pdaManager *PDAManager) Currentstate(id string, pdaStatus entity.PDAStatus) (string, error) {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return "", err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
+
 	return pdaProcessor.Current_state(), err
 }
 
-func (pdaManager *PDAManager) Queued_token(id string) ([]string, error) {
+func (pdaManager *PDAManager) Queued_token(id string, pdaStatus entity.PDAStatus) ([]string, error) {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return nil, err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
+
 	return pdaProcessor.Queued_tokens(), nil
 }
 
@@ -153,15 +164,95 @@ func (pdaManager *PDAManager) Deletepda(id string) error {
 	return nil
 }
 
-func (pdaManager *PDAManager) PutsEOS(id string, position int) error {
+func (pdaManager *PDAManager) PutsEOS(id string, position int, pdaStatus entity.PDAStatus) error {
 	get, err := pdaManager.PdaStore.Get(id)
 
 	if err != nil {
 		return err
 	}
 	pdaProcessor := parsePdaProcessor(get)
+	pdaProcessor.UpdateStatus(pdaStatus)
 	fmt.Printf(" Name:%s  Token:%s Position:%d  \n", pdaProcessor.PdaConf.Name, pdaProcessor.PdaConf.Eos, position)
 	pdaProcessor.Puts(position, " ")
 	pdaManager.PdaStore.Update(id, pdaProcessor)
 	return nil
 }
+
+func (pdaManager *PDAManager) CreateNewReplicaGroup(gid int, conf string) error {
+	var Replica entity.ReplicaConf
+	err := json.Unmarshal([]byte(conf), &Replica)
+	if err != nil {
+		return err
+	}
+	Replica.Gid = gid
+	//fmt.Printf("%+v\n", Replica.Group_members)
+
+	pdaProcessor := core.PdaProcessor{}
+	marshal, _ := json.Marshal(Replica.Pda_code)
+	if pdaProcessor.Open(marshal) {
+		pdaManager.PdaStore.SaveReplica(Replica.Gid, pdaProcessor, Replica.Group_members)
+	}
+	return nil
+}
+
+func (pdaManager *PDAManager) GetAllReplicaIds() []int {
+	return pdaManager.PdaStore.GetAllReplicaIds()
+}
+
+func (pdaManager *PDAManager) ResetReplicaMembers(gid int) error {
+	members := pdaManager.PdaStore.GetAllMembers(gid)
+
+	for i := range members {
+		pdaStr, _ := pdaManager.PdaStore.Get(members[i])
+		processor := parsePdaProcessor(pdaStr)
+		processor.Reset()
+		pdaManager.PdaStore.Update(members[i], processor)
+	}
+	//fmt.Printf(" Name:%s  Token:%s Position: N/A  \n", pdaProcessor.PdaConf.Name, "START")
+	return nil
+}
+
+func (pdaManager *PDAManager) GetMemberAddress(id int) []string {
+	return pdaManager.PdaStore.GetAllMembers(id)
+}
+
+func (pdaManager *PDAManager) GetRandomMemberAddress(id int) string {
+	members := pdaManager.PdaStore.GetAllMembers(id)
+	i := len(members)
+	if i < 1 {
+		return ""
+	}
+	return members[rand.Intn(i)]
+}
+
+func (pdaManager *PDAManager) GetCookieFor(gid int, memberId string) entity.PDAStatus {
+	pda := pdaManager.PdaStore.GetPDA(gid, memberId)
+	return entity.PDAStatus{
+		Stack:             pda.Stack,
+		State:             pda.State,
+		Clock:             pda.Clock,
+		InputQueue:        pda.InputQueue,
+		LastConsumedIndex: pda.LastConsumedIndex,
+		PdaId:             memberId,
+		ReplicaId:         gid,
+	}
+}
+
+func (pdaManager *PDAManager) CloseReplicaGrpAndMembers(gid int) {
+	all_members := pdaManager.PdaStore.GetAllMembers(gid)
+
+	for _, pdaid := range all_members {
+		pda := pdaManager.PdaStore.GetPDA(gid, pdaid)
+		pda.Close()
+	}
+}
+
+func (pdaManager *PDAManager) JoinAReplicaGrp(pdaId string, replicaId int) {
+	processor := pdaManager.PdaStore.GetReplicaConf(replicaId)
+	pdaManager.PdaStore.JoinReplicaGroup(replicaId, pdaId, processor)
+	//CALl update
+}
+
+//func (pdaManager *PDAManager) ListAllPDAs() []string {
+//	return pdaManager.PdaStore.GetAllPDANames()
+//}
