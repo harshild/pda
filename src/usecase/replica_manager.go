@@ -78,7 +78,6 @@ func (replicamanager *ReplicaManager) CloseReplicaGrpAndMembers(gid int) {
 	for _, pdaid := range all_members {
 		pda := replicamanager.ReplicaStore.GetPDA(gid, pdaid)
 		pda.Close()
-		replicamanager.ReplicaStore.JoinReplicaGroup(gid, pdaid, pda)
 	}
 }
 
