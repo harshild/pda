@@ -123,15 +123,15 @@ func (replicaController *ReplicaController) Pdacode(writer http.ResponseWriter, 
 // PDA APIs with respect to Replica
 
 func (replicaController *ReplicaController) ListAllPDA(writer http.ResponseWriter, request *http.Request) {
-	cookies := request.Cookies()
-	var pdaStatus entity.PDAStatus
-	for i := range cookies {
-		if cookies[i].Name == "pda" {
-			pdaStatus = getCookieValue(cookies[i].Value)
-		}
-	}
+	//cookies := request.Cookies()
+	//var pdaStatus entity.PDAStatus
+	//for i := range cookies {
+	//	if cookies[i].Name == "pda" {
+	//		pdaStatus = getCookieValue(cookies[i].Value)
+	//	}
+	//}
 
-	names := replicaController.ReplicaManager.ListAllPDAs(pdaStatus)
+	names := replicaController.ReplicaManager.ListAllPDAs()
 	json, _ := json.Marshal(names)
 	writer.WriteHeader(200)
 	writer.Write(json)
