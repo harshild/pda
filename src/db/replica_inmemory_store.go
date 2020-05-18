@@ -101,3 +101,16 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllMembersNames(gid int) in
 
 	return abc
 }
+
+func (replicaInMemoryStore *ReplicaInMemoryStore) DeleteReplicaGrp() {
+
+}
+
+func (replicaInMemoryStore *ReplicaInMemoryStore) GetReplicaConf(gid int) core.PdaProcessor {
+	var first_member_conf string
+	for k, _ := range replicaInMemoryStore.ReplicaMembers[gid] {
+		first_member_conf = k
+		break
+	}
+	return replicaInMemoryStore.ReplicaMembers[gid][first_member_conf]
+}

@@ -109,7 +109,7 @@ func (replicaController *ReplicaController) Joinpda(writer http.ResponseWriter, 
 	replicaId, _ := strconv.Atoi(string(all))
 
 	if err != nil {
-		http.Error(writer, "Please pass Replica ID in request body", http.StatusBadRequest)
+		http.Error(writer, "Please pass Replica ID in body of the request", http.StatusBadRequest)
 		return
 	}
 

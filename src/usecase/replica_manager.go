@@ -72,12 +72,19 @@ func (replicamanager *ReplicaManager) GetCookieFor(gid int, memberId string) ent
 	}
 }
 
-func (replicamanager *ReplicaManager) CloseReplicaGrpAndMembers(id int) {
+func (replicamanager *ReplicaManager) CloseReplicaGrpAndMembers(gid int) {
+	all_members := replicamanager.ReplicaStore.GetAllMembers(gid)
 
+	for _, pdaid := range all_members {
+		pda := replicamanager.ReplicaStore.GetPDA(gid, pdaid)
+		pda.Close()
+		replicamanager.ReplicaStore.SavePDA(gid, pdaid, pda)
+	}
 }
 
 func (replicamanager *ReplicaManager) JoinAReplicaGrp(pdaId string, replicaId int) {
-
+	processor := replicamanager.ReplicaStore.GetReplicaConf(replicaId)
+	replicamanager.ReplicaStore.SavePDA(replicaId, pdaId, processor)
 }
 
 func (replicamanager *ReplicaManager) ListAllPDAs(cookie entity.PDAStatus) interface{} {
