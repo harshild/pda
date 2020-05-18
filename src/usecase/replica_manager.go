@@ -79,3 +79,7 @@ func (replicamanager *ReplicaManager) CloseReplicaGrpAndMembers(id int) {
 func (replicamanager *ReplicaManager) JoinAReplicaGrp(pdaId string, replicaId int) {
 
 }
+
+func (replicamanager *ReplicaManager) ListAllPDAs(cookie entity.PDAStatus) interface{} {
+	return replicamanager.ReplicaStore.GetAllMembersNames(cookie.ReplicaId)
+}

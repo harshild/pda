@@ -91,3 +91,13 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllMembers(id int) []string
 func (replicaInMemoryStore *ReplicaInMemoryStore) GetPDA(gid int, pdaId string) core.PdaProcessor {
 	return replicaInMemoryStore.ReplicaMembers[gid][pdaId]
 }
+
+func (replicaInMemoryStore *ReplicaInMemoryStore) GetAllMembersNames(gid int) interface{} {
+	abc := make([]string, 0)
+
+	for k, _ := range replicaInMemoryStore.ReplicaMembers[gid] {
+		abc = append(abc, replicaInMemoryStore.ReplicaMembers[gid][k].PdaConf.Name)
+	}
+
+	return abc
+}

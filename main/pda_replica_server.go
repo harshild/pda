@@ -28,7 +28,7 @@ func main() {
 	replicaController.ReplicaManager.ReplicaStore.InitStore()
 	router := mux.NewRouter().StrictSlash(true)
 
-	//router.HandleFunc("/pdas", replicaController.ListAllPDA).Methods("GET")
+	router.HandleFunc("/pdas", replicaController.ListAllPDA).Methods("GET")
 	//router.HandleFunc("/pdas/{id}", replicaController.OpenPDA).Methods("PUT")
 	//router.HandleFunc("/pdas/{id}/reset", replicaController.ResetPDA).Methods("PUT")
 	//router.HandleFunc("/pdas/{id}/tokens/{position}", replicaController.PutsToken).Methods("PUT")
