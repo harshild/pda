@@ -77,5 +77,6 @@ func (replicamanager *ReplicaManager) CloseReplicaGrpAndMembers(id int) {
 }
 
 func (replicamanager *ReplicaManager) JoinAReplicaGrp(pdaId string, replicaId int) {
-
+	processor := replicamanager.ReplicaStore.GetReplicaConf(replicaId)
+	replicamanager.ReplicaStore.SavePDA(replicaId, pdaId, processor)
 }
