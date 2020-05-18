@@ -92,6 +92,10 @@ func (replicaInMemoryStore *ReplicaInMemoryStore) GetPDA(gid int, pdaId string) 
 	return replicaInMemoryStore.ReplicaMembers[gid][pdaId]
 }
 
+func (replicaInMemoryStore *ReplicaInMemoryStore) DeleteReplicaGrp() {
+
+}
+
 func (replicaInMemoryStore *ReplicaInMemoryStore) GetReplicaConf(gid int) core.PdaProcessor {
 	var first_member_conf string
 	for k, _ := range replicaInMemoryStore.ReplicaMembers[gid] {
