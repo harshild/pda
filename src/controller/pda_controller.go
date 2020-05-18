@@ -342,8 +342,20 @@ func (pdaController *PdaController) ConnectToAMember(writer http.ResponseWriter,
 		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
 		return
 	}
+
+	pdsStatus := pdaController.getPDAStatus(request)
+
 	groupMember := pdaController.PdaManager.GetRandomMemberAddress(replicaId)
 	cookieDetails := pdaController.PdaManager.GetCookieFor(replicaId, groupMember)
+
+	if len(request.Cookies()) > 0 && pdsStatus.ReplicaId == replicaId {
+		cookieDetails.LastConsumedIndex = pdsStatus.LastConsumedIndex
+		cookieDetails.Stack = pdsStatus.Stack
+		cookieDetails.State = pdsStatus.State
+		cookieDetails.InputQueue = pdsStatus.InputQueue
+		cookieDetails.Clock = pdsStatus.Clock
+	}
+
 	val, _ := json.Marshal(cookieDetails)
 
 	cookie := &http.Cookie{
