@@ -150,30 +150,31 @@ func getCookieValue(value string) entity.PDAStatus {
 	return pdaStatus
 }
 
-//func (replicaController *ReplicaController) OpenPDA(writer http.ResponseWriter, request *http.Request) {
-//	params := mux.Vars(request)
-//	pda_id := params["id"]
-//
-//	all, err := ioutil.ReadAll(request.Body)
-//	pdaConf := string(all)
-//
-//	if err != nil {
-//		http.Error(writer, err.Error(), http.StatusBadRequest)
-//		return
-//	}
-//	err = replicaController.ReplicaManager.CreateNewPDA(pda_id, pdaConf)
-//	if err != nil {
-//		http.Error(writer, err.Error(), http.StatusBadRequest)
-//	}
-//
-//}
-//func (replicaController *ReplicaController) ResetPDA(writer http.ResponseWriter, request *http.Request) {
-//	params := mux.Vars(request)
-//	pda_id := params["id"]
-//
-//	//call manager for resetting the pda_id
-//	replicaController.ReplicaManager.Reset(pda_id)
-//}
+func (replicaController *ReplicaController) OpenPDA(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	pda_id := params["id"]
+
+	all, err := ioutil.ReadAll(request.Body)
+	pdaConf := string(all)
+
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+	err = replicaController.ReplicaManager.CreateNewPDA(pda_id, pdaConf)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+	}
+
+}
+func (replicaController *ReplicaController) ResetPDA(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	pda_id := params["id"]
+
+	//call manager for resetting the pda_id
+	replicaController.ReplicaManager.Reset(pda_id)
+}
+
 //
 //func (replicaController *ReplicaController) PutsToken(writer http.ResponseWriter, request *http.Request) {
 //	params := mux.Vars(request)

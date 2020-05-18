@@ -5,6 +5,7 @@ import (
 	"db"
 	"encoding/json"
 	"entity"
+	"fmt"
 	"math/rand"
 )
 
@@ -88,4 +89,25 @@ func (replicamanager *ReplicaManager) JoinAReplicaGrp(pdaId string, replicaId in
 
 func (replicamanager *ReplicaManager) ListAllPDAs() []string {
 	return replicamanager.ReplicaStore.GetAllPDANames()
+}
+
+func (replicamanager *ReplicaManager) CreateNewPDA(id string, conf string) error {
+	pdaProcessor := core.PdaProcessor{}
+	if pdaProcessor.Open([]byte(conf)) {
+		replicamanager.ReplicaStore.Save(id, pdaProcessor)
+	}
+	return nil
+}
+
+func (replicamanager *ReplicaManager) Reset(id string) error {
+	get, err := replicamanager.ReplicaStore.Get(id)
+
+	if err != nil {
+		return err
+	}
+	pdaProcessor := parsePdaProcessor(get)
+	fmt.Printf(" Name:%s  Token:%s Position: N/A  \n", pdaProcessor.PdaConf.Name, "START")
+	pdaProcessor.Reset()
+	replicamanager.ReplicaStore.Update(id, pdaProcessor)
+	return err
 }
