@@ -1,0 +1,567 @@
+{
+	"info": {
+		"_postman_id": "4b160a12-4f47-43cf-ac1c-a05bad686440",
+		"name": "Replica test 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create first replica grp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "34b23627-8482-4028-8e84-77c83156c2f8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"pda_code\":{\n\t\t\t\t\"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"0\", null, \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"1\",\"2\",\"3\",\"4\"]\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/replica_pdas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"1"
+					]
+				},
+				"description": "replica create request "
+			},
+			"response": []
+		},
+		{
+			"name": "create second replica grp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "634e0cf5-37ab-443f-93ce-6e7f1b25e90f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"pda_code\":{\n  \"name\": \"testPDA2\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"a\", \"b\",\"c\"],\n  \"stack_alphabet\" : [\"a\", \"c\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"a\", null, \"q2\", \"a\"],\n    [\"q2\", \"b\", null, \"q3\", null],\n    [\"q3\", \"c\", \"a\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"5\",\"6\",\"7\"]\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/replica_pdas/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"2"
+					]
+				},
+				"description": "replica create request "
+			},
+			"response": []
+		},
+		{
+			"name": "list replica grps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list members of first Replica grp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas/1/members",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"1",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reset Replica grp 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas/1/reset",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"1",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connect to one member of first replica grp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "00ed80fe-56e8-4433-82d7-af460ba2f7da",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"pdaId\", jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas/1/connect",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"1",
+						"connect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token 0 replica grp1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "0",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/{{pdaId}}/tokens/0",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"{{pdaId}}",
+						"tokens",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token 1 replica grp1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "0",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/{{pdaId}}/tokens/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"{{pdaId}}",
+						"tokens",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token 2 replica grp1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/{{pdaId}}/tokens/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"{{pdaId}}",
+						"tokens",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token 3 replica grp1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/{{pdaId}}/tokens/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"{{pdaId}}",
+						"tokens",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "eos 4 replica grp 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{token1}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/{{pdaId}}/eos/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"{{pdaId}}",
+						"eos",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "is_accepted replica grp 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe018dd1-df58-4fbc-a44e-ea26cc180530",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{token1}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/{{pdaId}}/is_accepted",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"{{pdaId}}",
+						"is_accepted"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "close first replica grp",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas/1/close",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"1",
+						"close"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete first replica grp",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/replica_pdas/1/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"replica_pdas",
+						"1",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "a random pda joining first replica grp",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1"
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/6/join",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"6",
+						"join"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get pda specification ",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/6/code",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"6",
+						"code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get C3 state of a pda",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/pdas/6/c3state",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pdas",
+						"6",
+						"c3state"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
