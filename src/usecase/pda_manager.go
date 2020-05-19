@@ -254,8 +254,11 @@ func (pdaManager *PDAManager) JoinAReplicaGrp(pdaId string, replicaId int) {
 	//CALl update
 }
 
-func (pdaManager *PDAManager) GetPDACode(gid int) entity.PDAConf {
-	return pdaManager.PdaStore.GetReplicaConf(gid)
+func (pdaManager *PDAManager) GetPDACode(pdaId string) entity.PDAConf {
+	get, _ := pdaManager.PdaStore.Get(pdaId)
+
+	pdaProcessor := parsePdaProcessor(get)
+	return pdaProcessor.PdaConf
 }
 
 func (pdaManager *PDAManager) DeleteReplicaGrpAndMembers(gid int) {
