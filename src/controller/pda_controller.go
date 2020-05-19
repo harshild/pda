@@ -382,7 +382,14 @@ func (pdaController *PdaController) CloseReplicaGrp(writer http.ResponseWriter, 
 }
 
 func (pdaController *PdaController) DeleteReplicaGrp(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	replicaId, err := strconv.Atoi(params["gid"])
 
+	if err != nil {
+		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
+		return
+	}
+	pdaController.PdaManager.DeleteReplicaGrpAndMembers(replicaId)
 }
 
 func (pdaController *PdaController) Joinpda(writer http.ResponseWriter, request *http.Request) {

@@ -263,6 +263,19 @@ func (pdaManager *PDAManager) GetPDACode(gid int) entity.PDAConf {
 	return pdaManager.PdaStore.GetReplicaConf(gid)
 }
 
+func (pdaManager *PDAManager) DeleteReplicaGrpAndMembers(gid int) {
+	all_members := pdaManager.PdaStore.GetAllMembers(gid)
+
+	for _, pdaid := range all_members {
+		pdaManager.Deletepda(pdaid)
+	}
+	pdaManager.DeleteReplica(gid)
+}
+
+func (pdaManager *PDAManager) DeleteReplica(gid int) {
+	pdaManager.PdaStore.DeleteReplicaGrp(gid)
+}
+
 //func (pdaManager *PDAManager) ListAllPDAs() []string {
 //	return pdaManager.PdaStore.GetAllPDANames()
 //}
