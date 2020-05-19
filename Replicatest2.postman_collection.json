@@ -26,7 +26,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"pda_code\":{\n\t\t\t\t\"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"0\", null, \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"1\",\"2\",\"3\",\"4\"]\n\t\n}",
+					"raw": "{\n\t\"pda_code\":{\n\t\t\t\t\"name\": \"HelloPDA\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"0\", \"1\"],\n  \"stack_alphabet\" : [\"0\", \"1\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"0\", null, \"q2\", \"0\"],\n    [\"q2\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", \"1\", \"0\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"a\",\"b\",\"c\",\"d\"]\n\t\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -69,7 +69,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"pda_code\":{\n  \"name\": \"testPDA2\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"a\", \"b\",\"c\"],\n  \"stack_alphabet\" : [\"a\", \"c\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"a\", null, \"q2\", \"a\"],\n    [\"q2\", \"b\", null, \"q3\", null],\n    [\"q3\", \"c\", \"a\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"5\",\"6\",\"7\",\"8\",\"9\"]\n\t\n}",
+					"raw": "{\n\t\"pda_code\":{\n  \"name\": \"testPDA2\",\n  \"states\": [\"q1\", \"q2\", \"q3\", \"q4\"],\n  \"input_alphabet\": [\"a\", \"b\",\"c\"],\n  \"stack_alphabet\" : [\"a\", \"c\"],\n  \"accepting_states\": [\"q1\", \"q4\"],\n  \"start_state\": \"q1\",\n  \"transitions\": [\n    [\"q1\", null, null, \"q2\", \"$\"],\n    [\"q2\", \"a\", null, \"q2\", \"a\"],\n    [\"q2\", \"b\", null, \"q3\", null],\n    [\"q3\", \"c\", \"a\", \"q3\", null],\n    [\"q3\", null, \"$\", \"q4\", null]\n  ],\n  \"eos\": \"$\"\n},\n\"group_members\":[\"e\",\"f\",\"g\",\"h\",\"i\"]\n\t\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -607,7 +607,7 @@
 					"script": {
 						"id": "f10a0e66-4eee-49a7-871f-fadb47877e88",
 						"exec": [
-							"pm.test(\"A random PDA:10 joined Replica group 2 successfully\", function () {",
+							"pm.test(\"A random PDA:M joined Replica group 2 successfully\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});"
 						],
@@ -623,14 +623,14 @@
 					"raw": "2"
 				},
 				"url": {
-					"raw": "localhost:8080/pdas/10/join",
+					"raw": "localhost:8080/pdas/M/join",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"pdas",
-						"10",
+						"M",
 						"join"
 					]
 				}
