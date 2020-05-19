@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "3fd1b34b-7f1f-4cb3-b1d7-281300876854",
-		"name": "Replica test 2",
+		"name": "Replicatest2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -205,6 +205,10 @@
 						"exec": [
 							"console.log(pm.response.json())",
 							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"pdaId\", jsonData);",
+							"",
+							"",
 							"pm.test(\"Got a random pda_ID from second replica group successfully\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});"
@@ -372,6 +376,10 @@
 						"id": "c113b415-4780-4062-9b0d-7fad3a1f3845",
 						"exec": [
 							"console.log(pm.response.json())",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"pdaId\", jsonData);",
+							"",
 							"",
 							"pm.test(\"Got a random pda_ID from second replica group successfully\", function () {",
 							"    pm.response.to.have.status(200);",
