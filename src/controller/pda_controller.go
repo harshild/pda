@@ -400,6 +400,9 @@ func (pdaController *PdaController) Joinpda(writer http.ResponseWriter, request 
 	pdaController.PdaManager.JoinAReplicaGrp(pdaId, replicaId)
 }
 
-func (pdaController *PdaController) Pdacode(writer http.ResponseWriter, request *http.Request) {
-
+func (pdaController *PdaController) GetC3State(writer http.ResponseWriter, request *http.Request) {
+	pdsStatus := pdaController.getPDAStatus(request)
+	data, _ := json.Marshal(pdsStatus)
+	writer.WriteHeader(200)
+	writer.Write(data)
 }
