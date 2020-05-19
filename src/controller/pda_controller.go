@@ -67,33 +67,11 @@ func (pdaController *PdaController) PutsToken(writer http.ResponseWriter, reques
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 		}
 		cookieDetails := pdaController.PdaManager.GetCookieFor(pdaStatus.ReplicaId, pdaStatus.PdaId)
-		val, _ := json.Marshal(cookieDetails)
-		pdaController.WriteCookie(writer, val)
+		pdaController.WriteCookie(writer, cookieDetails)
 	} else {
 		http.Error(writer, "Connect to the PDA first!! then send token", 501)
 	}
 
-}
-
-func (pdaController *PdaController) getPDAStatus(request *http.Request) entity.PDAStatus {
-	cookies := request.Cookies()
-	var pdaStatus entity.PDAStatus
-	for i := range cookies {
-		if cookies[i].Name == "pda" {
-			pdaStatus = getCookieValue(cookies[i].Value)
-		}
-	}
-	return pdaStatus
-}
-func getCookieValue(value string) entity.PDAStatus {
-	var pdaStatus entity.PDAStatus
-
-	unescape, _ := url.PathUnescape(value)
-	all := strings.ReplaceAll(unescape, "\"", "")
-	all = strings.ReplaceAll(all, "'", "\"")
-	bytes := []byte(all)
-	json.Unmarshal(bytes, &pdaStatus)
-	return pdaStatus
 }
 
 func (pdaController *PdaController) PutsEOS(writer http.ResponseWriter, request *http.Request) {
@@ -110,21 +88,11 @@ func (pdaController *PdaController) PutsEOS(writer http.ResponseWriter, request 
 			return
 		}
 		cookieDetails := pdaController.PdaManager.GetCookieFor(pdaStatus.ReplicaId, pdaStatus.PdaId)
-		val, _ := json.Marshal(cookieDetails)
 
-		pdaController.WriteCookie(writer, val)
+		pdaController.WriteCookie(writer, cookieDetails)
 	} else {
 		http.Error(writer, "Connect to the PDA first,then send EOS", 502)
 	}
-}
-
-func (pdaController *PdaController) WriteCookie(writer http.ResponseWriter, val []byte) {
-	cookie := &http.Cookie{
-		Name:  "pda",
-		Value: strings.ReplaceAll(string(val), "\"", "'"),
-		Path:  "/",
-	}
-	http.SetCookie(writer, cookie)
 }
 
 func (pdaController *PdaController) IsPDAAccepted(writer http.ResponseWriter, request *http.Request) {
@@ -320,8 +288,8 @@ func (pdaController *PdaController) ResetAllMembers(writer http.ResponseWriter, 
 	pdaController.PdaManager.ResetReplicaMembers(replicaId)
 	groupMember := pdaController.PdaManager.GetRandomMemberAddress(replicaId)
 	cookieDetails := pdaController.PdaManager.GetCookieFor(replicaId, groupMember)
-	val, _ := json.Marshal(cookieDetails)
-	pdaController.WriteCookie(writer, val)
+
+	pdaController.WriteCookie(writer, cookieDetails)
 
 }
 
@@ -361,9 +329,7 @@ func (pdaController *PdaController) ConnectToAMember(writer http.ResponseWriter,
 		cookieDetails.Clock = pdsStatus.Clock
 	}
 
-	val, _ := json.Marshal(cookieDetails)
-
-	pdaController.WriteCookie(writer, val)
+	pdaController.WriteCookie(writer, cookieDetails)
 	data, _ := json.Marshal(groupMember)
 	writer.WriteHeader(200)
 	writer.Write(data)
@@ -423,4 +389,42 @@ func (pdaController *PdaController) GetPDACode(writer http.ResponseWriter, reque
 	data, _ := json.Marshal(code)
 	writer.WriteHeader(200)
 	writer.Write(data)
+}
+
+func (pdaController *PdaController) getPDAStatus(request *http.Request) entity.PDAStatus {
+	cookies := request.Cookies()
+	var pdaStatus entity.PDAStatus
+	for i := range cookies {
+		if cookies[i].Name == "pda" {
+			cookieInfo := getCookieValue(cookies[i].Value)
+			pdaStatus = pdaController.PdaManager.GetPDA(cookieInfo.ReplicaId, cookieInfo.PdaId)
+		}
+	}
+	return pdaStatus
+}
+func getCookieValue(value string) entity.CookieInfo {
+	var cookieInfo entity.CookieInfo
+
+	unescape, _ := url.PathUnescape(value)
+	all := strings.ReplaceAll(unescape, "\"", "")
+	all = strings.ReplaceAll(all, "'", "\"")
+	bytes := []byte(all)
+	json.Unmarshal(bytes, &cookieInfo)
+	return cookieInfo
+}
+
+func (pdaController *PdaController) WriteCookie(writer http.ResponseWriter, cookieDetails entity.PDAStatus) {
+	cookieInfo := entity.CookieInfo{
+		PdaId:     cookieDetails.PdaId,
+		ReplicaId: cookieDetails.ReplicaId,
+	}
+
+	val, _ := json.Marshal(cookieInfo)
+
+	cookie := &http.Cookie{
+		Name:  "pda",
+		Value: strings.ReplaceAll(string(val), "\"", "'"),
+		Path:  "/",
+	}
+	http.SetCookie(writer, cookie)
 }

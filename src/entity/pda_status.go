@@ -11,3 +11,8 @@ type PDAStatus struct {
 	PdaId             string         `json:"PdaId"`
 	ReplicaId         int            `json:"ReplicaId"`
 }
+
+type CookieInfo struct {
+	PdaId     string `json:"PdaId"`
+	ReplicaId int    `json:"ReplicaId"`
+}

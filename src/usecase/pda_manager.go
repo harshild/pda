@@ -279,6 +279,19 @@ func (pdaManager *PDAManager) DeleteReplica(gid int) {
 	pdaManager.PdaStore.DeleteReplicaGrp(gid)
 }
 
+func (pdaManager *PDAManager) GetPDA(gid int, pdaId string) entity.PDAStatus {
+	pda := pdaManager.PdaStore.GetPDA(gid, pdaId)
+	return entity.PDAStatus{
+		Stack:             pda.Stack,
+		State:             pda.State,
+		Clock:             pda.Clock,
+		InputQueue:        pda.InputQueue,
+		LastConsumedIndex: pda.LastConsumedIndex,
+		PdaId:             pdaId,
+		ReplicaId:         gid,
+	}
+}
+
 //func (pdaManager *PDAManager) ListAllPDAs() []string {
 //	return pdaManager.PdaStore.GetAllPDANames()
 //}
