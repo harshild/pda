@@ -55,8 +55,8 @@ func main() {
 	router.HandleFunc("/replica_pdas/{gid}/close", pdaController.CloseReplicaGrp).Methods("PUT")    //close all members
 	router.HandleFunc("/replica_pdas/{gid}/delete", pdaController.DeleteReplicaGrp).Methods("DELETE")
 	router.HandleFunc("/pdas/{id}/join", pdaController.Joinpda).Methods("PUT")
-	router.HandleFunc("/pdas/{id}/code", pdaController.Pdacode).Methods("GET")
-	router.HandleFunc("/pdas/{id}/c3state", pdaController.Pdacode).Methods("GET") //state information
+	router.HandleFunc("/pdas/{id}/code", pdaController.GetPDACode).Methods("GET")
+	router.HandleFunc("/pdas/{id}/c3state", pdaController.GetC3State).Methods("GET") //state information
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

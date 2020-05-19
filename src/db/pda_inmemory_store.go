@@ -107,7 +107,8 @@ func contains(s []string, e string) bool {
 	return false
 }
 
-func (inMemoryStore *InMemoryStore) DeleteReplicaGrp() {
+func (inMemoryStore *InMemoryStore) DeleteReplicaGrp(gid int) {
+	delete(inMemoryStore.ReplicaMembers, gid)
 
 }
 

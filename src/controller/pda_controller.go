@@ -382,7 +382,14 @@ func (pdaController *PdaController) CloseReplicaGrp(writer http.ResponseWriter, 
 }
 
 func (pdaController *PdaController) DeleteReplicaGrp(writer http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+	replicaId, err := strconv.Atoi(params["gid"])
 
+	if err != nil {
+		http.Error(writer, "Invalid replica group ID provided", http.StatusBadRequest)
+		return
+	}
+	pdaController.PdaManager.DeleteReplicaGrpAndMembers(replicaId)
 }
 
 func (pdaController *PdaController) Joinpda(writer http.ResponseWriter, request *http.Request) {
@@ -400,6 +407,18 @@ func (pdaController *PdaController) Joinpda(writer http.ResponseWriter, request 
 	pdaController.PdaManager.JoinAReplicaGrp(pdaId, replicaId)
 }
 
-func (pdaController *PdaController) Pdacode(writer http.ResponseWriter, request *http.Request) {
+func (pdaController *PdaController) GetC3State(writer http.ResponseWriter, request *http.Request) {
+	pdsStatus := pdaController.getPDAStatus(request)
+	data, _ := json.Marshal(pdsStatus)
+	writer.WriteHeader(200)
+	writer.Write(data)
+}
 
+func (pdaController *PdaController) GetPDACode(writer http.ResponseWriter, request *http.Request) {
+	pdsStatus := pdaController.getPDAStatus(request)
+	code := pdaController.PdaManager.GetPDACode(pdsStatus.ReplicaId)
+
+	data, _ := json.Marshal(code)
+	writer.WriteHeader(200)
+	writer.Write(data)
 }
