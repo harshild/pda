@@ -201,11 +201,17 @@ func (pdaManager *PDAManager) GetAllReplicaIds() []int {
 
 func (pdaManager *PDAManager) ResetReplicaMembers(gid int) error {
 	members := pdaManager.PdaStore.GetAllMembers(gid)
+	//var status entity.PDAStatus
 
 	for i := range members {
 		pdaStr, _ := pdaManager.PdaStore.Get(members[i])
 		processor := parsePdaProcessor(pdaStr)
 		processor.Reset()
+		//status.Clock = processor.Clock
+		//status.InputQueue = processor.InputQueue
+		//status.LastConsumedIndex = processor.LastConsumedIndex
+		//status.State = processor.State
+		//status.Stack = processor.Stack
 		pdaManager.PdaStore.Update(members[i], processor)
 	}
 	//fmt.Printf(" Name:%s  Token:%s Position: N/A  \n", pdaProcessor.PdaConf.Name, "START")

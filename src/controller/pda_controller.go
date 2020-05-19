@@ -68,12 +68,7 @@ func (pdaController *PdaController) PutsToken(writer http.ResponseWriter, reques
 		}
 		cookieDetails := pdaController.PdaManager.GetCookieFor(pdaStatus.ReplicaId, pdaStatus.PdaId)
 		val, _ := json.Marshal(cookieDetails)
-
-		cookie := &http.Cookie{
-			Name:  "pda",
-			Value: strings.ReplaceAll(string(val), "\"", "'"),
-		}
-		http.SetCookie(writer, cookie)
+		pdaController.WriteCookie(writer, val)
 	} else {
 		http.Error(writer, "Connect to the PDA first!! then send token", 501)
 	}
@@ -117,14 +112,19 @@ func (pdaController *PdaController) PutsEOS(writer http.ResponseWriter, request 
 		cookieDetails := pdaController.PdaManager.GetCookieFor(pdaStatus.ReplicaId, pdaStatus.PdaId)
 		val, _ := json.Marshal(cookieDetails)
 
-		cookie := &http.Cookie{
-			Name:  "pda",
-			Value: strings.ReplaceAll(string(val), "\"", "'"),
-		}
-		http.SetCookie(writer, cookie)
+		pdaController.WriteCookie(writer, val)
 	} else {
 		http.Error(writer, "Connect to the PDA first,then send EOS", 502)
 	}
+}
+
+func (pdaController *PdaController) WriteCookie(writer http.ResponseWriter, val []byte) {
+	cookie := &http.Cookie{
+		Name:  "pda",
+		Value: strings.ReplaceAll(string(val), "\"", "'"),
+		Path:  "/",
+	}
+	http.SetCookie(writer, cookie)
 }
 
 func (pdaController *PdaController) IsPDAAccepted(writer http.ResponseWriter, request *http.Request) {
@@ -318,6 +318,11 @@ func (pdaController *PdaController) ResetAllMembers(writer http.ResponseWriter, 
 	}
 
 	pdaController.PdaManager.ResetReplicaMembers(replicaId)
+	groupMember := pdaController.PdaManager.GetRandomMemberAddress(replicaId)
+	cookieDetails := pdaController.PdaManager.GetCookieFor(replicaId, groupMember)
+	val, _ := json.Marshal(cookieDetails)
+	pdaController.WriteCookie(writer, val)
+
 }
 
 func (pdaController *PdaController) GetMembersAddress(writer http.ResponseWriter, request *http.Request) {
@@ -358,11 +363,7 @@ func (pdaController *PdaController) ConnectToAMember(writer http.ResponseWriter,
 
 	val, _ := json.Marshal(cookieDetails)
 
-	cookie := &http.Cookie{
-		Name:  "pda",
-		Value: strings.ReplaceAll(string(val), "\"", "'"),
-	}
-	http.SetCookie(writer, cookie)
+	pdaController.WriteCookie(writer, val)
 	data, _ := json.Marshal(groupMember)
 	writer.WriteHeader(200)
 	writer.Write(data)
