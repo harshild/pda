@@ -415,8 +415,10 @@ func (pdaController *PdaController) GetC3State(writer http.ResponseWriter, reque
 }
 
 func (pdaController *PdaController) GetPDACode(writer http.ResponseWriter, request *http.Request) {
-	pdsStatus := pdaController.getPDAStatus(request)
-	code := pdaController.PdaManager.GetPDACode(pdsStatus.ReplicaId)
+	params := mux.Vars(request)
+	pdaId := params["id"]
+
+	code := pdaController.PdaManager.GetPDACode(pdaId)
 
 	data, _ := json.Marshal(code)
 	writer.WriteHeader(200)
