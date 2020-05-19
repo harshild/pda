@@ -259,6 +259,10 @@ func (pdaManager *PDAManager) JoinAReplicaGrp(pdaId string, replicaId int) {
 	//CALl update
 }
 
+func (pdaManager *PDAManager) GetPDACode(gid int) entity.PDAConf {
+	return pdaManager.PdaStore.GetReplicaConf(gid)
+}
+
 //func (pdaManager *PDAManager) ListAllPDAs() []string {
 //	return pdaManager.PdaStore.GetAllPDANames()
 //}
