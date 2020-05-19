@@ -375,7 +375,11 @@ func (pdaController *PdaController) Joinpda(writer http.ResponseWriter, request 
 
 func (pdaController *PdaController) GetC3State(writer http.ResponseWriter, request *http.Request) {
 	pdsStatus := pdaController.getPDAStatus(request)
-	data, _ := json.Marshal(pdsStatus)
+	cookieInfo := entity.CookieInfo{
+		PdaId:     pdsStatus.PdaId,
+		ReplicaId: pdsStatus.ReplicaId,
+	}
+	data, _ := json.Marshal(cookieInfo)
 	writer.WriteHeader(200)
 	writer.Write(data)
 }
