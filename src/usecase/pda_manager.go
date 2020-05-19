@@ -207,11 +207,6 @@ func (pdaManager *PDAManager) ResetReplicaMembers(gid int) error {
 		pdaStr, _ := pdaManager.PdaStore.Get(members[i])
 		processor := parsePdaProcessor(pdaStr)
 		processor.Reset()
-		//status.Clock = processor.Clock
-		//status.InputQueue = processor.InputQueue
-		//status.LastConsumedIndex = processor.LastConsumedIndex
-		//status.State = processor.State
-		//status.Stack = processor.Stack
 		pdaManager.PdaStore.Update(members[i], processor)
 	}
 	//fmt.Printf(" Name:%s  Token:%s Position: N/A  \n", pdaProcessor.PdaConf.Name, "START")
